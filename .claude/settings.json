@@ -1,0 +1,38 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(set -e)",
+      "Bash(convert /tmp/tv_crop2.png -background white -flatten -resize 512x512 /tmp/icon_master.png)",
+      "Bash(convert /tmp/icon_master.png -background white '\\(' -clone 0 -resize 16x16 '\\)' '\\(' -clone 0 -resize 32x32 '\\)' '\\(' -clone 0 -resize 48x48 '\\)' -delete 0 -colors 256 src/app/favicon.ico)",
+      "Bash(convert /tmp/icon_master.png -resize 180x180 -background white -flatten src/app/apple-icon.png)",
+      "Bash(convert /tmp/icon_master.png -resize 192x192 public/icon-192.png)",
+      "Bash(convert \"src/app/favicon.ico[2]\" /tmp/favicon_preview.png)",
+      "Bash(identify /tmp/favicon_preview.png)",
+      "Bash(convert \"public/logo .png\" -fuzz 12% -transparent white -fuzz 5% -trim +repage /tmp/logo_t.png)",
+      "Bash(identify /tmp/logo_t.png)",
+      "Bash(convert /tmp/logo_t.png -background \"#16315c\" -flatten /tmp/logo_t_oncolor.png)",
+      "Bash(convert /tmp/tv_crop2.png -fuzz 12% -transparent white -resize 512x512 /tmp/icon_master_t.png)",
+      "Bash(convert /tmp/icon_master_t.png '\\(' -clone 0 -resize 16x16 '\\)' '\\(' -clone 0 -resize 32x32 '\\)' '\\(' -clone 0 -resize 48x48 '\\)' -delete 0 src/app/favicon.ico)",
+      "Bash(convert /tmp/icon_master_t.png -resize 192x192 public/icon-192.png)",
+      "Bash(convert /tmp/icon_master_t.png -resize 512x512 public/icon-512.png)",
+      "Bash(convert /tmp/icon_master_t.png -resize 180x180 -background white -flatten src/app/apple-icon.png)",
+      "Bash(convert src/app/icon.png -background \"#16315c\" -flatten /tmp/v_dark.png)",
+      "Bash(convert src/app/icon.png -background \"#f3f4f6\" -flatten /tmp/v_light.png)",
+      "Bash(convert /tmp/v_dark.png /tmp/v_light.png +append -resize 50% /tmp/icon_check.png)",
+      "Bash(convert /tmp/logo_t.png -fill white -colorize 100% public/logo-white.png)",
+      "Bash(identify -format \"%f %wx%h\\\\n\" public/logo.png public/logo-white.png)",
+      "Bash(convert public/logo-white.png -background \"#16315c\" -flatten /tmp/logo_white_check.png)",
+      "Bash(node -e \"const p=require\\('./node_modules/@prisma/client/package.json'\\); console.log\\(JSON.stringify\\(p.exports['./runtime/client'],null,2\\)\\); console.log\\('type:',p.type\\)\")",
+      "Bash(sed -n '1,30p' src/lib/format.ts)",
+      "Bash(sed -n '25,90p' src/lib/jsonld.ts)",
+      "Bash(/usr/local/bin/node node_modules/typescript/bin/tsc --noEmit -p tsconfig.json)",
+      "Bash(/usr/local/bin/node ./diag.mjs)",
+      "Bash(python3 -c \"import sys,json; print\\(json.loads\\('['+sys.stdin.read\\(\\).strip\\(\\)+']'\\)[0]['message'] if False else json.loads\\(sys.stdin.read\\(\\)\\)['message']\\)\")",
+      "Bash(/usr/local/bin/node -e \"const fs=require\\('fs'\\);const l=fs.readFileSync\\('/tmp/line.txt','utf8'\\).trim\\(\\);const o=JSON.parse\\(l\\);process.stdout.write\\(o.message\\);\")",
+      "Bash(/usr/local/bin/node -e \"const fs=require\\('fs'\\);for\\(const l of fs.readFileSync\\('/tmp/l2.txt','utf8'\\).trim\\(\\).split\\('\\\\n'\\)\\){try{console.log\\('---'\\);console.log\\(JSON.parse\\(l\\).message\\)}catch\\(e\\){}}\")",
+      "Bash(/usr/local/bin/node -e \"console.log\\('global WebSocket:', typeof WebSocket\\)\")",
+      "Bash(kill -9 42518 42507 42506)",
+      "Bash(node -e \"const p=require\\('./package.json'\\); console.log\\(JSON.stringify\\(p.scripts,null,2\\)\\)\")"
+    ]
+  }
+}

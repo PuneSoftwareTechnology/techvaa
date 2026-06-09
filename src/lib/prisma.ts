@@ -56,24 +56,35 @@ function createPrismaClient() {
   }).$extends({
     query: {
       async $allOperations({ args, query }) {
-        // Waking Neon compute can take a few seconds, and during static builds
-        // many workers race their first connection at once. Retry with
-        // exponential backoff + jitter so the herd de-synchronizes and the
-        // total wait window outlasts a cold start.
-        const MAX_ATTEMPTS = 6;
+        // Waking Neon compute from auto-suspend can take 10s+, and during
+        // static builds many workers race their first connection at once.
+        // Retry with exponential backoff + jitter so the herd de-synchronizes
+        // and the total wait window comfortably outlasts a cold start (these
+        // settings give a ~20s cumulative window).
+        const MAX_ATTEMPTS = 10;
         let lastError: unknown;
         for (let attempt = 0; attempt < MAX_ATTEMPTS; attempt++) {
           try {
             return await query(args);
           } catch (error) {
             lastError = error;
+            // TEMP DIAG
+            console.error("[DIAG] attempt", attempt, {
+              ctor: (error as any)?.constructor?.name,
+              name: (error as any)?.name,
+              message: (error as any)?.message,
+              code: (error as any)?.code,
+              keys: error && typeof error === "object" ? Object.keys(error as any) : null,
+              str: String(error).slice(0, 200),
+              transient: isTransientConnectionError(error),
+            });
             if (
               attempt === MAX_ATTEMPTS - 1 ||
               !isTransientConnectionError(error)
             ) {
               throw error;
             }
-            const backoff = Math.min(2000, 100 * 2 ** attempt);
+            const backoff = Math.min(4000, 100 * 2 ** attempt);
             await sleep(backoff + Math.random() * 250);
           }
         }

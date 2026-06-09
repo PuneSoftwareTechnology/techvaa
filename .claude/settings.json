@@ -32,7 +32,12 @@
       "Bash(/usr/local/bin/node -e \"const fs=require\\('fs'\\);for\\(const l of fs.readFileSync\\('/tmp/l2.txt','utf8'\\).trim\\(\\).split\\('\\\\n'\\)\\){try{console.log\\('---'\\);console.log\\(JSON.parse\\(l\\).message\\)}catch\\(e\\){}}\")",
       "Bash(/usr/local/bin/node -e \"console.log\\('global WebSocket:', typeof WebSocket\\)\")",
       "Bash(kill -9 42518 42507 42506)",
-      "Bash(node -e \"const p=require\\('./package.json'\\); console.log\\(JSON.stringify\\(p.scripts,null,2\\)\\)\")"
+      "Bash(node -e \"const p=require\\('./package.json'\\); console.log\\(JSON.stringify\\(p.scripts,null,2\\)\\)\")",
+      "Bash(/usr/local/bin/node -v)",
+      "Bash(/usr/local/bin/node /tmp/dbtest.mjs)",
+      "Bash(node -e \"const p=require\\('./package.json'\\); console.log\\(JSON.stringify\\(p.scripts,null,2\\)\\); console.log\\('prisma dep:', \\(p.dependencies&&p.dependencies.prisma\\)||\\(p.devDependencies&&p.devDependencies.prisma\\)\\); console.log\\('@prisma/client:', p.dependencies&&p.dependencies['@prisma/client']\\)\")",
+      "Bash(PATH=/usr/local/bin:__TRACKED_VAR__ node --env-file=.env node_modules/.bin/tsx ./_dbtest.mts)",
+      "Bash(PATH=/usr/local/bin:__TRACKED_VAR__ npm run build)"
     ]
   }
 }

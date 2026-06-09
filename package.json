@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "prebuild": "node --env-file-if-exists=.env scripts/warm-db.mjs",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",

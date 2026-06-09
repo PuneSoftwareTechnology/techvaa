@@ -75,13 +75,35 @@ function isTransientConnectionError(error: unknown): boolean {
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 function createPrismaClient() {
-  return new PrismaClient({
+  const base = new PrismaClient({
     adapter,
+    // Emit `error` as an event rather than to stdout. The Neon driver fires an
+    // error-level log for every dropped-connection blip *before* the retry
+    // wrapper below recovers from it, so the default stdout logger spams builds
+    // with useless `prisma:error undefined` lines (the underlying error has no
+    // message). Handling the event ourselves lets us drop those transient,
+    // message-less blips while still surfacing genuine errors.
     log:
       process.env.NODE_ENV === "development"
-        ? ["query", "warn", "error"]
-        : ["warn", "error"],
-  }).$extends({
+        ? [
+            { level: "query", emit: "stdout" },
+            { level: "warn", emit: "stdout" },
+            { level: "error", emit: "event" },
+          ]
+        : [
+            { level: "warn", emit: "stdout" },
+            { level: "error", emit: "event" },
+          ],
+  });
+
+  base.$on("error", (event) => {
+    const message = event.message?.trim();
+    // A blank message is the swallowed Neon WebSocket drop we already retry.
+    if (!message || TRANSIENT_MESSAGE.test(message)) return;
+    console.error("prisma:error", message);
+  });
+
+  return base.$extends({
     query: {
       async $allOperations({ args, query }) {
         // Waking Neon compute from auto-suspend can take 10s+, and during

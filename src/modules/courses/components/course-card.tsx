@@ -1,9 +1,8 @@
 import Link from "next/link";
-import { ArrowRight, Clock, BarChart3 } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
-import { levelLabel } from "@/lib/format";
 import type { CourseDTO } from "@/types";
 
 export function CourseCard({
@@ -39,19 +38,6 @@ export function CourseCard({
       </div>
 
       <div className="flex flex-1 flex-col p-5">
-        <div className="mb-3 flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
-          <span className="inline-flex items-center gap-1">
-            <BarChart3 className="size-3.5" aria-hidden="true" />
-            {levelLabel(course.level)}
-          </span>
-          {course.duration && (
-            <span className="inline-flex items-center gap-1">
-              <Clock className="size-3.5" aria-hidden="true" />
-              {course.duration}
-            </span>
-          )}
-        </div>
-
         <h3 className="font-heading text-lg font-semibold leading-snug text-foreground">
           <Link
             href={`/courses/${course.slug}`}
@@ -61,9 +47,9 @@ export function CourseCard({
           </Link>
         </h3>
 
-        {course.shortDescription && (
+        {course.intro[0] && (
           <p className="mt-2 line-clamp-2 text-sm text-muted-foreground">
-            {course.shortDescription}
+            {course.intro[0]}
           </p>
         )}
 

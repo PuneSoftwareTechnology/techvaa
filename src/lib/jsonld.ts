@@ -65,22 +65,13 @@ export function courseSchema(course: CourseDTO) {
     "@context": "https://schema.org",
     "@type": "Course",
     name: course.title,
-    description: course.shortDescription ?? course.description.slice(0, 200),
+    description: course.description.slice(0, 200),
     url: absoluteUrl(`/courses/${course.slug}`),
     provider: {
       "@type": "EducationalOrganization",
       name: SITE.name,
       sameAs: absoluteUrl("/"),
     },
-    ...(course.duration
-      ? {
-          hasCourseInstance: {
-            "@type": "CourseInstance",
-            courseMode: ["Online", "Onsite"],
-            courseWorkload: course.duration,
-          },
-        }
-      : {}),
   };
 }
 
@@ -132,7 +123,7 @@ export function articleSchema(blog: BlogDTO) {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
     headline: blog.title,
-    description: blog.excerpt ?? undefined,
+    description: blog.metaDescription ?? blog.introduction,
     image: blog.featuredImage ? absoluteUrl(blog.featuredImage) : undefined,
     datePublished: blog.publishedAt ?? undefined,
     url: absoluteUrl(`/blog/${blog.slug}`),

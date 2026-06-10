@@ -27,7 +27,18 @@ export const blogRepository = {
   async findBySlug(slug: string): Promise<BlogDTO | null> {
     const row = await prisma.blog.findFirst({
       where: { slug, ...PUBLISHED },
-      include: { category: true, seo: true },
+      include: {
+        category: true,
+        seo: true,
+        relatedCourse: {
+          select: {
+            id: true,
+            title: true,
+            slug: true,
+            image: true,
+          },
+        },
+      },
     });
     return row ? toBlogDTO(row) : null;
   },

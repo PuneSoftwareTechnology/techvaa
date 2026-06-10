@@ -34,7 +34,7 @@ export function CourseBatch({ course }: { course: CourseDTO }) {
                   </div>
                   <div className="flex items-center gap-2">
                     <Clock className="size-4 text-brand" aria-hidden="true" />
-                    <span>{course.duration ?? "12 weeks"}</span>
+                    <span>12 weeks</span>
                   </div>
                 </dl>
               </div>

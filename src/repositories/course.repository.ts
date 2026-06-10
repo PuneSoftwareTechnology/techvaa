@@ -28,7 +28,15 @@ export const courseRepository = {
   async findBySlug(slug: string): Promise<CourseDTO | null> {
     const row = await prisma.course.findFirst({
       where: { slug, ...PUBLISHED },
-      include: { seo: true },
+      include: {
+        seo: true,
+        // Only surface related courses that are themselves live.
+        relatedCourses: {
+          where: PUBLISHED,
+          select: { id: true, title: true, slug: true, image: true },
+          orderBy: { createdAt: "desc" },
+        },
+      },
     });
     return row ? toCourseDTO(row) : null;
   },

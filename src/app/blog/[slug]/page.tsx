@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
+import Link from "next/link";
+import Image from "next/image";
 import { notFound } from "next/navigation";
-import { Clock, CalendarDays } from "lucide-react";
+import { CalendarDays } from "lucide-react";
+import type { BlogContentBlockDTO } from "@/types";
 import { blogService } from "@/services/blog.service";
 import { buildMetadata } from "@/lib/seo";
 import { JsonLd } from "@/components/seo/json-ld";
@@ -15,6 +18,51 @@ import { BlogCard } from "@/modules/blog/components/blog-card";
 
 export const revalidate = 3600;
 export const dynamicParams = true;
+
+/** Renders one templated content block; nothing if the block is empty. */
+function ContentBlock({ block }: { block: BlogContentBlockDTO }) {
+  const isEmpty =
+    !block.title &&
+    !block.intro &&
+    !block.image &&
+    !block.text &&
+    block.points.length === 0;
+  if (isEmpty) return null;
+
+  return (
+    <section className="mt-10">
+      {block.title && (
+        <h2 className="text-2xl font-semibold text-foreground">{block.title}</h2>
+      )}
+      {block.intro && (
+        <p className="mt-2 font-medium leading-relaxed text-foreground">
+          {block.intro}
+        </p>
+      )}
+      {block.image && (
+        <Image
+          src={block.image}
+          alt={block.title ?? ""}
+          width={768}
+          height={432}
+          className="mt-4 w-full rounded-xl object-cover"
+        />
+      )}
+      {block.text && (
+        <div className="mt-4 whitespace-pre-line leading-relaxed text-muted-foreground">
+          {block.text}
+        </div>
+      )}
+      {block.points.length > 0 && (
+        <ul className="mt-4 list-disc space-y-1 pl-6 text-muted-foreground">
+          {block.points.map((p, i) => (
+            <li key={i}>{p}</li>
+          ))}
+        </ul>
+      )}
+    </section>
+  );
+}
 
 export async function generateStaticParams() {
   const slugs = await blogService.getAllSlugs();
@@ -33,7 +81,8 @@ export async function generateMetadata({
   const seo = blog.seo;
   return buildMetadata({
     title: seo?.metaTitle ?? blog.title,
-    description: seo?.metaDescription ?? blog.excerpt ?? blog.content.slice(0, 160),
+    description:
+      seo?.metaDescription ?? blog.metaDescription ?? blog.introduction.slice(0, 160),
     path: `/blog/${blog.slug}`,
     image: seo?.ogImage ?? blog.featuredImage,
     keywords: seo?.keywords,
@@ -83,25 +132,50 @@ export default async function BlogDetailPage({
               {formatDate(blog.publishedAt)}
             </span>
           )}
-          {blog.readingTime && (
-            <span className="inline-flex items-center gap-1">
-              <Clock className="size-4" aria-hidden="true" /> {blog.readingTime} min read
-            </span>
-          )}
         </div>
       </PageHero>
 
       <Container className="max-w-3xl py-14">
         <article className="prose prose-neutral max-w-none">
-          {blog.excerpt && (
-            <p className="text-lg font-medium leading-relaxed text-foreground">
-              {blog.excerpt}
-            </p>
+          <p className="text-lg font-medium leading-relaxed text-foreground">
+            {blog.introduction}
+          </p>
+
+          <ContentBlock block={blog.primary} />
+          <ContentBlock block={blog.secondary} />
+          <ContentBlock block={blog.tertiary} />
+
+          {blog.conclusion && (
+            <div className="mt-10 whitespace-pre-line leading-relaxed text-muted-foreground">
+              {blog.conclusion}
+            </div>
           )}
-          <div className="mt-6 whitespace-pre-line leading-relaxed text-muted-foreground">
-            {blog.content}
-          </div>
         </article>
+
+        {blog.relatedCourse && (
+          <Link
+            href={`/courses/${blog.relatedCourse.slug}`}
+            className="mt-12 flex items-center gap-4 rounded-xl border bg-secondary/40 p-5 transition-colors hover:bg-secondary/60"
+          >
+            {blog.relatedCourse.image && (
+              <Image
+                src={blog.relatedCourse.image}
+                alt={blog.relatedCourse.title}
+                width={80}
+                height={80}
+                className="size-20 shrink-0 rounded-lg object-cover"
+              />
+            )}
+            <div>
+              <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                Related course
+              </p>
+              <p className="mt-1 font-semibold text-foreground">
+                {blog.relatedCourse.title}
+              </p>
+            </div>
+          </Link>
+        )}
       </Container>
 
       {related.length > 0 && (

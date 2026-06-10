@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowRight, Clock, Download, BarChart3 } from "lucide-react";
+import { ArrowRight, Download } from "lucide-react";
 import { courseService } from "@/services/course.service";
 import { faqService } from "@/services/faq.service";
 import { buildMetadata } from "@/lib/seo";
@@ -9,9 +9,8 @@ import { JsonLd } from "@/components/seo/json-ld";
 import { courseSchema, breadcrumbSchema, faqSchema } from "@/lib/jsonld";
 import { PageHero } from "@/components/common/page-hero";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+import { Card } from "@/components/ui/card";
 import { Container } from "@/components/common/container";
-import { levelLabel } from "@/lib/format";
 import { CurriculumHighlights } from "@/modules/courses/components/curriculum-highlights";
 import { CourseOutcomes } from "@/modules/courses/components/course-outcomes";
 import { CourseBatch } from "@/modules/courses/components/course-batch";
@@ -19,6 +18,29 @@ import { FaqSection } from "@/modules/home/components/faq-section";
 
 export const revalidate = 3600;
 export const dynamicParams = true;
+
+/** A titled list of bullet points (course intro / modules / prerequisites). */
+function CourseBulletSection({
+  title,
+  items,
+}: {
+  title: string;
+  items: string[];
+}) {
+  return (
+    <div className="mt-10">
+      <h2 className="font-heading text-2xl font-bold text-foreground">{title}</h2>
+      <ul className="mt-4 space-y-2">
+        {items.map((item, i) => (
+          <li key={i} className="flex gap-3 text-pretty leading-relaxed text-muted-foreground">
+            <ArrowRight className="mt-1 size-4 shrink-0 text-accent-orange" aria-hidden="true" />
+            <span>{item}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
 
 export async function generateStaticParams() {
   const slugs = await courseService.getAllSlugs();
@@ -37,7 +59,8 @@ export async function generateMetadata({
   const seo = course.seo;
   return buildMetadata({
     title: seo?.metaTitle ?? course.title,
-    description: seo?.metaDescription ?? course.shortDescription ?? course.description.slice(0, 160),
+    description:
+      seo?.metaDescription ?? course.intro[0] ?? course.description.slice(0, 160),
     path: `/courses/${course.slug}`,
     image: seo?.ogImage ?? course.image,
     keywords: seo?.keywords,
@@ -74,7 +97,7 @@ export default async function CourseDetailPage({
       <PageHero
         eyebrow="SAP Certification Bootcamp"
         title={course.title}
-        description={course.shortDescription ?? undefined}
+        description={course.intro[0] ?? undefined}
         breadcrumbs={[
           { name: "Home", href: "/" },
           { name: "Courses", href: "/courses" },
@@ -98,14 +121,6 @@ export default async function CourseDetailPage({
             </Link>
           </Button>
         </div>
-        <div className="mt-6 flex flex-wrap gap-2">
-          <Badge className="gap-1 bg-white/15 text-white">
-            <Clock className="size-3.5" aria-hidden="true" /> {course.duration ?? "12 weeks"}
-          </Badge>
-          <Badge className="gap-1 bg-white/15 text-white">
-            <BarChart3 className="size-3.5" aria-hidden="true" /> {levelLabel(course.level)}
-          </Badge>
-        </div>
       </PageHero>
 
       {course.description && (
@@ -116,12 +131,53 @@ export default async function CourseDetailPage({
           <p className="mt-4 whitespace-pre-line text-pretty leading-relaxed text-muted-foreground">
             {course.description}
           </p>
+
+          {course.intro.length > 0 && (
+            <CourseBulletSection title="Course introduction" items={course.intro} />
+          )}
         </Container>
       )}
 
-      <CurriculumHighlights />
+      {course.modules.length > 0 ? (
+        <Container className="max-w-3xl pb-4">
+          <CourseBulletSection title="Modules" items={course.modules} />
+        </Container>
+      ) : (
+        <CurriculumHighlights />
+      )}
+
+      {course.prerequisites.length > 0 && (
+        <Container className="max-w-3xl py-4">
+          <CourseBulletSection title="Prerequisites" items={course.prerequisites} />
+        </Container>
+      )}
+
       <CourseOutcomes courseTitle={course.title} />
       <CourseBatch course={course} />
+
+      {course.relatedCourses.length > 0 && (
+        <Container className="max-w-4xl py-12">
+          <h2 className="font-heading text-2xl font-bold text-foreground">
+            Related courses
+          </h2>
+          <div className="mt-6 grid gap-4 sm:grid-cols-2">
+            {course.relatedCourses.map((related) => (
+              <Card key={related.id} className="p-0">
+                <Link
+                  href={`/courses/${related.slug}`}
+                  className="flex items-center justify-between gap-3 p-5 transition-colors hover:bg-muted/50"
+                >
+                  <span className="font-heading text-base font-semibold text-foreground">
+                    {related.title}
+                  </span>
+                  <ArrowRight className="size-4 shrink-0 text-accent-orange" aria-hidden="true" />
+                </Link>
+              </Card>
+            ))}
+          </div>
+        </Container>
+      )}
+
       <FaqSection faqs={faqs} />
     </>
   );

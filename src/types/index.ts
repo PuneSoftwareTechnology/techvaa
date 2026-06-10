@@ -6,12 +6,6 @@
  * serializable across the Server/Client Component boundary.
  */
 
-export type CourseLevel =
-  | "BEGINNER"
-  | "INTERMEDIATE"
-  | "ADVANCED"
-  | "ALL_LEVELS";
-
 export interface SeoDTO {
   metaTitle: string | null;
   metaDescription: string | null;
@@ -24,17 +18,30 @@ export interface SeoDTO {
   schemaMarkup: unknown | null;
 }
 
+/** A course's related-course link, slimmed for the detail page. */
+export interface RelatedCourseDTO {
+  id: string;
+  title: string;
+  slug: string;
+  image: string | null;
+}
+
 export interface CourseDTO {
   id: string;
   title: string;
   slug: string;
-  shortDescription: string | null;
   description: string;
-  duration: string | null;
-  level: CourseLevel;
+  /** Bullet-point course introduction. */
+  intro: string[];
+  /** Bullet-point list of modules / curriculum. */
+  modules: string[];
+  /** Bullet-point list of prerequisites. */
+  prerequisites: string[];
   image: string | null;
   isFeatured: boolean;
   createdAt: string;
+  /** Curated related courses (only populated on the detail query). */
+  relatedCourses: RelatedCourseDTO[];
   seo: SeoDTO | null;
 }
 
@@ -45,16 +52,38 @@ export interface BlogCategoryDTO {
   description: string | null;
 }
 
+/** One templated content block (primary/secondary/tertiary) of a blog. */
+export interface BlogContentBlockDTO {
+  title: string | null;
+  intro: string | null;
+  image: string | null;
+  text: string | null;
+  points: string[];
+}
+
+/** A blog's related-course link, slimmed for the UI. */
+export interface BlogRelatedCourseDTO {
+  id: string;
+  title: string;
+  slug: string;
+  image: string | null;
+}
+
 export interface BlogDTO {
   id: string;
   title: string;
   slug: string;
-  excerpt: string | null;
-  content: string;
+  metaDescription: string | null;
   featuredImage: string | null;
-  readingTime: number | null;
+  introduction: string;
+  primary: BlogContentBlockDTO;
+  secondary: BlogContentBlockDTO;
+  tertiary: BlogContentBlockDTO;
+  conclusion: string | null;
+  showOnHomepage: boolean;
   publishedAt: string | null;
   category: BlogCategoryDTO;
+  relatedCourse: BlogRelatedCourseDTO | null;
   seo: SeoDTO | null;
 }
 

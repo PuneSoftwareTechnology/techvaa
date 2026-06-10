@@ -48,13 +48,21 @@ export function toCourseDTO(c: any): CourseDTO {
     id: c.id,
     title: c.title,
     slug: c.slug,
-    shortDescription: c.shortDescription ?? null,
     description: c.description,
-    duration: c.duration ?? null,
-    level: c.level,
+    intro: c.intro ?? [],
+    modules: c.modules ?? [],
+    prerequisites: c.prerequisites ?? [],
     image: c.image ?? null,
     isFeatured: c.isFeatured,
     createdAt: c.createdAt.toISOString(),
+    relatedCourses: Array.isArray(c.relatedCourses)
+      ? c.relatedCourses.map((r: any) => ({
+          id: r.id,
+          title: r.title,
+          slug: r.slug,
+          image: r.image ?? null,
+        }))
+      : [],
     seo: toSeoDTO(c.seo ?? null),
   };
 }
@@ -65,10 +73,32 @@ export function toBlogDTO(b: any): BlogDTO {
     id: b.id,
     title: b.title,
     slug: b.slug,
-    excerpt: b.excerpt ?? null,
-    content: b.content,
+    metaDescription: b.metaDescription ?? null,
     featuredImage: b.featuredImage ?? null,
-    readingTime: b.readingTime ?? null,
+    introduction: b.introduction,
+    primary: {
+      title: b.primaryTitle ?? null,
+      intro: b.primaryIntro ?? null,
+      image: b.primaryImage ?? null,
+      text: b.primaryText ?? null,
+      points: [],
+    },
+    secondary: {
+      title: b.secondaryTitle ?? null,
+      intro: b.secondaryIntro ?? null,
+      image: b.secondaryImage ?? null,
+      text: b.secondaryText ?? null,
+      points: [],
+    },
+    tertiary: {
+      title: b.tertiaryTitle ?? null,
+      intro: b.tertiaryIntro ?? null,
+      image: b.tertiaryImage ?? null,
+      text: b.tertiaryText ?? null,
+      points: b.tertiaryPoints ?? [],
+    },
+    conclusion: b.conclusion ?? null,
+    showOnHomepage: b.showOnHomepage ?? false,
     publishedAt: b.publishedAt ? b.publishedAt.toISOString() : null,
     category: {
       id: b.category.id,
@@ -76,6 +106,14 @@ export function toBlogDTO(b: any): BlogDTO {
       slug: b.category.slug,
       description: b.category.description ?? null,
     },
+    relatedCourse: b.relatedCourse
+      ? {
+          id: b.relatedCourse.id,
+          title: b.relatedCourse.title,
+          slug: b.relatedCourse.slug,
+          image: b.relatedCourse.image ?? null,
+        }
+      : null,
     seo: toSeoDTO(b.seo ?? null),
   };
 }

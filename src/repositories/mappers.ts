@@ -100,12 +100,6 @@ export function toBlogDTO(b: any): BlogDTO {
     conclusion: b.conclusion ?? null,
     showOnHomepage: b.showOnHomepage ?? false,
     publishedAt: b.publishedAt ? b.publishedAt.toISOString() : null,
-    category: {
-      id: b.category.id,
-      name: b.category.name,
-      slug: b.category.slug,
-      description: b.category.description ?? null,
-    },
     relatedCourse: b.relatedCourse
       ? {
           id: b.relatedCourse.id,

@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { formatDate } from "@/lib/format";
 import type { BlogDTO } from "@/types";
@@ -27,9 +26,6 @@ export function BlogCard({
           aria-hidden="true"
           className="absolute inset-0 bg-[radial-gradient(120%_120%_at_100%_0%,oklch(0.46_0.11_258),oklch(0.26_0.07_258))]"
         />
-        <Badge className="absolute left-3 top-3 bg-accent-orange text-accent-orange-foreground">
-          {blog.category.name}
-        </Badge>
       </div>
 
       <div className="flex flex-1 flex-col p-5">

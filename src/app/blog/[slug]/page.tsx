@@ -12,7 +12,6 @@ import { PageHero } from "@/components/common/page-hero";
 import { Container } from "@/components/common/container";
 import { SectionHeader } from "@/components/common/section-header";
 import { Reveal } from "@/components/common/reveal";
-import { Badge } from "@/components/ui/badge";
 import { formatDate } from "@/lib/format";
 import { BlogCard } from "@/modules/blog/components/blog-card";
 
@@ -100,7 +99,7 @@ export default async function BlogDetailPage({
   const blog = await blogService.getBySlug(slug);
   if (!blog) notFound();
 
-  const related = await blogService.getRelated(blog.slug, blog.category.id);
+  const related = await blogService.getRelated(blog.slug);
 
   return (
     <>
@@ -116,7 +115,7 @@ export default async function BlogDetailPage({
       />
 
       <PageHero
-        eyebrow={blog.category.name}
+        eyebrow="Blog"
         title={blog.title}
         breadcrumbs={[
           { name: "Home", href: "/" },
@@ -125,7 +124,6 @@ export default async function BlogDetailPage({
         ]}
       >
         <div className="flex flex-wrap items-center gap-3 text-sm text-white/80">
-          <Badge className="bg-white/15 text-white">{blog.category.name}</Badge>
           {blog.publishedAt && (
             <span className="inline-flex items-center gap-1">
               <CalendarDays className="size-4" aria-hidden="true" />

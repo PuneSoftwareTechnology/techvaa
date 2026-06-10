@@ -101,25 +101,6 @@ async function main() {
   }
   console.log(`   ✓ ${pageSeo.length} page SEO entries`);
 
-  // ── Blog categories ────────────────────────────────────────────────────────
-  const categoryData = [
-    { name: "SAP FICO", slug: "sap-fico", description: "Finance & Controlling insights." },
-    { name: "SAP MM", slug: "sap-mm", description: "Materials Management guides." },
-    { name: "SAP ABAP", slug: "sap-abap", description: "ABAP development tutorials." },
-    { name: "Career", slug: "career", description: "SAP careers, salaries and placements." },
-    { name: "Certification", slug: "certification", description: "SAP certification roadmaps." },
-  ];
-  const categories: Record<string, string> = {};
-  for (const c of categoryData) {
-    const cat = await prisma.blogCategory.upsert({
-      where: { slug: c.slug },
-      update: { name: c.name, description: c.description },
-      create: c,
-    });
-    categories[c.slug] = cat.id;
-  }
-  console.log(`   ✓ ${categoryData.length} blog categories`);
-
   // ── Courses (5) ─────────────────────────────────────────────────────────────
   const courses = [
     {
@@ -221,7 +202,6 @@ async function main() {
       primaryText: "From accounts payable to controlling, FICO touches every financial process in the enterprise...",
       isPublished: true,
       publishedAt: new Date("2026-01-15T09:00:00Z"),
-      categorySlug: "sap-fico",
     },
     {
       title: "Top 10 SAP MM Interview Questions",
@@ -236,7 +216,6 @@ async function main() {
       ],
       isPublished: true,
       publishedAt: new Date("2026-02-02T09:00:00Z"),
-      categorySlug: "sap-mm",
     },
     {
       title: "ABAP vs. ABAP on HANA: What Changed",
@@ -247,7 +226,6 @@ async function main() {
       primaryText: "Instead of looping in the application server, modern ABAP leans on CDS views and AMDP...",
       isPublished: true,
       publishedAt: new Date("2026-03-10T09:00:00Z"),
-      categorySlug: "sap-abap",
     },
     {
       title: "Is SAP Certification Worth It?",
@@ -257,7 +235,6 @@ async function main() {
       conclusion: "For most early-career consultants, the answer is a qualified yes.",
       isPublished: true,
       publishedAt: new Date("2026-04-05T09:00:00Z"),
-      categorySlug: "certification",
     },
     {
       title: "How Our Students Land SAP Jobs",
@@ -266,15 +243,13 @@ async function main() {
       introduction: "Placements are the heart of what we do. Here's how the process works.",
       isPublished: false,
       publishedAt: null as Date | null,
-      categorySlug: "career",
     },
   ];
   for (const b of blogs) {
-    const { categorySlug, ...rest } = b;
     await prisma.blog.upsert({
       where: { slug: b.slug },
-      update: { ...rest, categoryId: categories[categorySlug] },
-      create: { ...rest, categoryId: categories[categorySlug] },
+      update: b,
+      create: b,
     });
   }
   console.log(`   ✓ ${blogs.length} blogs`);

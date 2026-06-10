@@ -133,7 +133,6 @@ export function articleSchema(blog: BlogDTO) {
       name: SITE.name,
       logo: { "@type": "ImageObject", url: absoluteUrl("/opengraph-image") },
     },
-    articleSection: blog.category.name,
   };
 }
 

@@ -45,13 +45,6 @@ export interface CourseDTO {
   seo: SeoDTO | null;
 }
 
-export interface BlogCategoryDTO {
-  id: string;
-  name: string;
-  slug: string;
-  description: string | null;
-}
-
 /** One templated content block (primary/secondary/tertiary) of a blog. */
 export interface BlogContentBlockDTO {
   title: string | null;
@@ -82,7 +75,6 @@ export interface BlogDTO {
   conclusion: string | null;
   showOnHomepage: boolean;
   publishedAt: string | null;
-  category: BlogCategoryDTO;
   relatedCourse: BlogRelatedCourseDTO | null;
   seo: SeoDTO | null;
 }

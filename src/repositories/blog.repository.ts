@@ -1,25 +1,17 @@
 import "server-only";
 import { prisma } from "@/lib/prisma";
 import { toBlogDTO } from "./mappers";
-import type { BlogCategoryDTO, BlogDTO } from "@/types";
+import type { BlogDTO } from "@/types";
 
 const PUBLISHED = { isPublished: true, deletedAt: null } as const;
 
 export const blogRepository = {
-  async findPublished(opts?: {
-    categorySlug?: string;
-    take?: number;
-  }): Promise<BlogDTO[]> {
+  async findPublished(opts?: { take?: number }): Promise<BlogDTO[]> {
     const rows = await prisma.blog.findMany({
-      where: {
-        ...PUBLISHED,
-        ...(opts?.categorySlug
-          ? { category: { slug: opts.categorySlug } }
-          : {}),
-      },
+      where: PUBLISHED,
       orderBy: { publishedAt: "desc" },
       take: opts?.take,
-      include: { category: true, seo: true },
+      include: { seo: true },
     });
     return rows.map(toBlogDTO);
   },
@@ -28,7 +20,6 @@ export const blogRepository = {
     const row = await prisma.blog.findFirst({
       where: { slug, ...PUBLISHED },
       include: {
-        category: true,
         seo: true,
         relatedCourse: {
           select: {
@@ -43,12 +34,13 @@ export const blogRepository = {
     return row ? toBlogDTO(row) : null;
   },
 
-  async findRelated(slug: string, categoryId: string, take = 3): Promise<BlogDTO[]> {
+  /** Latest published blogs excluding the current one — shown as "Related articles". */
+  async findRelated(slug: string, take = 3): Promise<BlogDTO[]> {
     const rows = await prisma.blog.findMany({
-      where: { ...PUBLISHED, categoryId, slug: { not: slug } },
+      where: { ...PUBLISHED, slug: { not: slug } },
       orderBy: { publishedAt: "desc" },
       take,
-      include: { category: true, seo: true },
+      include: { seo: true },
     });
     return rows.map(toBlogDTO);
   },
@@ -59,18 +51,5 @@ export const blogRepository = {
       select: { slug: true },
     });
     return rows.map((r) => r.slug);
-  },
-
-  async findCategories(): Promise<BlogCategoryDTO[]> {
-    const rows = await prisma.blogCategory.findMany({
-      where: { deletedAt: null },
-      orderBy: { name: "asc" },
-    });
-    return rows.map((c) => ({
-      id: c.id,
-      name: c.name,
-      slug: c.slug,
-      description: c.description ?? null,
-    }));
   },
 };

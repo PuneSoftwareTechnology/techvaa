@@ -8,7 +8,6 @@ import { Container } from "@/components/common/container";
 import { SectionHeader } from "@/components/common/section-header";
 import { Reveal } from "@/components/common/reveal";
 import { BlogCard } from "@/modules/blog/components/blog-card";
-import { BlogFilter } from "@/modules/blog/components/blog-filter";
 
 export const revalidate = 3600;
 
@@ -21,15 +20,9 @@ export async function generateMetadata(): Promise<Metadata> {
   });
 }
 
-export default async function BlogPage({
-  searchParams,
-}: {
-  searchParams: Promise<{ category?: string }>;
-}) {
-  const { category } = await searchParams;
-  const [blogs, categories, featured] = await Promise.all([
-    blogService.getAll(category),
-    blogService.getCategories(),
+export default async function BlogPage() {
+  const [blogs, featured] = await Promise.all([
+    blogService.getAll(),
     blogService.getFeatured(3),
   ]);
 
@@ -53,7 +46,7 @@ export default async function BlogPage({
       />
 
       {/* Featured posts */}
-      {!category && featured.length > 0 && (
+      {featured.length > 0 && (
         <section aria-labelledby="featured-title" className="py-16">
           <Container>
             <SectionHeader align="left" as="h2" title="Featured posts" />
@@ -68,19 +61,18 @@ export default async function BlogPage({
         </section>
       )}
 
-      {/* All posts + filter */}
+      {/* All posts */}
       <section aria-labelledby="all-posts-title" className="bg-secondary/40 py-16">
         <Container>
           <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
             <h2 id="all-posts-title" className="font-heading text-2xl font-bold text-foreground">
               Explore all modules
             </h2>
-            <BlogFilter categories={categories} active={category} />
           </div>
 
           {blogs.length === 0 ? (
             <p className="mt-10 rounded-xl border bg-card p-10 text-center text-muted-foreground">
-              No articles found in this category yet. Try another filter.
+              No articles published yet. Check back soon.
             </p>
           ) : (
             <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">

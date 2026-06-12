@@ -21,21 +21,41 @@ export const blogRepository = {
       where: { slug, ...PUBLISHED },
       include: {
         seo: true,
-        relatedCourse: {
+        // Only surface related courses that are themselves live.
+        relatedCourses: {
+          where: PUBLISHED,
           select: {
             id: true,
             title: true,
             slug: true,
             image: true,
           },
+          orderBy: { createdAt: "desc" },
         },
       },
     });
     return row ? toBlogDTO(row) : null;
   },
 
-  /** Latest published blogs excluding the current one — shown as "Related articles". */
+  /**
+   * Blogs shown as "Related articles". Prefers the post's curated
+   * `relatedBlogs`; falls back to the latest published posts (excluding the
+   * current one) when none are curated.
+   */
   async findRelated(slug: string, take = 3): Promise<BlogDTO[]> {
+    const row = await prisma.blog.findFirst({
+      where: { slug, ...PUBLISHED },
+      select: {
+        relatedBlogs: {
+          where: PUBLISHED,
+          orderBy: { publishedAt: "desc" },
+          take,
+          include: { seo: true },
+        },
+      },
+    });
+    if (row?.relatedBlogs.length) return row.relatedBlogs.map(toBlogDTO);
+
     const rows = await prisma.blog.findMany({
       where: { ...PUBLISHED, slug: { not: slug } },
       orderBy: { publishedAt: "desc" },

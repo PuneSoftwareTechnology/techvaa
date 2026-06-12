@@ -128,35 +128,32 @@ export function toBlogDTO(b: any): BlogDTO {
     primary: {
       title: b.primaryTitle ?? null,
       intro: b.primaryIntro ?? null,
-      image: b.primaryImage ?? null,
       text: b.primaryText ?? null,
       points: [],
     },
     secondary: {
       title: b.secondaryTitle ?? null,
       intro: b.secondaryIntro ?? null,
-      image: b.secondaryImage ?? null,
       text: b.secondaryText ?? null,
       points: [],
     },
     tertiary: {
       title: b.tertiaryTitle ?? null,
       intro: b.tertiaryIntro ?? null,
-      image: b.tertiaryImage ?? null,
       text: b.tertiaryText ?? null,
       points: b.tertiaryPoints ?? [],
     },
     conclusion: b.conclusion ?? null,
     showOnHomepage: b.showOnHomepage ?? false,
     publishedAt: b.publishedAt ? b.publishedAt.toISOString() : null,
-    relatedCourse: b.relatedCourse
-      ? {
-          id: b.relatedCourse.id,
-          title: b.relatedCourse.title,
-          slug: b.relatedCourse.slug,
-          image: b.relatedCourse.image ?? null,
-        }
-      : null,
+    relatedCourses: Array.isArray(b.relatedCourses)
+      ? b.relatedCourses.map((c: any) => ({
+          id: c.id,
+          title: c.title,
+          slug: c.slug,
+          image: c.image ?? null,
+        }))
+      : [],
     seo: toSeoDTO(b.seo ?? null),
   };
 }

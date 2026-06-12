@@ -25,7 +25,6 @@ function ContentBlock({ block }: { block: BlogContentBlockDTO }) {
   const isEmpty =
     !block.title &&
     !block.intro &&
-    !block.image &&
     !block.text &&
     block.points.length === 0;
   if (isEmpty) return null;
@@ -35,20 +34,11 @@ function ContentBlock({ block }: { block: BlogContentBlockDTO }) {
       {block.title && (
         <h2 className="text-2xl font-semibold text-foreground">{block.title}</h2>
       )}
-      {block.intro && (
-        <p className="mt-2 font-medium leading-relaxed text-foreground">
-          {block.intro}
-        </p>
-      )}
-      {block.image && (
-        <Image
-          src={block.image}
-          alt={block.title ?? ""}
-          width={768}
-          height={432}
-          className="mt-4 w-full rounded-xl object-cover"
-        />
-      )}
+      <RichTextContent
+        html={block.intro}
+        bare
+        className="mt-2 [&_p]:font-medium [&_p]:leading-relaxed [&_p]:text-foreground"
+      />
       <RichTextContent html={block.text} bare className="mt-4 text-muted-foreground" />
       {block.points.length > 0 && (
         <ul className="mt-4 list-disc space-y-1 pl-6 text-muted-foreground">
@@ -117,6 +107,8 @@ export default async function BlogDetailPage({
       <PageHero
         eyebrow="Blog"
         title={blog.title}
+        image={blog.featuredImage}
+        imageAlt={blog.title}
         breadcrumbs={[
           { name: "Home", href: "/" },
           { name: "Blog", href: "/blog" },
@@ -133,49 +125,54 @@ export default async function BlogDetailPage({
         </div>
       </PageHero>
 
-      <Container className="max-w-3xl py-14">
-        <article className="prose prose-neutral max-w-none">
-          <RichTextContent
-            html={blog.introduction}
-            bare
-            className="[&_p]:text-lg [&_p]:font-medium [&_p]:text-foreground"
-          />
+      <Container className="py-14">
+        <div className="grid gap-12 lg:grid-cols-[minmax(0,1fr)_20rem]">
+          <article className="prose prose-neutral max-w-none">
+            <RichTextContent
+              html={blog.introduction}
+              bare
+              className="[&_p]:text-lg [&_p]:font-medium [&_p]:text-foreground"
+            />
 
-          <ContentBlock block={blog.primary} />
-          <ContentBlock block={blog.secondary} />
-          <ContentBlock block={blog.tertiary} />
+            <ContentBlock block={blog.primary} />
+            <ContentBlock block={blog.secondary} />
+            <ContentBlock block={blog.tertiary} />
 
-          <RichTextContent
-            html={blog.conclusion}
-            bare
-            className="mt-10 text-muted-foreground"
-          />
-        </article>
+            <RichTextContent
+              html={blog.conclusion}
+              bare
+              className="mt-10 text-muted-foreground"
+            />
+          </article>
 
-        {blog.relatedCourse && (
-          <Link
-            href={`/courses/${blog.relatedCourse.slug}`}
-            className="mt-12 flex items-center gap-4 rounded-xl border bg-secondary/40 p-5 transition-colors hover:bg-secondary/60"
-          >
-            {blog.relatedCourse.image && (
-              <Image
-                src={blog.relatedCourse.image}
-                alt={blog.relatedCourse.title}
-                width={80}
-                height={80}
-                className="size-20 shrink-0 rounded-lg object-cover"
-              />
-            )}
-            <div>
+          {blog.relatedCourses.length > 0 && (
+            <aside className="lg:sticky lg:top-24 lg:self-start">
               <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                Related course
+                Related course{blog.relatedCourses.length > 1 ? "s" : ""}
               </p>
-              <p className="mt-1 font-semibold text-foreground">
-                {blog.relatedCourse.title}
-              </p>
-            </div>
-          </Link>
-        )}
+              <div className="mt-3 grid gap-4">
+                {blog.relatedCourses.map((course) => (
+                  <Link
+                    key={course.id}
+                    href={`/courses/${course.slug}`}
+                    className="flex items-center gap-4 rounded-xl border bg-secondary/40 p-5 transition-colors hover:bg-secondary/60"
+                  >
+                    {course.image && (
+                      <Image
+                        src={course.image}
+                        alt={course.title}
+                        width={80}
+                        height={80}
+                        className="size-20 shrink-0 rounded-lg object-cover"
+                      />
+                    )}
+                    <p className="font-semibold text-foreground">{course.title}</p>
+                  </Link>
+                ))}
+              </div>
+            </aside>
+          )}
+        </div>
       </Container>
 
       {related.length > 0 && (

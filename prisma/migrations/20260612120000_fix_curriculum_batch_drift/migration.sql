@@ -7,7 +7,22 @@
 
 -- curriculum_items: `order` holds the curated section order -> rename to schema's
 -- `sortOrder`; drop the unmodeled `createdAt`.
-ALTER TABLE "curriculum_items" RENAME COLUMN "order" TO "sortOrder";
+-- The rename is guarded: on a drifted DB it renames `order` -> `sortOrder`, but
+-- on a clean build (e.g. the shadow DB used by `migrate dev`/CI) the table is
+-- created with `sortOrder` already, so there is no `order` column to rename and
+-- this becomes a no-op instead of erroring with 42703 ColumnNotFound.
+DO $$
+BEGIN
+  IF EXISTS (
+    SELECT 1 FROM information_schema.columns
+    WHERE table_name = 'curriculum_items' AND column_name = 'order'
+  ) AND NOT EXISTS (
+    SELECT 1 FROM information_schema.columns
+    WHERE table_name = 'curriculum_items' AND column_name = 'sortOrder'
+  ) THEN
+    ALTER TABLE "curriculum_items" RENAME COLUMN "order" TO "sortOrder";
+  END IF;
+END $$;
 ALTER TABLE "curriculum_items" ALTER COLUMN "sortOrder" SET DEFAULT 0;
 ALTER TABLE "curriculum_items" DROP COLUMN IF EXISTS "createdAt";
 

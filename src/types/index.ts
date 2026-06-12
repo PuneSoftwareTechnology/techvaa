@@ -87,7 +87,6 @@ export interface CourseDTO {
 export interface BlogContentBlockDTO {
   title: string | null;
   intro: string | null;
-  image: string | null;
   text: string | null;
   points: string[];
 }
@@ -113,7 +112,8 @@ export interface BlogDTO {
   conclusion: string | null;
   showOnHomepage: boolean;
   publishedAt: string | null;
-  relatedCourse: BlogRelatedCourseDTO | null;
+  /** Curated related courses (only populated on the detail query). */
+  relatedCourses: BlogRelatedCourseDTO[];
   seo: SeoDTO | null;
 }
 

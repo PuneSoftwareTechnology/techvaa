@@ -12,7 +12,10 @@ export function DemoSessions() {
       <div className="grid gap-6 lg:grid-cols-2">
         <Reveal>
           <Card className="h-full p-7">
-            <h2 id="demo-title" className="font-heading text-xl font-bold text-foreground">
+            <h2
+              id="demo-title"
+              className="font-heading text-xl font-bold text-foreground"
+            >
               Featured demo sessions
             </h2>
             <ul className="mt-5 space-y-3">
@@ -26,7 +29,9 @@ export function DemoSessions() {
                       <CalendarDays className="size-5" aria-hidden="true" />
                     </span>
                     <div>
-                      <p className="text-sm font-semibold text-foreground">{d.title}</p>
+                      <p className="text-sm font-semibold text-foreground">
+                        {d.title}
+                      </p>
                       <p className="text-xs text-muted-foreground">{d.date}</p>
                     </div>
                   </div>
@@ -45,11 +50,14 @@ export function DemoSessions() {
               aria-hidden="true"
               className="pointer-events-none absolute -right-10 -top-10 size-48 rounded-full bg-accent-orange/25 blur-3xl"
             />
-            <Sparkles className="size-8 text-accent-orange" aria-hidden="true" />
-            <h2 className="mt-3 font-heading text-2xl font-bold">
+            <Sparkles
+              className="size-8 text-accent-orange"
+              aria-hidden="true"
+            />
+            <h2 className="mt-3 font-heading text-2xl text-black font-bold">
               Ready to send your career soaring?
             </h2>
-            <p className="mt-2 max-w-sm text-white/80">
+            <p className="mt-2 max-w-sm text-black/80">
               Download the complete Techvaa course catalog with syllabi, batch
               dates, and placement outcomes.
             </p>

@@ -61,18 +61,51 @@ export function websiteSchema() {
   };
 }
 
+/** Best-effort map of a free-text batch mode to a schema.org courseMode. */
+function toCourseMode(mode: string | null): "online" | "onsite" {
+  const m = (mode ?? "").toLowerCase();
+  return m.includes("class") || m.includes("offline") || m.includes("onsite")
+    ? "onsite"
+    : "online";
+}
+
 export function courseSchema(course: CourseDTO) {
+  // CourseInstance entries unlock the Google "Courses" rich result. Prefer real
+  // batches; fall back to a single online instance carrying the course's
+  // overall duration so the property is never empty.
+  const instances =
+    course.batches.length > 0
+      ? course.batches.map((b) => ({
+          "@type": "CourseInstance",
+          courseMode: toCourseMode(b.mode),
+          ...(b.duration ? { courseWorkload: b.duration } : {}),
+          ...(b.startDate ? { startDate: b.startDate } : {}),
+        }))
+      : course.duration
+        ? [
+            {
+              "@type": "CourseInstance",
+              courseMode: "online",
+              courseWorkload: course.duration,
+            },
+          ]
+        : [];
+
   return {
     "@context": "https://schema.org",
     "@type": "Course",
     name: course.title,
     description: htmlToPlainText(course.description).slice(0, 200),
     url: absoluteUrl(`/courses/${course.slug}`),
+    inLanguage: "en",
+    educationalCredentialAwarded: `${course.title} — Course Completion Certificate`,
     provider: {
       "@type": "EducationalOrganization",
       name: SITE.name,
+      url: absoluteUrl("/"),
       sameAs: absoluteUrl("/"),
     },
+    ...(instances.length > 0 ? { hasCourseInstance: instances } : {}),
   };
 }
 

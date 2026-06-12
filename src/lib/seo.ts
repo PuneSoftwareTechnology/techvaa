@@ -10,6 +10,12 @@ type BuildMetadataArgs = {
   title?: string;
   description?: string;
   path?: string;
+  /**
+   * Explicit canonical URL override (e.g. a DB-managed `canonicalUrl`). When
+   * omitted the canonical is derived from `path`. Accepts an absolute URL or a
+   * root-relative path.
+   */
+  canonical?: string | null;
   image?: string | null;
   keywords?: string[];
   robots?: string;
@@ -24,12 +30,14 @@ export function buildMetadata({
   title,
   description = SITE.description,
   path = "/",
+  canonical,
   image,
   keywords,
   robots,
   type = "website",
 }: BuildMetadataArgs = {}): Metadata {
   const url = absoluteUrl(path);
+  const canonicalUrl = canonical ? absoluteUrl(canonical) : url;
   const resolvedTitle = title ? `${title} | ${SITE.name}` : `${SITE.name} — ${SITE.tagline}`;
   const noindex = robots?.startsWith("NOINDEX");
 
@@ -43,7 +51,7 @@ export function buildMetadata({
     title: title ?? `${SITE.name} — ${SITE.tagline}`,
     description,
     keywords,
-    alternates: { canonical: url },
+    alternates: { canonical: canonicalUrl },
     robots: noindex
       ? { index: false, follow: !robots?.endsWith("NOFOLLOW") }
       : { index: true, follow: true },

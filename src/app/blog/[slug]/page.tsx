@@ -73,6 +73,7 @@ export async function generateMetadata({
       blog.metaDescription ??
       htmlToPlainText(blog.introduction).slice(0, 160),
     path: `/blog/${blog.slug}`,
+    canonical: seo?.canonicalUrl,
     image: seo?.ogImage ?? blog.featuredImage,
     keywords: seo?.keywords,
     robots: seo?.robots,

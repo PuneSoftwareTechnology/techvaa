@@ -41,9 +41,8 @@ export const PRIMARY_CTA = { label: "Enroll Now", href: "/courses" } as const;
 /** Footer link columns. */
 export const FOOTER_LINKS = {
   company: [
-    { label: "About Us", href: "/about" },
-    { label: "Careers", href: "/careers" },
     { label: "Blog", href: "/blog" },
+    { label: "Reviews", href: "/reviews" },
     { label: "Contact", href: "/contact" },
   ],
   courses: [

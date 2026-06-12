@@ -10,6 +10,7 @@ import { FloatingContact } from "@/components/layout/floating-contact";
 import { FloatingEnquiry } from "@/components/layout/floating-enquiry";
 import { JsonLd } from "@/components/seo/json-ld";
 import { organizationSchema, websiteSchema } from "@/lib/jsonld";
+import { GoogleAnalytics } from "@/components/analytics/google-analytics";
 
 const geistSans = Geist({
   variable: "--font-sans",
@@ -34,6 +35,16 @@ export const metadata: Metadata = {
   authors: [{ name: SITE.name }],
   creator: SITE.name,
   formatDetection: { telephone: true, email: true },
+  // Search-engine ownership verification. Each entry is emitted only when its
+  // env var is set, so unconfigured environments stay clean.
+  verification: {
+    ...(process.env.NEXT_PUBLIC_GSC_VERIFICATION
+      ? { google: process.env.NEXT_PUBLIC_GSC_VERIFICATION }
+      : {}),
+    ...(process.env.NEXT_PUBLIC_BING_VERIFICATION
+      ? { other: { "msvalidate.01": process.env.NEXT_PUBLIC_BING_VERIFICATION } }
+      : {}),
+  },
   openGraph: {
     type: "website",
     siteName: SITE.name,
@@ -70,6 +81,7 @@ export default function RootLayout({
           <FloatingContact />
           <FloatingEnquiry />
         </Providers>
+        <GoogleAnalytics />
       </body>
     </html>
   );

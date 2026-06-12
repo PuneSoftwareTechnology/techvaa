@@ -65,6 +65,21 @@ export const blogRepository = {
     return rows.map(toBlogDTO);
   },
 
+  /**
+   * Published blogs tagged with the given course (the reciprocal of a blog's
+   * `relatedCourses`). Powers the "Related articles" block on course pages,
+   * which strengthens topic-cluster internal linking for SEO.
+   */
+  async findForCourse(courseSlug: string, take = 3): Promise<BlogDTO[]> {
+    const rows = await prisma.blog.findMany({
+      where: { ...PUBLISHED, relatedCourses: { some: { slug: courseSlug } } },
+      orderBy: { publishedAt: "desc" },
+      take,
+      include: { seo: true },
+    });
+    return rows.map(toBlogDTO);
+  },
+
   async findPublishedSlugs(): Promise<string[]> {
     const rows = await prisma.blog.findMany({
       where: PUBLISHED,

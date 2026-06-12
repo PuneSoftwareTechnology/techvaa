@@ -7,5 +7,6 @@ export const blogService = {
   getFeatured: cache((take = 3) => blogRepository.findPublished({ take })),
   getBySlug: cache((slug: string) => blogRepository.findBySlug(slug)),
   getRelated: cache((slug: string) => blogRepository.findRelated(slug)),
+  getForCourse: cache((slug: string) => blogRepository.findForCourse(slug)),
   getAllSlugs: cache(() => blogRepository.findPublishedSlugs()),
 };

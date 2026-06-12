@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { ArrowRight } from "lucide-react";
 import { courseService } from "@/services/course.service";
 import { faqService } from "@/services/faq.service";
+import { blogService } from "@/services/blog.service";
 import { testimonialService } from "@/services/social-proof.service";
 import { buildMetadata } from "@/lib/seo";
 import { JsonLd } from "@/components/seo/json-ld";
@@ -17,6 +18,7 @@ import { CollapsibleContent } from "@/components/common/collapsible-content";
 import { EnrollDialog } from "@/components/forms/enroll-dialog";
 import { htmlToPlainText } from "@/lib/sanitize";
 import { CourseCard } from "@/modules/courses/components/course-card";
+import { BlogCard } from "@/modules/blog/components/blog-card";
 import { CurriculumHighlights } from "@/modules/courses/components/curriculum-highlights";
 import { CourseOutcomes } from "@/modules/courses/components/course-outcomes";
 import { BatchSchedule } from "@/modules/courses/components/batch-schedule";
@@ -53,6 +55,7 @@ export async function generateMetadata({
       course.shortDescription ??
       htmlToPlainText(course.description).slice(0, 160),
     path: `/courses/${course.slug}`,
+    canonical: seo?.canonicalUrl,
     image: seo?.ogImage ?? course.image,
     keywords: seo?.keywords,
     robots: seo?.robots,
@@ -69,9 +72,10 @@ export default async function CourseDetailPage({
 
   if (!course) notFound();
 
-  const [faqs, testimonials] = await Promise.all([
+  const [faqs, testimonials, relatedArticles] = await Promise.all([
     faqService.getForCourse(course.id),
     testimonialService.getForDisplay(8),
+    blogService.getForCourse(course.slug),
   ]);
 
   // Reuse the shared schedule table with just this course's batches.
@@ -183,6 +187,28 @@ export default async function CourseDetailPage({
             {course.relatedCourses.map((related, i) => (
               <Reveal as="div" index={i % 3} key={related.id}>
                 <CourseCard course={related} />
+              </Reveal>
+            ))}
+          </div>
+        </Container>
+      )}
+
+      {relatedArticles.length > 0 && (
+        <Container className="pb-16">
+          <div className="text-center">
+            <p className="mb-2 text-sm font-semibold uppercase tracking-wider text-accent-orange">
+              From the blog
+            </p>
+            <h2 className="font-heading text-3xl font-bold tracking-tight">
+              <span className="bg-gradient-to-r from-brand via-brand to-accent-orange bg-clip-text text-transparent">
+                Related articles
+              </span>
+            </h2>
+          </div>
+          <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {relatedArticles.map((article, i) => (
+              <Reveal as="div" index={i % 3} key={article.id}>
+                <BlogCard blog={article} />
               </Reveal>
             ))}
           </div>

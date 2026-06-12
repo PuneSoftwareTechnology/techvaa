@@ -69,19 +69,27 @@ export default async function ReviewsPage() {
           <h2 id="overview-title" className="sr-only">
             Rating overview
           </h2>
-          <div className="grid gap-8 lg:grid-cols-[360px_1fr] lg:items-start">
-            <Reveal>
+          <div className="grid gap-8 lg:grid-cols-[420px_1fr] lg:items-stretch">
+            <Reveal className="h-full">
               <RatingOverview summary={summary} />
             </Reveal>
-            <Reveal index={1}>
-              <div className="grid gap-5 sm:grid-cols-3">
+            <Reveal index={1} className="h-full">
+              <div className="grid h-full grid-rows-3 gap-5">
                 {REVIEW_STATS.map((s) => (
-                  <Card key={s.label} className="p-6 text-center">
-                    <div className="mx-auto mb-3 grid size-12 place-items-center rounded-xl bg-brand/10 text-brand">
+                  <Card
+                    key={s.label}
+                    size="sm"
+                    className="h-full flex-row items-center justify-center gap-4 p-5"
+                  >
+                    <div className="grid size-12 shrink-0 place-items-center rounded-xl bg-brand/10 text-brand">
                       <DynamicIcon name={s.icon} className="size-6" />
                     </div>
-                    <p className="font-heading text-2xl font-extrabold text-brand">{s.value}</p>
-                    <p className="mt-1 text-sm text-muted-foreground">{s.label}</p>
+                    <div>
+                      <p className="font-heading text-2xl font-extrabold leading-none text-brand">
+                        {s.value}
+                      </p>
+                      <p className="mt-1 text-sm text-muted-foreground">{s.label}</p>
+                    </div>
                   </Card>
                 ))}
               </div>

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { CalendarCheck, Download, Sparkles, Star } from "lucide-react";
+import { CalendarCheck, Download, Eye, Sparkles, Star } from "lucide-react";
 import { Container } from "@/components/common/container";
 import { Reveal } from "@/components/common/reveal";
 import { Shimmer } from "@/components/common/shimmer";
@@ -55,11 +55,16 @@ export function TransformCta() {
             Ready to transform your future?
           </h2>
           <p className="mx-auto mt-3 max-w-lg text-white/80">
-            Join the next cohort, attend a free demo, or download the full course
-            catalog to plan your SAP career.
+            Join the next cohort, attend a free demo, or download the full
+            course catalog to plan your SAP career.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
-            <Button asChild variant="accent" size="xl" className="relative overflow-hidden">
+            <Button
+              asChild
+              variant="accent"
+              size="xl"
+              className="relative overflow-hidden"
+            >
               <Link href="#contact">
                 <Shimmer />
                 <CalendarCheck aria-hidden="true" /> Book a Free Demo
@@ -72,7 +77,7 @@ export function TransformCta() {
               className="border-white/30 bg-white/5 text-white hover:bg-white/15 hover:text-white"
             >
               <Link href="/courses">
-                <Download aria-hidden="true" /> Download Catalog
+                <Eye aria-hidden="true" /> View Catalog
               </Link>
             </Button>
           </div>

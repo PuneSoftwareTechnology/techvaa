@@ -124,25 +124,37 @@ export function BatchSchedule({
             {rows.map((b) => (
               <li key={b.id} className="p-5">
                 <div className="flex items-start justify-between gap-3">
-                  <h3 className="font-semibold text-foreground">
+                  <h3 className="text-lg font-bold leading-snug text-foreground">
                     {b.courseTitle}
                   </h3>
                   <Badge className={cn("shrink-0", STATUS_STYLES[b.status])}>
                     {b.status}
                   </Badge>
                 </div>
-                <dl className="mt-3 grid grid-cols-2 gap-2 text-sm text-muted-foreground">
+                <dl className="mt-3 grid grid-cols-2 gap-x-4 gap-y-3 text-sm">
                   <div>
-                    <dt className="text-xs uppercase">Mode</dt>
-                    <dd>{b.mode}</dd>
+                    <dt className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                      Mode
+                    </dt>
+                    <dd className="mt-0.5 font-medium text-foreground">
+                      {b.mode}
+                    </dd>
                   </div>
                   <div>
-                    <dt className="text-xs uppercase">Start</dt>
-                    <dd>{formatDate(b.startDate)}</dd>
+                    <dt className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                      Start
+                    </dt>
+                    <dd className="mt-0.5 font-medium text-foreground">
+                      {formatDate(b.startDate)}
+                    </dd>
                   </div>
                   <div className="col-span-2">
-                    <dt className="text-xs uppercase">Duration</dt>
-                    <dd>{b.duration}</dd>
+                    <dt className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                      Duration
+                    </dt>
+                    <dd className="mt-0.5 font-medium text-foreground">
+                      {b.duration}
+                    </dd>
                   </div>
                 </dl>
                 <div className="mt-4 flex gap-2">

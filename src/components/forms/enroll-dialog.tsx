@@ -34,10 +34,23 @@ type EnrollDialogProps = {
   /** Extra classes for the trigger button (e.g. full-width on mobile cards). */
   className?: string;
   /**
-   * Custom trigger element. When provided it replaces the default "Enroll Now"
-   * accent button (e.g. a text-style "Talk to us" link on a course card).
+   * Custom trigger presentation. When provided it replaces the default "Enroll
+   * Now" accent button (e.g. a text-style "Talk to us" link on a course card).
+   *
+   * This is intentionally plain data, NOT a JSX element: the button is built
+   * here, inside the client component. Handing Radix's `asChild` Slot an element
+   * created in a Server Component breaks SSR — Slot clones/introspects the child,
+   * which throws for cross-boundary elements, so the trigger silently deopts to
+   * client-only rendering and React reports a hydration mismatch.
    */
-  trigger?: React.ReactNode;
+  trigger?: {
+    /** Visible content of the trigger button (text, and optionally icons). */
+    label: React.ReactNode;
+    /** Classes applied to the bare <button>. */
+    className?: string;
+    /** Render the animated shimmer sweep before the label. */
+    shimmer?: boolean;
+  };
 };
 
 export function EnrollDialog({ course, className, trigger }: EnrollDialogProps) {
@@ -90,7 +103,12 @@ export function EnrollDialog({ course, className, trigger }: EnrollDialogProps) 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        {trigger ?? (
+        {trigger ? (
+          <button type="button" className={cn(trigger.className, className)}>
+            {trigger.shimmer && <Shimmer />}
+            {trigger.label}
+          </button>
+        ) : (
           <Button
             size="sm"
             variant="accent"

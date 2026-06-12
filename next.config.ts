@@ -33,6 +33,7 @@ const nextConfig: NextConfig = {
       { protocol: "https", hostname: "**.amazonaws.com" },
       { protocol: "https", hostname: "images.unsplash.com" },
       { protocol: "https", hostname: "logo.clearbit.com" },
+      { protocol: "https", hostname: "picsum.photos" },
     ],
     deviceSizes: [360, 640, 768, 1024, 1280, 1536, 1920],
   },

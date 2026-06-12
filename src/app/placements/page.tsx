@@ -60,7 +60,7 @@ export default async function PlacementsPage() {
         ]}
       >
         <Button asChild variant="accent" size="xl" className="relative overflow-hidden">
-          <Link href="#contact">
+          <Link href="#enquiry-form">
             <Shimmer />
             Schedule a Placement Session <ArrowRight aria-hidden="true" />
           </Link>
@@ -78,14 +78,22 @@ export default async function PlacementsPage() {
           <div className="mt-12 grid gap-6 md:grid-cols-3">
             {CAREER_TOOLS.map((t, i) => (
               <Reveal as="div" index={i} key={t.title}>
-                <Card className="h-full p-7 text-center">
-                  <div className="mx-auto mb-4 grid size-14 place-items-center rounded-2xl bg-brand/10 text-brand">
+                <Card
+                  className={`group relative h-full overflow-hidden p-7 text-center ring-1 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg ${t.ring}`}
+                >
+                  <div
+                    aria-hidden="true"
+                    className={`pointer-events-none absolute -right-10 -top-10 size-32 rounded-full blur-2xl ${t.glow}`}
+                  />
+                  <div
+                    className={`relative mx-auto mb-4 grid size-14 place-items-center rounded-2xl bg-gradient-to-br text-white shadow-md transition-transform duration-300 group-hover:scale-110 ${t.gradient}`}
+                  >
                     <DynamicIcon name={t.icon} className="size-7" />
                   </div>
-                  <h3 className="font-heading text-lg font-semibold text-foreground">
+                  <h3 className="relative font-heading text-lg font-semibold text-foreground">
                     {t.title}
                   </h3>
-                  <p className="mt-2 text-sm text-muted-foreground">
+                  <p className="relative mt-2 text-sm text-muted-foreground">
                     {t.description}
                   </p>
                 </Card>
@@ -185,7 +193,7 @@ export default async function PlacementsPage() {
 
           <div className="mt-10 text-center">
             <Button asChild variant="accent" size="xl" className="relative overflow-hidden">
-              <Link href="#contact">
+              <Link href="#enquiry-form">
                 <Shimmer />
                 Schedule a Placement Session
               </Link>

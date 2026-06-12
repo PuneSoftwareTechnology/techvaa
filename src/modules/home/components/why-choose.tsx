@@ -20,7 +20,7 @@ export function WhyChoose() {
           {WHY_CHOOSE.map((f, i) => (
             <Reveal as="div" index={i} key={f.title}>
               <Card className="h-full p-6 text-center transition-shadow hover:shadow-md">
-                <div className="mx-auto mb-4 grid size-16 place-items-center rounded-2xl bg-brand/10 text-brand">
+                <div className={`mx-auto mb-4 grid size-16 place-items-center rounded-2xl ${f.iconClass}`}>
                   <DynamicIcon name={f.icon} className="size-9" />
                 </div>
                 <h3 className="font-heading text-lg font-semibold text-foreground">

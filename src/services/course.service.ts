@@ -11,4 +11,7 @@ export const courseService = {
   getFeatured: cache((limit?: number) => courseRepository.findFeatured(limit)),
   getBySlug: cache((slug: string) => courseRepository.findBySlug(slug)),
   getAllSlugs: cache(() => courseRepository.findPublishedSlugs()),
+  getUpcomingBatches: cache((limit?: number) =>
+    courseRepository.findUpcomingBatches(limit),
+  ),
 };

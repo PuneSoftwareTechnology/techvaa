@@ -23,6 +23,15 @@ export type TestimonialAccent = {
   avatar: string;
 };
 
+/** Rotating color accents so adjacent review cards read as distinct. */
+export const TESTIMONIAL_ACCENTS: TestimonialAccent[] = [
+  { bar: "border-t-4 border-t-brand", quote: "text-brand/70", avatar: "bg-brand/10 text-brand" },
+  { bar: "border-t-4 border-t-accent-orange", quote: "text-accent-orange/70", avatar: "bg-accent-orange/10 text-accent-orange" },
+  { bar: "border-t-4 border-t-emerald-500", quote: "text-emerald-500/70", avatar: "bg-emerald-500/10 text-emerald-600" },
+  { bar: "border-t-4 border-t-violet-500", quote: "text-violet-500/70", avatar: "bg-violet-500/10 text-violet-600" },
+  { bar: "border-t-4 border-t-sky-500", quote: "text-sky-500/70", avatar: "bg-sky-500/10 text-sky-600" },
+];
+
 export function TestimonialCard({
   testimonial,
   className,

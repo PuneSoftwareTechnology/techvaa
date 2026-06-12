@@ -7,16 +7,25 @@ export const CAREER_TOOLS = [
     icon: "file-text",
     title: "Professional Resume Building",
     description: "ATS-friendly, consultant-grade resumes that get shortlisted.",
+    gradient: "from-sky-500 to-blue-600",
+    glow: "bg-sky-500/10",
+    ring: "ring-sky-500/20",
   },
   {
     icon: "mic",
     title: "Mock Interview Workshops",
     description: "Domain and HR mock interviews with real-time consultant feedback.",
+    gradient: "from-violet-500 to-purple-600",
+    glow: "bg-violet-500/10",
+    ring: "ring-violet-500/20",
   },
   {
     icon: "users",
     title: "One-on-One Mentorship",
     description: "A dedicated mentor to guide your job search end to end.",
+    gradient: "from-amber-500 to-orange-600",
+    glow: "bg-amber-500/10",
+    ring: "ring-amber-500/20",
   },
 ] as const;
 

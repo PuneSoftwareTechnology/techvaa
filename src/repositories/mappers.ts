@@ -4,6 +4,8 @@
  * Date conversions live in one place.
  */
 import type {
+  BatchScheduleRow,
+  BatchStatus,
   BlogDTO,
   CourseDTO,
   FaqDTO,
@@ -12,6 +14,34 @@ import type {
   SeoDTO,
   TestimonialDTO,
 } from "@/types";
+
+/** Prisma `BatchStatus` enum value → the human label shown on the badge. */
+const BATCH_STATUS_LABEL: Record<string, BatchStatus> = {
+  ENROLLMENT_OPEN: "Enrollment Open",
+  LIMITED_SEATS: "Limited Seats",
+  FILLING_FAST: "Filling Fast",
+};
+
+function toBatchStatus(value: unknown): BatchStatus {
+  return BATCH_STATUS_LABEL[String(value)] ?? "Enrollment Open";
+}
+
+/**
+ * Map a raw batch row (with its parent course's identity) to the unified
+ * `BatchScheduleRow` the shared schedule table renders.
+ */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function toBatchScheduleRow(b: any): BatchScheduleRow {
+  return {
+    id: b.id,
+    courseSlug: b.course?.slug ?? b.courseSlug ?? "",
+    courseTitle: b.course?.title ?? b.courseTitle ?? "",
+    startDate: b.startDate.toISOString(),
+    mode: b.mode ?? "Instructor Led Training",
+    duration: b.duration ?? "",
+    status: toBatchStatus(b.status),
+  };
+}
 
 // Prisma's generated row types are structural; we accept the minimal shape we
 // need rather than importing the heavy model types to keep this layer light.
@@ -67,6 +97,8 @@ export function toCourseDTO(c: any): CourseDTO {
           startDate: b.startDate.toISOString(),
           duration: b.duration,
           mode: b.mode ?? null,
+          timing: b.timing ?? null,
+          status: toBatchStatus(b.status),
           isOpen: b.isOpen,
         }))
       : [],

@@ -8,7 +8,11 @@ type SectionHeaderProps = {
   align?: "center" | "left";
   /** Heading level for correct document outline; defaults to h2. */
   as?: "h1" | "h2" | "h3";
-  /** Render the title as a brand→orange gradient for extra emphasis. */
+  /**
+   * Render the title as the vibrant brand→violet→orange gradient. On by
+   * default so every section heading across the site reads consistently; pass
+   * `gradient={false}` for headings on dark/colored backgrounds.
+   */
   gradient?: boolean;
   className?: string;
 };
@@ -19,7 +23,7 @@ export function SectionHeader({
   description,
   align = "center",
   as: Heading = "h2",
-  gradient = false,
+  gradient = true,
   className,
 }: SectionHeaderProps) {
   return (
@@ -27,7 +31,7 @@ export function SectionHeader({
       className={cn(
         "max-w-2xl",
         align === "center" ? "mx-auto text-center" : "text-left",
-        className
+        className,
       )}
     >
       {eyebrow ? (
@@ -35,7 +39,7 @@ export function SectionHeader({
           className={cn(
             "mb-2 inline-flex items-center gap-2 text-sm font-semibold tracking-wider text-accent-orange uppercase",
             align === "center" &&
-              "before:h-px before:w-6 before:bg-accent-orange/50 after:h-px after:w-6 after:bg-accent-orange/50"
+              "before:h-px before:w-6 before:bg-accent-orange/50 after:h-px after:w-6 after:bg-accent-orange/50",
           )}
         >
           {eyebrow}
@@ -45,8 +49,8 @@ export function SectionHeader({
         className={cn(
           "text-balance font-heading text-3xl font-bold tracking-tight sm:text-4xl",
           gradient
-            ? "bg-gradient-to-r from-brand via-brand to-accent-orange bg-clip-text text-transparent"
-            : "text-foreground"
+            ? "bg-gradient-to-r from-brand  to-accent-orange bg-clip-text text-transparent"
+            : "text-foreground",
         )}
       >
         {title}

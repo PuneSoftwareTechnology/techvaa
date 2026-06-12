@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
-import { ArrowRight, PlayCircle, CheckCircle2 } from "lucide-react";
+import { ArrowRight, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/common/container";
 import { HeroBackground } from "@/components/common/hero-background";
@@ -53,19 +53,9 @@ export function Hero() {
               size="xl"
               className="relative overflow-hidden"
             >
-              <Link href="/courses">
+              <Link href="#contact">
                 <Shimmer />
                 Enroll Now <ArrowRight aria-hidden="true" />
-              </Link>
-            </Button>
-            <Button
-              asChild
-              size="xl"
-              variant="outline"
-              className="border-white/30 bg-white/5 text-white hover:bg-white/15 hover:text-white"
-            >
-              <Link href="#contact">
-                <PlayCircle aria-hidden="true" /> Schedule a Demo
               </Link>
             </Button>
           </motion.div>

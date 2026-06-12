@@ -71,7 +71,10 @@ export function ContactBand({ courseInterest }: { courseInterest?: string }) {
           </div>
         </div>
 
-        <div className="rounded-2xl bg-white/5 p-6 ring-1 ring-white/10 backdrop-blur sm:p-8">
+        <div
+          id="enquiry-form"
+          className="scroll-mt-24 rounded-2xl bg-white/5 p-6 ring-1 ring-white/10 backdrop-blur sm:p-8"
+        >
           <LeadForm tone="dark" courseInterest={courseInterest} />
         </div>
       </Container>

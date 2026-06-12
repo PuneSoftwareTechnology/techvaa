@@ -105,6 +105,7 @@ async function main() {
   // Each course carries its Key Curriculum sections and upcoming batches. These
   // are nested relations, so we strip them off before the course upsert and seed
   // them separately (delete + recreate) to stay idempotent.
+  const BATCH_TIMING = "Weekdays 9–11 AM · Weekends 10 AM–12 PM";
   const courses = [
     {
       title: "SAP FICO End-to-End Training",
@@ -122,8 +123,8 @@ async function main() {
         { heading: "Controlling (CO)", description: "Cost centers, profit centers and internal orders." },
       ],
       batches: [
-        { startDate: new Date("2026-07-01T00:00:00Z"), duration: "8 weeks", mode: "Live Online" },
-        { startDate: new Date("2026-08-15T00:00:00Z"), duration: "8 weeks", mode: "Classroom" },
+        { startDate: new Date("2026-07-01T00:00:00Z"), duration: "8 weeks", mode: "Instructor Led Training", timing: BATCH_TIMING, status: "ENROLLMENT_OPEN" as const },
+        { startDate: new Date("2026-08-15T00:00:00Z"), duration: "8 weeks", mode: "Classroom", timing: BATCH_TIMING, status: "LIMITED_SEATS" as const },
       ],
     },
     {
@@ -141,7 +142,7 @@ async function main() {
         { heading: "Invoice Verification", description: "Three-way match, blocked invoices and FI integration." },
       ],
       batches: [
-        { startDate: new Date("2026-07-10T00:00:00Z"), duration: "6 weeks", mode: "Live Online" },
+        { startDate: new Date("2026-07-10T00:00:00Z"), duration: "6 weeks", mode: "Instructor Led Training", timing: BATCH_TIMING, status: "LIMITED_SEATS" as const },
       ],
     },
     {
@@ -159,7 +160,7 @@ async function main() {
         { heading: "Interface Programming", description: "BAPIs, BDC, RFCs and OData service creation." },
       ],
       batches: [
-        { startDate: new Date("2026-07-20T00:00:00Z"), duration: "10 weeks", mode: "Live Online" },
+        { startDate: new Date("2026-07-20T00:00:00Z"), duration: "10 weeks", mode: "Instructor Led Training", timing: BATCH_TIMING, status: "FILLING_FAST" as const },
       ],
     },
     {
@@ -177,7 +178,7 @@ async function main() {
         { heading: "Central Finance", description: "Central Finance architecture and replication." },
       ],
       batches: [
-        { startDate: new Date("2026-08-01T00:00:00Z"), duration: "7 weeks", mode: "Live Online" },
+        { startDate: new Date("2026-08-01T00:00:00Z"), duration: "7 weeks", mode: "Instructor Led Training", timing: BATCH_TIMING, status: "ENROLLMENT_OPEN" as const },
       ],
     },
     {

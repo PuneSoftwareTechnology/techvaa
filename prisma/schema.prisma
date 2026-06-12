@@ -52,6 +52,13 @@ enum RobotsDirective {
   NOINDEX_NOFOLLOW
 }
 
+// Enrollment state shown as the batch's status badge.
+enum BatchStatus {
+  ENROLLMENT_OPEN
+  LIMITED_SEATS
+  FILLING_FAST
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 // Auth / Admin
 // ─────────────────────────────────────────────────────────────────────────────
@@ -142,9 +149,11 @@ model CourseBatch {
   course    Course   @relation(fields: [courseId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   startDate DateTime
   duration  String // e.g. "12 weeks"
-  mode      String?  @default("Live Online")
-  isOpen    Boolean  @default(true) // enrollment open?
-  createdAt DateTime @default(now())
+  mode      String?     @default("Instructor Led Training")
+  timing    String? // e.g. "Weekdays 9–11 AM · Weekends 10 AM–12 PM"
+  status    BatchStatus @default(ENROLLMENT_OPEN)
+  isOpen    Boolean     @default(true) // enrollment open?
+  createdAt DateTime    @default(now())
 
   @@index([courseId, startDate])
   @@map("course_batches")

@@ -1,7 +1,7 @@
 import "server-only";
 import { prisma } from "@/lib/prisma";
-import { toCourseDTO } from "./mappers";
-import type { CourseDTO } from "@/types";
+import { toBatchScheduleRow, toCourseDTO } from "./mappers";
+import type { BatchScheduleRow, CourseDTO } from "@/types";
 
 const PUBLISHED = { isPublished: true, deletedAt: null } as const;
 
@@ -53,6 +53,20 @@ export const courseRepository = {
       },
     });
     return row ? toCourseDTO(row) : null;
+  },
+
+  /**
+   * The next open batches across all published courses, soonest first — feeds
+   * the home/courses "Upcoming training batches" table.
+   */
+  async findUpcomingBatches(limit = 5): Promise<BatchScheduleRow[]> {
+    const rows = await prisma.courseBatch.findMany({
+      where: { isOpen: true, course: PUBLISHED },
+      orderBy: { startDate: "asc" },
+      take: limit,
+      include: { course: { select: { title: true, slug: true } } },
+    });
+    return rows.map(toBatchScheduleRow);
   },
 
   async findPublishedSlugs(): Promise<string[]> {

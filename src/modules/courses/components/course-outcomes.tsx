@@ -1,7 +1,6 @@
 import { Container } from "@/components/common/container";
 import { Reveal } from "@/components/common/reveal";
 import { DynamicIcon } from "@/components/common/dynamic-icon";
-import { Shimmer } from "@/components/common/shimmer";
 import { EnrollDialog } from "@/components/forms/enroll-dialog";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -73,18 +72,14 @@ export function CourseOutcomes({ courseTitle }: { courseTitle: string }) {
         <div className="mt-10 text-center">
           <EnrollDialog
             course={courseTitle}
-            trigger={
-              <button
-                type="button"
-                className={cn(
-                  buttonVariants({ variant: "accent", size: "xl" }),
-                  "relative overflow-hidden",
-                )}
-              >
-                <Shimmer />
-                Enroll in {courseTitle}
-              </button>
-            }
+            trigger={{
+              label: `Enroll in ${courseTitle}`,
+              className: cn(
+                buttonVariants({ variant: "accent", size: "xl" }),
+                "relative overflow-hidden",
+              ),
+              shimmer: true,
+            }}
           />
         </div>
       </Container>

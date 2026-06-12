@@ -35,13 +35,33 @@ export interface CurriculumItemDTO {
   description: string;
 }
 
+/** Enrollment state shown as the batch's status badge. */
+export type BatchStatus = "Enrollment Open" | "Limited Seats" | "Filling Fast";
+
 /** An upcoming batch for a course (the "New Batch Schedule" row). */
 export interface CourseBatchDTO {
   id: string;
   startDate: string;
   duration: string;
   mode: string | null;
+  timing: string | null;
+  status: BatchStatus;
   isOpen: boolean;
+}
+
+/**
+ * A batch row enriched with its course identity — the unified shape the
+ * shared `BatchSchedule` table consumes, on both the home page (latest batches
+ * across all courses) and the course detail page (one course's batches).
+ */
+export interface BatchScheduleRow {
+  id: string;
+  courseSlug: string;
+  courseTitle: string;
+  startDate: string;
+  mode: string;
+  duration: string;
+  status: BatchStatus;
 }
 
 export interface CourseDTO {

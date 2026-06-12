@@ -76,14 +76,11 @@ export function CourseCard({
         <div className="mt-4 flex items-center justify-between pt-2">
           <EnrollDialog
             course={course.title}
-            trigger={
-              <button
-                type="button"
-                className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-              >
-                Talk to us
-              </button>
-            }
+            trigger={{
+              label: "Talk to us",
+              className:
+                "text-sm font-medium text-muted-foreground transition-colors hover:text-foreground",
+            }}
           />
           <Link
             href={`/courses/${course.slug}`}

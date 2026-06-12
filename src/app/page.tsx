@@ -12,7 +12,7 @@ import { WhyChoose } from "@/modules/home/components/why-choose";
 import { TopModules } from "@/modules/home/components/top-modules";
 import { GraduatesSay } from "@/modules/home/components/graduates-say";
 import { TransformCta } from "@/modules/home/components/transform-cta";
-import { UpcomingBatches } from "@/modules/home/components/upcoming-batches";
+import { BatchSchedule } from "@/modules/courses/components/batch-schedule";
 import { DemoSessions } from "@/modules/home/components/demo-sessions";
 import { FaqSection } from "@/modules/home/components/faq-section";
 
@@ -29,8 +29,9 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function HomePage() {
-  const [featured, testimonials, faqs, rating] = await Promise.all([
+  const [featured, batches, testimonials, faqs, rating] = await Promise.all([
     courseService.getFeatured(3),
+    courseService.getUpcomingBatches(5),
     testimonialService.getForDisplay(3),
     faqService.getForHomepage(),
     reviewService.getRatingSummary(),
@@ -45,7 +46,7 @@ export default async function HomePage() {
       <TopModules courses={featured} />
       <GraduatesSay testimonials={testimonials} />
       <TransformCta />
-      <UpcomingBatches />
+      <BatchSchedule rows={batches} />
       <DemoSessions />
       <FaqSection faqs={faqs} />
     </>

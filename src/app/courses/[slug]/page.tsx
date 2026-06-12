@@ -15,12 +15,11 @@ import { Reveal } from "@/components/common/reveal";
 import { RichTextContent } from "@/components/common/rich-text-content";
 import { CollapsibleContent } from "@/components/common/collapsible-content";
 import { EnrollDialog } from "@/components/forms/enroll-dialog";
-import { Shimmer } from "@/components/common/shimmer";
 import { htmlToPlainText } from "@/lib/sanitize";
 import { CourseCard } from "@/modules/courses/components/course-card";
 import { CurriculumHighlights } from "@/modules/courses/components/curriculum-highlights";
 import { CourseOutcomes } from "@/modules/courses/components/course-outcomes";
-import { CourseBatch } from "@/modules/courses/components/course-batch";
+import { BatchSchedule } from "@/modules/courses/components/batch-schedule";
 import { AlumniPlaced } from "@/modules/courses/components/alumni-placed";
 import { CourseReviews } from "@/modules/courses/components/course-reviews";
 import { FaqSection } from "@/modules/home/components/faq-section";
@@ -75,6 +74,17 @@ export default async function CourseDetailPage({
     testimonialService.getForDisplay(8),
   ]);
 
+  // Reuse the shared schedule table with just this course's batches.
+  const batchRows = course.batches.map((b) => ({
+    id: b.id,
+    courseSlug: course.slug,
+    courseTitle: course.title,
+    startDate: b.startDate,
+    mode: b.mode ?? "Instructor Led Training",
+    duration: b.duration ?? "",
+    status: b.status,
+  }));
+
   return (
     <>
       <JsonLd
@@ -104,18 +114,18 @@ export default async function CourseDetailPage({
         <div className="flex flex-wrap items-center gap-4">
           <EnrollDialog
             course={course.title}
-            trigger={
-              <button
-                type="button"
-                className={cn(
-                  buttonVariants({ variant: "accent", size: "xl" }),
-                  "relative overflow-hidden",
-                )}
-              >
-                <Shimmer />
-                Advance My Career <ArrowRight aria-hidden="true" />
-              </button>
-            }
+            trigger={{
+              label: (
+                <>
+                  Advance My Career <ArrowRight aria-hidden="true" />
+                </>
+              ),
+              className: cn(
+                buttonVariants({ variant: "accent", size: "xl" }),
+                "relative overflow-hidden",
+              ),
+              shimmer: true,
+            }}
           />
         </div>
       </PageHero>
@@ -144,7 +154,12 @@ export default async function CourseDetailPage({
       <CurriculumHighlights items={course.curriculum} />
 
       <CourseOutcomes courseTitle={course.title} />
-      <CourseBatch course={course} />
+      <BatchSchedule
+        rows={batchRows}
+        eyebrow="New Batch Schedule"
+        title="Upcoming training"
+        hideViewDetails
+      />
 
       <AlumniPlaced courseTitle={course.title} />
 

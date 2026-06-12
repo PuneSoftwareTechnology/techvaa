@@ -9,7 +9,7 @@ import { Reveal } from "@/components/common/reveal";
 import { PageHero } from "@/components/common/page-hero";
 import { CourseCard } from "@/modules/courses/components/course-card";
 import { HiringPartners } from "@/modules/home/components/hiring-partners";
-import { UpcomingBatches } from "@/modules/home/components/upcoming-batches";
+import { BatchSchedule } from "@/modules/courses/components/batch-schedule";
 
 export const revalidate = 3600;
 
@@ -23,7 +23,10 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function CoursesPage() {
-  const courses = await courseService.getAll();
+  const [courses, batches] = await Promise.all([
+    courseService.getAll(),
+    courseService.getUpcomingBatches(5),
+  ]);
 
   return (
     <>
@@ -62,7 +65,7 @@ export default async function CoursesPage() {
       </Container>
 
       <HiringPartners />
-      <UpcomingBatches />
+      <BatchSchedule rows={batches} />
     </>
   );
 }

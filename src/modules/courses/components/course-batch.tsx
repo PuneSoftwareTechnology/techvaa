@@ -14,9 +14,9 @@ export function CourseBatch({ course }: { course: CourseDTO }) {
   if (course.batches.length === 0) return null;
 
   return (
-    <section aria-labelledby="batch-title" className="py-16">
+    <section aria-labelledby="batch-title" className="py-14">
       <Container className="max-w-4xl">
-        <SectionHeader as="h2" eyebrow="New Batch Schedule" title="Upcoming training" />
+        <SectionHeader as="h2" eyebrow="New Batch Schedule" title="Upcoming training" gradient />
         <div className="mt-10 space-y-4">
           {course.batches.map((batch, i) => (
             <Reveal as="div" index={i} key={batch.id}>

@@ -3,6 +3,7 @@ import Image from "next/image";
 import { ChevronRight } from "lucide-react";
 import { Container } from "./container";
 import { HeroBackground } from "./hero-background";
+import { LinkifiedText } from "./linkified-text";
 
 type Crumb = { name: string; href: string };
 
@@ -64,22 +65,30 @@ export function PageHero({
           {title}
         </h1>
         {description && (
-          <p className="mt-4 max-w-2xl text-pretty text-lg text-white/80">
-            {description}
-          </p>
+          <LinkifiedText
+            text={description}
+            className="mt-4 max-w-2xl text-pretty text-lg text-white/80 [&_a]:font-medium [&_a]:text-white [&_a]:underline [&_a]:underline-offset-2 [&_a:hover]:text-accent-orange"
+          />
         )}
         {children && <div className="mt-8">{children}</div>}
         </div>
         {image && (
-          <div className="relative aspect-[16/10] overflow-hidden rounded-2xl border border-white/10 shadow-2xl ring-1 ring-white/5">
-            <Image
-              src={image}
-              alt={imageAlt ?? title}
-              fill
-              priority
-              sizes="(min-width: 1024px) 50vw, 100vw"
-              className="object-cover"
+          <div className="relative">
+            {/* soft warm glow so the card lifts off the navy backdrop */}
+            <div
+              aria-hidden="true"
+              className="absolute -inset-4 rounded-[2rem] bg-accent-orange/20 blur-3xl"
             />
+            <div className="relative aspect-[16/10] overflow-hidden rounded-2xl border border-white/15 bg-white/5 shadow-2xl ring-1 ring-white/10 backdrop-blur-sm">
+              <Image
+                src={image}
+                alt={imageAlt ?? title}
+                fill
+                priority
+                sizes="(min-width: 1024px) 50vw, 100vw"
+                className="object-contain p-5"
+              />
+            </div>
           </div>
         )}
       </Container>

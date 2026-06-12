@@ -24,6 +24,8 @@ export interface RelatedCourseDTO {
   title: string;
   slug: string;
   image: string | null;
+  shortDescription: string | null;
+  isFeatured: boolean;
 }
 
 /** One Key Curriculum section — heading + description. */

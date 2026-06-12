@@ -76,6 +76,8 @@ export function toCourseDTO(c: any): CourseDTO {
           title: r.title,
           slug: r.slug,
           image: r.image ?? null,
+          shortDescription: r.shortDescription ?? null,
+          isFeatured: r.isFeatured ?? false,
         }))
       : [],
     seo: toSeoDTO(c.seo ?? null),

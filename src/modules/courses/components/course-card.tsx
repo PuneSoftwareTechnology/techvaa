@@ -7,11 +7,17 @@ import { EnrollDialog } from "@/components/forms/enroll-dialog";
 import { cn } from "@/lib/utils";
 import type { CourseDTO } from "@/types";
 
+/** The subset of course fields the card renders — lets related-course links reuse it. */
+type CourseCardData = Pick<
+  CourseDTO,
+  "title" | "slug" | "image" | "shortDescription" | "isFeatured"
+>;
+
 export function CourseCard({
   course,
   className,
 }: {
-  course: CourseDTO;
+  course: CourseCardData;
   className?: string;
 }) {
   return (

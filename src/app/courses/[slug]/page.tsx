@@ -1,21 +1,28 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowRight, Download } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { courseService } from "@/services/course.service";
 import { faqService } from "@/services/faq.service";
+import { testimonialService } from "@/services/social-proof.service";
 import { buildMetadata } from "@/lib/seo";
 import { JsonLd } from "@/components/seo/json-ld";
 import { courseSchema, breadcrumbSchema, faqSchema } from "@/lib/jsonld";
 import { PageHero } from "@/components/common/page-hero";
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
+import { buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import { Container } from "@/components/common/container";
+import { Reveal } from "@/components/common/reveal";
 import { RichTextContent } from "@/components/common/rich-text-content";
+import { CollapsibleContent } from "@/components/common/collapsible-content";
+import { EnrollDialog } from "@/components/forms/enroll-dialog";
+import { Shimmer } from "@/components/common/shimmer";
 import { htmlToPlainText } from "@/lib/sanitize";
+import { CourseCard } from "@/modules/courses/components/course-card";
 import { CurriculumHighlights } from "@/modules/courses/components/curriculum-highlights";
 import { CourseOutcomes } from "@/modules/courses/components/course-outcomes";
 import { CourseBatch } from "@/modules/courses/components/course-batch";
+import { AlumniPlaced } from "@/modules/courses/components/alumni-placed";
+import { CourseReviews } from "@/modules/courses/components/course-reviews";
 import { FaqSection } from "@/modules/home/components/faq-section";
 
 export const revalidate = 3600;
@@ -33,7 +40,11 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   const course = await courseService.getBySlug(slug);
-  if (!course) return buildMetadata({ title: "Course not found", robots: "NOINDEX_FOLLOW" });
+  if (!course)
+    return buildMetadata({
+      title: "Course not found",
+      robots: "NOINDEX_FOLLOW",
+    });
 
   const seo = course.seo;
   return buildMetadata({
@@ -59,7 +70,10 @@ export default async function CourseDetailPage({
 
   if (!course) notFound();
 
-  const faqs = await faqService.getForCourse(course.id);
+  const [faqs, testimonials] = await Promise.all([
+    faqService.getForCourse(course.id),
+    testimonialService.getForDisplay(8),
+  ]);
 
   return (
     <>
@@ -88,33 +102,42 @@ export default async function CourseDetailPage({
         ]}
       >
         <div className="flex flex-wrap items-center gap-4">
-          <Button asChild variant="accent" size="xl">
-            <Link href="#contact">
-              Advance My Career <ArrowRight aria-hidden="true" />
-            </Link>
-          </Button>
-          <Button
-            asChild
-            size="xl"
-            variant="outline"
-            className="border-white/30 bg-white/5 text-white hover:bg-white/15 hover:text-white"
-          >
-            <Link href="#contact">
-              <Download aria-hidden="true" /> Download Syllabus
-            </Link>
-          </Button>
+          <EnrollDialog
+            course={course.title}
+            trigger={
+              <button
+                type="button"
+                className={cn(
+                  buttonVariants({ variant: "accent", size: "xl" }),
+                  "relative overflow-hidden",
+                )}
+              >
+                <Shimmer />
+                Advance My Career <ArrowRight aria-hidden="true" />
+              </button>
+            }
+          />
         </div>
       </PageHero>
 
       {course.description && (
-        <Container className="max-w-3xl py-12">
-          <h2 className="font-heading text-2xl font-bold text-foreground">
+        <Container className="py-12">
+          <p className="mb-2 text-sm font-semibold uppercase tracking-wider text-accent-orange">
+            Overview
+          </p>
+          <h2 className="flex items-center gap-3 font-heading text-2xl font-bold text-foreground">
+            <span
+              aria-hidden="true"
+              className="h-7 w-1.5 rounded-full bg-gradient-to-b from-brand to-accent-orange"
+            />
             About this course
           </h2>
-          <RichTextContent
-            html={course.description}
-            className="mt-4 prose-p:text-muted-foreground prose-li:text-muted-foreground"
-          />
+          <CollapsibleContent className="mt-4">
+            <RichTextContent
+              html={course.description}
+              className="prose-p:text-muted-foreground prose-li:text-muted-foreground"
+            />
+          </CollapsibleContent>
         </Container>
       )}
 
@@ -123,30 +146,33 @@ export default async function CourseDetailPage({
       <CourseOutcomes courseTitle={course.title} />
       <CourseBatch course={course} />
 
+      <AlumniPlaced courseTitle={course.title} />
+
+      <CourseReviews courseTitle={course.title} testimonials={testimonials} />
+
+      <FaqSection faqs={faqs} />
+
       {course.relatedCourses.length > 0 && (
-        <Container className="max-w-4xl py-12">
-          <h2 className="font-heading text-2xl font-bold text-foreground">
-            Related courses
-          </h2>
-          <div className="mt-6 grid gap-4 sm:grid-cols-2">
-            {course.relatedCourses.map((related) => (
-              <Card key={related.id} className="p-0">
-                <Link
-                  href={`/courses/${related.slug}`}
-                  className="flex items-center justify-between gap-3 p-5 transition-colors hover:bg-muted/50"
-                >
-                  <span className="font-heading text-base font-semibold text-foreground">
-                    {related.title}
-                  </span>
-                  <ArrowRight className="size-4 shrink-0 text-accent-orange" aria-hidden="true" />
-                </Link>
-              </Card>
+        <Container className="py-14">
+          <div className="text-center">
+            <p className="mb-2 text-sm font-semibold uppercase tracking-wider text-accent-orange">
+              Keep exploring
+            </p>
+            <h2 className="font-heading text-3xl font-bold tracking-tight">
+              <span className="bg-gradient-to-r from-brand via-brand to-accent-orange bg-clip-text text-transparent">
+                Related courses
+              </span>
+            </h2>
+          </div>
+          <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {course.relatedCourses.map((related, i) => (
+              <Reveal as="div" index={i % 3} key={related.id}>
+                <CourseCard course={related} />
+              </Reveal>
             ))}
           </div>
         </Container>
       )}
-
-      <FaqSection faqs={faqs} />
     </>
   );
 }

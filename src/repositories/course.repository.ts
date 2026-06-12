@@ -40,7 +40,14 @@ export const courseRepository = {
         // Only surface related courses that are themselves live.
         relatedCourses: {
           where: PUBLISHED,
-          select: { id: true, title: true, slug: true, image: true },
+          select: {
+            id: true,
+            title: true,
+            slug: true,
+            image: true,
+            shortDescription: true,
+            isFeatured: true,
+          },
           orderBy: { createdAt: "desc" },
         },
       },

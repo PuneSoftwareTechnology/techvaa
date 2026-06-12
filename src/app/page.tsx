@@ -13,7 +13,6 @@ import { TopModules } from "@/modules/home/components/top-modules";
 import { GraduatesSay } from "@/modules/home/components/graduates-say";
 import { TransformCta } from "@/modules/home/components/transform-cta";
 import { BatchSchedule } from "@/modules/courses/components/batch-schedule";
-import { DemoSessions } from "@/modules/home/components/demo-sessions";
 import { FaqSection } from "@/modules/home/components/faq-section";
 
 // ISR: regenerate the home page at most once an hour.
@@ -47,7 +46,6 @@ export default async function HomePage() {
       <GraduatesSay testimonials={testimonials} />
       <TransformCta />
       <BatchSchedule rows={batches} />
-      <DemoSessions />
       <FaqSection faqs={faqs} />
     </>
   );

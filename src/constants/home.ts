@@ -39,11 +39,6 @@ export const TRUST_STATS = [
   { value: "4.9/5", label: "Average Student Rating" },
 ] as const;
 
-export const DEMO_SESSIONS = [
-  { title: "Free Demo: Intro to S/4HANA Finance", date: "Every Saturday · 11 AM EST" },
-  { title: "Free Demo: SAP MM Procure-to-Pay", date: "Every Sunday · 11 AM EST" },
-] as const;
-
 export const HERO_HIGHLIGHTS = [
   "Comprehensive SAP training with live Projects",
   "100% placement support & career services",

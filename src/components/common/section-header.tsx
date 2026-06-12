@@ -49,7 +49,7 @@ export function SectionHeader({
         className={cn(
           "text-balance font-heading text-3xl font-bold tracking-tight sm:text-4xl",
           gradient
-            ? "bg-gradient-to-r from-brand  to-accent-orange bg-clip-text text-transparent"
+            ? "bg-gradient-to-l from-brand  to-accent-orange bg-clip-text text-transparent"
             : "text-foreground",
         )}
       >

@@ -9,7 +9,7 @@ import { SectionHeader } from "@/components/common/section-header";
 import { Reveal } from "@/components/common/reveal";
 import { DynamicIcon } from "@/components/common/dynamic-icon";
 import { Card } from "@/components/ui/card";
-import { RatingOverview } from "@/modules/reviews/components/rating-overview";
+import { RatingOverview, RatingDistribution } from "@/modules/reviews/components/rating-overview";
 import { ReviewsList } from "@/modules/reviews/components/reviews-list";
 
 export const revalidate = 3600;
@@ -24,9 +24,30 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 const REVIEW_STATS = [
-  { icon: "shield-check", value: "99%", label: "Student Satisfaction" },
-  { icon: "briefcase", value: "100%", label: "Job Assistance" },
-  { icon: "users", value: "500+", label: "Candidates Placed" },
+  {
+    icon: "shield-check",
+    value: "99%",
+    label: "Student Satisfaction",
+    accent: "#3b82f6",
+    tint: "bg-blue-500/10 text-blue-600",
+    text: "text-blue-600",
+  },
+  {
+    icon: "briefcase",
+    value: "100%",
+    label: "Job Assistance",
+    accent: "#10b981",
+    tint: "bg-emerald-500/10 text-emerald-600",
+    text: "text-emerald-600",
+  },
+  {
+    icon: "users",
+    value: "500+",
+    label: "Candidates Placed",
+    accent: "#f97316",
+    tint: "bg-orange-500/10 text-orange-600",
+    text: "text-orange-600",
+  },
 ];
 
 const WHY_US = [
@@ -69,31 +90,32 @@ export default async function ReviewsPage() {
           <h2 id="overview-title" className="sr-only">
             Rating overview
           </h2>
-          <div className="grid gap-8 lg:grid-cols-[420px_1fr] lg:items-stretch">
-            <Reveal className="h-full">
+          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-[1.5fr_1.5fr_1fr_1fr_1fr] lg:items-stretch">
+            <Reveal className="h-full" index={0}>
               <RatingOverview summary={summary} />
             </Reveal>
-            <Reveal index={1} className="h-full">
-              <div className="grid h-full grid-rows-3 gap-5">
-                {REVIEW_STATS.map((s) => (
-                  <Card
-                    key={s.label}
-                    size="sm"
-                    className="h-full flex-row items-center justify-center gap-4 p-5"
-                  >
-                    <div className="grid size-12 shrink-0 place-items-center rounded-xl bg-brand/10 text-brand">
-                      <DynamicIcon name={s.icon} className="size-6" />
-                    </div>
-                    <div>
-                      <p className="font-heading text-2xl font-extrabold leading-none text-brand">
-                        {s.value}
-                      </p>
-                      <p className="mt-1 text-sm text-muted-foreground">{s.label}</p>
-                    </div>
-                  </Card>
-                ))}
-              </div>
+            <Reveal className="h-full" index={1}>
+              <RatingDistribution summary={summary} />
             </Reveal>
+            {REVIEW_STATS.map((s, i) => (
+              <Reveal key={s.label} className="h-full" index={i + 2}>
+                <Card className="relative h-full items-center justify-center gap-3 overflow-hidden p-6 text-center">
+                  <div
+                    className="absolute inset-x-0 top-0 h-1.5"
+                    style={{ background: s.accent }}
+                  />
+                  <div
+                    className={`grid size-12 place-items-center rounded-xl ${s.tint}`}
+                  >
+                    <DynamicIcon name={s.icon} className="size-6" />
+                  </div>
+                  <p className={`font-heading text-3xl font-extrabold leading-none ${s.text}`}>
+                    {s.value}
+                  </p>
+                  <p className="text-sm text-muted-foreground">{s.label}</p>
+                </Card>
+              </Reveal>
+            ))}
           </div>
         </Container>
       </section>

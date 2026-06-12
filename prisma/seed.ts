@@ -102,6 +102,9 @@ async function main() {
   console.log(`   ✓ ${pageSeo.length} page SEO entries`);
 
   // ── Courses (5) ─────────────────────────────────────────────────────────────
+  // Each course carries its Key Curriculum sections and upcoming batches. These
+  // are nested relations, so we strip them off before the course upsert and seed
+  // them separately (delete + recreate) to stay idempotent.
   const courses = [
     {
       title: "SAP FICO End-to-End Training",
@@ -110,9 +113,18 @@ async function main() {
       description:
         "A comprehensive, hands-on SAP FICO program covering GL, AP, AR, Asset Accounting, Cost Center and Profit Center Accounting with real-time scenarios.",
       duration: "8 weeks",
-      level: "INTERMEDIATE" as const,
       isFeatured: true,
       isPublished: true,
+      curriculum: [
+        { heading: "General Ledger (FI-GL)", description: "Chart of accounts, document types, posting keys and real-time GL postings." },
+        { heading: "Accounts Payable & Receivable", description: "Vendor/customer master data, invoicing, payments and dunning." },
+        { heading: "Asset Accounting", description: "Asset master data, depreciation runs and asset lifecycle." },
+        { heading: "Controlling (CO)", description: "Cost centers, profit centers and internal orders." },
+      ],
+      batches: [
+        { startDate: new Date("2026-07-01T00:00:00Z"), duration: "8 weeks", mode: "Live Online" },
+        { startDate: new Date("2026-08-15T00:00:00Z"), duration: "8 weeks", mode: "Classroom" },
+      ],
     },
     {
       title: "SAP MM (Materials Management)",
@@ -121,9 +133,16 @@ async function main() {
       description:
         "Learn SAP MM from procurement and purchasing to inventory management, invoice verification and integration with FI and SD.",
       duration: "6 weeks",
-      level: "BEGINNER" as const,
       isFeatured: true,
       isPublished: true,
+      curriculum: [
+        { heading: "Procurement Process", description: "Purchase requisitions, RFQs, purchase orders and release strategies." },
+        { heading: "Inventory Management", description: "Goods receipt, goods issue, transfer postings and physical inventory." },
+        { heading: "Invoice Verification", description: "Three-way match, blocked invoices and FI integration." },
+      ],
+      batches: [
+        { startDate: new Date("2026-07-10T00:00:00Z"), duration: "6 weeks", mode: "Live Online" },
+      ],
     },
     {
       title: "SAP ABAP Programming",
@@ -132,9 +151,16 @@ async function main() {
       description:
         "From reports and data dictionary to ALV, BAPIs, BDC and OData services — become a job-ready SAP ABAP developer.",
       duration: "10 weeks",
-      level: "ADVANCED" as const,
       isFeatured: false,
       isPublished: true,
+      curriculum: [
+        { heading: "ABAP Fundamentals", description: "Data types, internal tables, control structures and modularization." },
+        { heading: "Data Dictionary & ALV", description: "Tables, views, search helps and ALV report building." },
+        { heading: "Interface Programming", description: "BAPIs, BDC, RFCs and OData service creation." },
+      ],
+      batches: [
+        { startDate: new Date("2026-07-20T00:00:00Z"), duration: "10 weeks", mode: "Live Online" },
+      ],
     },
     {
       title: "SAP S/4HANA Simple Finance",
@@ -143,9 +169,16 @@ async function main() {
       description:
         "Understand the Universal Journal, migration from ECC, central finance and the new S/4HANA finance capabilities.",
       duration: "7 weeks",
-      level: "INTERMEDIATE" as const,
       isFeatured: true,
       isPublished: true,
+      curriculum: [
+        { heading: "Universal Journal", description: "The ACDOCA table and unified finance data model." },
+        { heading: "Migration from ECC", description: "System conversion, data migration and customizing." },
+        { heading: "Central Finance", description: "Central Finance architecture and replication." },
+      ],
+      batches: [
+        { startDate: new Date("2026-08-01T00:00:00Z"), duration: "7 weeks", mode: "Live Online" },
+      ],
     },
     {
       title: "SAP SD (Sales & Distribution)",
@@ -154,21 +187,41 @@ async function main() {
       description:
         "Cover the full order-to-cash cycle: sales orders, pricing, delivery, billing, and integration with MM and FI.",
       duration: "6 weeks",
-      level: "ALL_LEVELS" as const,
       isFeatured: false,
       isPublished: false,
+      curriculum: [
+        { heading: "Sales Order Management", description: "Order types, item categories and schedule lines." },
+        { heading: "Pricing & Billing", description: "Condition technique, pricing procedures and billing documents." },
+      ],
+      batches: [],
     },
   ];
   const courseIds: Record<string, string> = {};
-  for (const c of courses) {
+  for (const { curriculum, batches, ...c } of courses) {
     const course = await prisma.course.upsert({
       where: { slug: c.slug },
       update: c,
       create: c,
     });
     courseIds[c.slug] = course.id;
+
+    // Reseed Key Curriculum (ordered) idempotently.
+    await prisma.curriculumItem.deleteMany({ where: { courseId: course.id } });
+    if (curriculum.length > 0) {
+      await prisma.curriculumItem.createMany({
+        data: curriculum.map((item, i) => ({ ...item, courseId: course.id, sortOrder: i })),
+      });
+    }
+
+    // Reseed upcoming batches idempotently.
+    await prisma.courseBatch.deleteMany({ where: { courseId: course.id } });
+    if (batches.length > 0) {
+      await prisma.courseBatch.createMany({
+        data: batches.map((b) => ({ ...b, courseId: course.id })),
+      });
+    }
   }
-  console.log(`   ✓ ${courses.length} courses`);
+  console.log(`   ✓ ${courses.length} courses (with curriculum + batches)`);
 
   // Attach SEO metadata to the featured FICO course (demonstrates 1:1).
   await prisma.seoMetadata.upsert({

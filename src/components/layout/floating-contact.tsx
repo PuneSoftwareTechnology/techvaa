@@ -99,17 +99,26 @@ export function FloatingContact() {
         <X
           className={cn(
             "absolute size-6 transition-all duration-300",
-            open ? "rotate-0 scale-100 opacity-100" : "rotate-90 scale-0 opacity-0",
+            open
+              ? "rotate-0 scale-100 opacity-100"
+              : "rotate-90 scale-0 opacity-0",
           )}
           aria-hidden="true"
         />
-        <MessageCircle
+        {/* Composite contact glyph: a phone with a small message badge so the
+            FAB reads as "call + message", not chat alone. */}
+        <span
           className={cn(
-            "absolute size-6 transition-all duration-300",
-            open ? "-rotate-90 scale-0 opacity-0" : "rotate-0 scale-100 opacity-100",
+            "absolute transition-all duration-300",
+            open
+              ? "-rotate-90 scale-0 opacity-0"
+              : "rotate-0 scale-100 opacity-100",
           )}
           aria-hidden="true"
-        />
+        >
+          <Phone className="size-6" />
+          <MessageCircle className="absolute -right-1 -top-1 size-4 fill-current stroke-[2.5] text-accent-orange-foreground" />
+        </span>
       </button>
     </div>
   );

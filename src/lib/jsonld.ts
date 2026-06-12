@@ -1,5 +1,6 @@
 import { SITE, SOCIAL_LINKS } from "@/constants/site";
 import { absoluteUrl } from "./seo";
+import { htmlToPlainText } from "./sanitize";
 import type {
   BlogDTO,
   CourseDTO,
@@ -65,7 +66,7 @@ export function courseSchema(course: CourseDTO) {
     "@context": "https://schema.org",
     "@type": "Course",
     name: course.title,
-    description: course.description.slice(0, 200),
+    description: htmlToPlainText(course.description).slice(0, 200),
     url: absoluteUrl(`/courses/${course.slug}`),
     provider: {
       "@type": "EducationalOrganization",
@@ -82,7 +83,7 @@ export function faqSchema(faqs: FaqDTO[]) {
     mainEntity: faqs.map((f) => ({
       "@type": "Question",
       name: f.question,
-      acceptedAnswer: { "@type": "Answer", text: f.answer },
+      acceptedAnswer: { "@type": "Answer", text: htmlToPlainText(f.answer) },
     })),
   };
 }
@@ -123,7 +124,7 @@ export function articleSchema(blog: BlogDTO) {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
     headline: blog.title,
-    description: blog.metaDescription ?? blog.introduction,
+    description: blog.metaDescription ?? htmlToPlainText(blog.introduction),
     image: blog.featuredImage ? absoluteUrl(blog.featuredImage) : undefined,
     datePublished: blog.publishedAt ?? undefined,
     url: absoluteUrl(`/blog/${blog.slug}`),

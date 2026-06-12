@@ -8,6 +8,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import type { FaqDTO } from "@/types";
+import { RichTextContent } from "@/components/common/rich-text-content";
 
 /**
  * Renders the FAQ accordion. The matching FAQPage JSON-LD is emitted by the
@@ -32,8 +33,11 @@ export function FaqSection({ faqs }: { faqs: FaqDTO[] }) {
                 <AccordionTrigger className="text-left text-base font-medium">
                   {faq.question}
                 </AccordionTrigger>
-                <AccordionContent className="text-muted-foreground">
-                  {faq.answer}
+                <AccordionContent>
+                  <RichTextContent
+                    html={faq.answer}
+                    className="prose-sm prose-p:text-muted-foreground prose-li:text-muted-foreground"
+                  />
                 </AccordionContent>
               </AccordionItem>
             ))}

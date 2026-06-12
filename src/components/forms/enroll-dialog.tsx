@@ -33,9 +33,14 @@ type EnrollDialogProps = {
   course: string;
   /** Extra classes for the trigger button (e.g. full-width on mobile cards). */
   className?: string;
+  /**
+   * Custom trigger element. When provided it replaces the default "Enroll Now"
+   * accent button (e.g. a text-style "Talk to us" link on a course card).
+   */
+  trigger?: React.ReactNode;
 };
 
-export function EnrollDialog({ course, className }: EnrollDialogProps) {
+export function EnrollDialog({ course, className, trigger }: EnrollDialogProps) {
   const [open, setOpen] = useState(false);
   const [isPending, startTransition] = useTransition();
   const {
@@ -85,14 +90,16 @@ export function EnrollDialog({ course, className }: EnrollDialogProps) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button
-          size="sm"
-          variant="accent"
-          className={cn("relative overflow-hidden", className)}
-        >
-          <Shimmer />
-          Enroll Now
-        </Button>
+        {trigger ?? (
+          <Button
+            size="sm"
+            variant="accent"
+            className={cn("relative overflow-hidden", className)}
+          >
+            <Shimmer />
+            Enroll Now
+          </Button>
+        )}
       </DialogTrigger>
 
       <DialogContent>

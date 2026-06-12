@@ -26,20 +26,36 @@ export interface RelatedCourseDTO {
   image: string | null;
 }
 
+/** One Key Curriculum section — heading + description. */
+export interface CurriculumItemDTO {
+  id: string;
+  heading: string;
+  description: string;
+}
+
+/** An upcoming batch for a course (the "New Batch Schedule" row). */
+export interface CourseBatchDTO {
+  id: string;
+  startDate: string;
+  duration: string;
+  mode: string | null;
+  isOpen: boolean;
+}
+
 export interface CourseDTO {
   id: string;
   title: string;
   slug: string;
+  shortDescription: string | null;
   description: string;
-  /** Bullet-point course introduction. */
-  intro: string[];
-  /** Bullet-point list of modules / curriculum. */
-  modules: string[];
-  /** Bullet-point list of prerequisites. */
-  prerequisites: string[];
+  duration: string | null;
   image: string | null;
   isFeatured: boolean;
   createdAt: string;
+  /** Key Curriculum sections, ordered. Populated on the detail query. */
+  curriculum: CurriculumItemDTO[];
+  /** Upcoming batches, soonest first. Populated on the detail query. */
+  batches: CourseBatchDTO[];
   /** Curated related courses (only populated on the detail query). */
   relatedCourses: RelatedCourseDTO[];
   seo: SeoDTO | null;

@@ -8,6 +8,8 @@ import { SectionHeader } from "@/components/common/section-header";
 import { Reveal } from "@/components/common/reveal";
 import { PageHero } from "@/components/common/page-hero";
 import { CourseCard } from "@/modules/courses/components/course-card";
+import { HiringPartners } from "@/modules/home/components/hiring-partners";
+import { UpcomingBatches } from "@/modules/home/components/upcoming-batches";
 
 export const revalidate = 3600;
 
@@ -58,6 +60,9 @@ export default async function CoursesPage() {
           </div>
         )}
       </Container>
+
+      <HiringPartners />
+      <UpcomingBatches />
     </>
   );
 }

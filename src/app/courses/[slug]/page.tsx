@@ -11,6 +11,8 @@ import { PageHero } from "@/components/common/page-hero";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Container } from "@/components/common/container";
+import { RichTextContent } from "@/components/common/rich-text-content";
+import { htmlToPlainText } from "@/lib/sanitize";
 import { CurriculumHighlights } from "@/modules/courses/components/curriculum-highlights";
 import { CourseOutcomes } from "@/modules/courses/components/course-outcomes";
 import { CourseBatch } from "@/modules/courses/components/course-batch";
@@ -18,29 +20,6 @@ import { FaqSection } from "@/modules/home/components/faq-section";
 
 export const revalidate = 3600;
 export const dynamicParams = true;
-
-/** A titled list of bullet points (course intro / modules / prerequisites). */
-function CourseBulletSection({
-  title,
-  items,
-}: {
-  title: string;
-  items: string[];
-}) {
-  return (
-    <div className="mt-10">
-      <h2 className="font-heading text-2xl font-bold text-foreground">{title}</h2>
-      <ul className="mt-4 space-y-2">
-        {items.map((item, i) => (
-          <li key={i} className="flex gap-3 text-pretty leading-relaxed text-muted-foreground">
-            <ArrowRight className="mt-1 size-4 shrink-0 text-accent-orange" aria-hidden="true" />
-            <span>{item}</span>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-}
 
 export async function generateStaticParams() {
   const slugs = await courseService.getAllSlugs();
@@ -60,7 +39,9 @@ export async function generateMetadata({
   return buildMetadata({
     title: seo?.metaTitle ?? course.title,
     description:
-      seo?.metaDescription ?? course.intro[0] ?? course.description.slice(0, 160),
+      seo?.metaDescription ??
+      course.shortDescription ??
+      htmlToPlainText(course.description).slice(0, 160),
     path: `/courses/${course.slug}`,
     image: seo?.ogImage ?? course.image,
     keywords: seo?.keywords,
@@ -97,7 +78,9 @@ export default async function CourseDetailPage({
       <PageHero
         eyebrow="SAP Certification Bootcamp"
         title={course.title}
-        description={course.intro[0] ?? undefined}
+        description={course.shortDescription ?? undefined}
+        image={course.image}
+        imageAlt={course.title}
         breadcrumbs={[
           { name: "Home", href: "/" },
           { name: "Courses", href: "/courses" },
@@ -128,29 +111,14 @@ export default async function CourseDetailPage({
           <h2 className="font-heading text-2xl font-bold text-foreground">
             About this course
           </h2>
-          <p className="mt-4 whitespace-pre-line text-pretty leading-relaxed text-muted-foreground">
-            {course.description}
-          </p>
-
-          {course.intro.length > 0 && (
-            <CourseBulletSection title="Course introduction" items={course.intro} />
-          )}
+          <RichTextContent
+            html={course.description}
+            className="mt-4 prose-p:text-muted-foreground prose-li:text-muted-foreground"
+          />
         </Container>
       )}
 
-      {course.modules.length > 0 ? (
-        <Container className="max-w-3xl pb-4">
-          <CourseBulletSection title="Modules" items={course.modules} />
-        </Container>
-      ) : (
-        <CurriculumHighlights />
-      )}
-
-      {course.prerequisites.length > 0 && (
-        <Container className="max-w-3xl py-4">
-          <CourseBulletSection title="Prerequisites" items={course.prerequisites} />
-        </Container>
-      )}
+      <CurriculumHighlights items={course.curriculum} />
 
       <CourseOutcomes courseTitle={course.title} />
       <CourseBatch course={course} />

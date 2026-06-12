@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { ChevronRight } from "lucide-react";
 import { Container } from "./container";
 import { HeroBackground } from "./hero-background";
@@ -11,18 +12,29 @@ export function PageHero({
   title,
   description,
   breadcrumbs,
+  image,
+  imageAlt,
   children,
 }: {
   eyebrow?: string;
   title: string;
   description?: string;
   breadcrumbs?: Crumb[];
+  image?: string | null;
+  imageAlt?: string;
   children?: React.ReactNode;
 }) {
   return (
     <section className="relative overflow-hidden bg-brand text-brand-foreground">
       <HeroBackground />
-      <Container className="relative py-14 lg:py-20">
+      <Container
+        className={
+          image
+            ? "relative grid items-center gap-10 py-14 lg:grid-cols-2 lg:py-20"
+            : "relative py-14 lg:py-20"
+        }
+      >
+        <div>
         {breadcrumbs && breadcrumbs.length > 0 && (
           <nav aria-label="Breadcrumb" className="mb-4">
             <ol className="flex flex-wrap items-center gap-1 text-sm text-white/70">
@@ -57,6 +69,19 @@ export function PageHero({
           </p>
         )}
         {children && <div className="mt-8">{children}</div>}
+        </div>
+        {image && (
+          <div className="relative aspect-[16/10] overflow-hidden rounded-2xl border border-white/10 shadow-2xl ring-1 ring-white/5">
+            <Image
+              src={image}
+              alt={imageAlt ?? title}
+              fill
+              priority
+              sizes="(min-width: 1024px) 50vw, 100vw"
+              className="object-cover"
+            />
+          </div>
+        )}
       </Container>
     </section>
   );

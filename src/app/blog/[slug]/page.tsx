@@ -10,6 +10,8 @@ import { JsonLd } from "@/components/seo/json-ld";
 import { articleSchema, breadcrumbSchema } from "@/lib/jsonld";
 import { PageHero } from "@/components/common/page-hero";
 import { Container } from "@/components/common/container";
+import { RichTextContent } from "@/components/common/rich-text-content";
+import { htmlToPlainText } from "@/lib/sanitize";
 import { SectionHeader } from "@/components/common/section-header";
 import { Reveal } from "@/components/common/reveal";
 import { formatDate } from "@/lib/format";
@@ -47,11 +49,7 @@ function ContentBlock({ block }: { block: BlogContentBlockDTO }) {
           className="mt-4 w-full rounded-xl object-cover"
         />
       )}
-      {block.text && (
-        <div className="mt-4 whitespace-pre-line leading-relaxed text-muted-foreground">
-          {block.text}
-        </div>
-      )}
+      <RichTextContent html={block.text} bare className="mt-4 text-muted-foreground" />
       {block.points.length > 0 && (
         <ul className="mt-4 list-disc space-y-1 pl-6 text-muted-foreground">
           {block.points.map((p, i) => (
@@ -81,7 +79,9 @@ export async function generateMetadata({
   return buildMetadata({
     title: seo?.metaTitle ?? blog.title,
     description:
-      seo?.metaDescription ?? blog.metaDescription ?? blog.introduction.slice(0, 160),
+      seo?.metaDescription ??
+      blog.metaDescription ??
+      htmlToPlainText(blog.introduction).slice(0, 160),
     path: `/blog/${blog.slug}`,
     image: seo?.ogImage ?? blog.featuredImage,
     keywords: seo?.keywords,
@@ -135,19 +135,21 @@ export default async function BlogDetailPage({
 
       <Container className="max-w-3xl py-14">
         <article className="prose prose-neutral max-w-none">
-          <p className="text-lg font-medium leading-relaxed text-foreground">
-            {blog.introduction}
-          </p>
+          <RichTextContent
+            html={blog.introduction}
+            bare
+            className="[&_p]:text-lg [&_p]:font-medium [&_p]:text-foreground"
+          />
 
           <ContentBlock block={blog.primary} />
           <ContentBlock block={blog.secondary} />
           <ContentBlock block={blog.tertiary} />
 
-          {blog.conclusion && (
-            <div className="mt-10 whitespace-pre-line leading-relaxed text-muted-foreground">
-              {blog.conclusion}
-            </div>
-          )}
+          <RichTextContent
+            html={blog.conclusion}
+            bare
+            className="mt-10 text-muted-foreground"
+          />
         </article>
 
         {blog.relatedCourse && (

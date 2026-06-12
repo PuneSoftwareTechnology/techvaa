@@ -3,6 +3,7 @@ import { ArrowRight } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { formatDate } from "@/lib/format";
+import { htmlToPlainText } from "@/lib/sanitize";
 import type { BlogDTO } from "@/types";
 
 export function BlogCard({
@@ -41,7 +42,7 @@ export function BlogCard({
         </h3>
         {(blog.metaDescription ?? blog.introduction) && (
           <p className="mt-2 line-clamp-2 text-sm text-muted-foreground">
-            {blog.metaDescription ?? blog.introduction}
+            {blog.metaDescription ?? htmlToPlainText(blog.introduction)}
           </p>
         )}
         <div className="mt-4 flex items-center justify-between pt-2 text-xs text-muted-foreground">

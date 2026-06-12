@@ -48,13 +48,28 @@ export function toCourseDTO(c: any): CourseDTO {
     id: c.id,
     title: c.title,
     slug: c.slug,
+    shortDescription: c.shortDescription ?? null,
     description: c.description,
-    intro: c.intro ?? [],
-    modules: c.modules ?? [],
-    prerequisites: c.prerequisites ?? [],
+    duration: c.duration ?? null,
     image: c.image ?? null,
     isFeatured: c.isFeatured,
     createdAt: c.createdAt.toISOString(),
+    curriculum: Array.isArray(c.curriculum)
+      ? c.curriculum.map((i: any) => ({
+          id: i.id,
+          heading: i.heading,
+          description: i.description,
+        }))
+      : [],
+    batches: Array.isArray(c.batches)
+      ? c.batches.map((b: any) => ({
+          id: b.id,
+          startDate: b.startDate.toISOString(),
+          duration: b.duration,
+          mode: b.mode ?? null,
+          isOpen: b.isOpen,
+        }))
+      : [],
     relatedCourses: Array.isArray(c.relatedCourses)
       ? c.relatedCourses.map((r: any) => ({
           id: r.id,

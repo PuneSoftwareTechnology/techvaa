@@ -30,6 +30,13 @@ export const courseRepository = {
       where: { slug, ...PUBLISHED },
       include: {
         seo: true,
+        // Key Curriculum, in authored order.
+        curriculum: { orderBy: { sortOrder: "asc" } },
+        // Upcoming batches that are still open, soonest first.
+        batches: {
+          where: { isOpen: true },
+          orderBy: { startDate: "asc" },
+        },
         // Only surface related courses that are themselves live.
         relatedCourses: {
           where: PUBLISHED,

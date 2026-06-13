@@ -4,6 +4,7 @@ import { prisma } from "@/lib/prisma";
 import type { Prisma } from "@/generated/prisma/client";
 import {
   errorJson,
+  guardAdmin,
   json,
   LEAD_STATUSES,
   noContent,
@@ -18,6 +19,9 @@ export async function OPTIONS(req: NextRequest) {
 
 /** GET /api/course-enquiries/:id */
 export async function GET(req: NextRequest, { params }: Ctx) {
+  const denied = guardAdmin(req);
+  if (denied) return denied;
+
   const { id } = await params;
   const enquiry = await prisma.courseEnquiry.findUnique({ where: { id } });
   if (!enquiry) return errorJson("Enquiry not found", 404, req);
@@ -26,6 +30,9 @@ export async function GET(req: NextRequest, { params }: Ctx) {
 
 /** PATCH /api/course-enquiries/:id — status updates only. */
 export async function PATCH(req: NextRequest, { params }: Ctx) {
+  const denied = guardAdmin(req);
+  if (denied) return denied;
+
   const { id } = await params;
   const body = (await req.json().catch(() => null)) as { status?: string } | null;
   const status = body?.status;
@@ -45,6 +52,9 @@ export async function PATCH(req: NextRequest, { params }: Ctx) {
 
 /** DELETE /api/course-enquiries/:id */
 export async function DELETE(req: NextRequest, { params }: Ctx) {
+  const denied = guardAdmin(req);
+  if (denied) return denied;
+
   const { id } = await params;
   try {
     await prisma.courseEnquiry.delete({ where: { id } });

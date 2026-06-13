@@ -1,6 +1,34 @@
 import type { NextConfig } from "next";
 
 /**
+ * Content-Security-Policy. Allowlists exactly the third parties this site loads:
+ * Google Analytics/Tag Manager, Microsoft Clarity, Meta Pixel, reCAPTCHA and
+ * the Google Maps embed. `'unsafe-inline'`/`'unsafe-eval'` are required because
+ * GA/Clarity/Pixel use inline bootstrap snippets and reCAPTCHA evals — so this
+ * is a baseline (origin allowlist + clickjacking/base-uri/form-action lockdown)
+ * rather than a strict nonce CSP. `img-src https:` avoids whack-a-mole with the
+ * many remote image origins (S3, Unsplash, picsum, partner favicons).
+ *
+ * If you add a new third-party script, add its origin to script-src/connect-src
+ * here or it will be blocked. Test forms + map after any change.
+ */
+const csp = [
+  "default-src 'self'",
+  "base-uri 'self'",
+  "object-src 'none'",
+  "frame-ancestors 'self'",
+  "form-action 'self'",
+  "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://*.clarity.ms https://connect.facebook.net https://www.google.com https://www.gstatic.com https://maps.googleapis.com",
+  "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+  "img-src 'self' data: blob: https:",
+  "font-src 'self' data: https://fonts.gstatic.com",
+  "connect-src 'self' https://www.googletagmanager.com https://*.google-analytics.com https://*.analytics.google.com https://*.clarity.ms https://c.bing.com https://connect.facebook.net https://www.facebook.com https://stats.g.doubleclick.net https://www.google.com",
+  "frame-src 'self' https://www.google.com https://*.facebook.com https://td.doubleclick.net",
+  "worker-src 'self' blob:",
+  "upgrade-insecure-requests",
+].join("; ");
+
+/**
  * Security headers applied to every route. Strict but allows the image
  * origins we use for remote media (S3, Unsplash placeholders).
  */
@@ -17,6 +45,7 @@ const securityHeaders = [
     key: "Strict-Transport-Security",
     value: "max-age=63072000; includeSubDomains; preload",
   },
+  { key: "Content-Security-Policy", value: csp },
 ];
 
 const nextConfig: NextConfig = {

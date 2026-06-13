@@ -3,6 +3,7 @@
 import { courseEnquirySchema } from "@/validations/course-enquiry";
 import { courseEnquiryService } from "@/services/course-enquiry.service";
 import { verifyRecaptcha } from "@/lib/recaptcha";
+import { rateLimit, clientIp } from "@/lib/rate-limit";
 
 export type CourseEnquiryActionState = {
   status: "idle" | "success" | "error";
@@ -19,6 +20,18 @@ export async function submitCourseEnquiry(
   _prev: CourseEnquiryActionState,
   formData: FormData
 ): Promise<CourseEnquiryActionState> {
+  // Throttle abuse: at most 5 submissions per 10 minutes per IP.
+  const limit = rateLimit(`enquiry:${await clientIp()}`, {
+    limit: 5,
+    windowMs: 10 * 60 * 1000,
+  });
+  if (!limit.ok) {
+    return {
+      status: "error",
+      message: "Too many submissions. Please wait a few minutes and try again.",
+    };
+  }
+
   const raw = {
     name: String(formData.get("name") ?? ""),
     phone: String(formData.get("phone") ?? ""),

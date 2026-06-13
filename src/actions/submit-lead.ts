@@ -3,6 +3,7 @@
 import { leadSchema } from "@/validations/lead";
 import { leadService } from "@/services/lead.service";
 import { verifyRecaptcha } from "@/lib/recaptcha";
+import { rateLimit, clientIp } from "@/lib/rate-limit";
 
 export type LeadActionState = {
   status: "idle" | "success" | "error";
@@ -19,6 +20,18 @@ export async function submitLead(
   _prev: LeadActionState,
   formData: FormData
 ): Promise<LeadActionState> {
+  // Throttle abuse: at most 5 submissions per 10 minutes per IP.
+  const limit = rateLimit(`lead:${await clientIp()}`, {
+    limit: 5,
+    windowMs: 10 * 60 * 1000,
+  });
+  if (!limit.ok) {
+    return {
+      status: "error",
+      message: "Too many submissions. Please wait a few minutes and try again.",
+    };
+  }
+
   const raw = {
     name: String(formData.get("name") ?? ""),
     email: String(formData.get("email") ?? ""),

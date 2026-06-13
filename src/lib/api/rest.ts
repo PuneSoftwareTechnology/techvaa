@@ -1,5 +1,6 @@
 import "server-only";
 import { NextResponse } from "next/server";
+import { rateLimit, ipFromRequest } from "@/lib/rate-limit";
 
 /** Pagination block in the admin SPA's `Paginated<T>` response shape. */
 export type AdminPaginationMeta = {
@@ -14,10 +15,40 @@ export type AdminPaginationMeta = {
  * these over HTTP). They mirror the admin's `ListParams` / `Paginated<T>` /
  * `ApiError` contract so the existing repository layer works unchanged.
  *
- * NOTE: these endpoints are currently UNAUTHENTICATED. The admin has no real
- * login backend yet, so guarding them would block all reads. Lock them down
- * (shared secret / session) before exposing this beyond localhost.
+ * AUTH: route handlers call `guardAdmin(req)` first. It rate-limits by IP and,
+ * when `ADMIN_API_KEY` is set, requires `Authorization: Bearer <key>`. The key
+ * is env-gated so the mock admin keeps working until you opt in: set
+ * `ADMIN_API_KEY` here AND have the admin send the same bearer token. These
+ * endpoints serve private lead data — lock them down before going public.
  */
+
+/**
+ * Gate an admin API request. Returns an error `NextResponse` to short-circuit
+ * with, or `null` when the request may proceed.
+ *  - Always rate-limits by client IP (60 req/min) to blunt scraping/brute force.
+ *  - Requires a bearer token equal to `ADMIN_API_KEY` when that env var is set;
+ *    when it's unset the check is skipped (preserves the current open behaviour).
+ */
+export function guardAdmin(req: Request): NextResponse | null {
+  const rl = rateLimit(`api:${ipFromRequest(req)}`, {
+    limit: 60,
+    windowMs: 60_000,
+  });
+  if (!rl.ok) {
+    return NextResponse.json(
+      { message: "Too many requests. Please slow down." },
+      { status: 429, headers: { ...corsHeaders(req), "Retry-After": String(rl.retryAfter) } }
+    );
+  }
+
+  const key = process.env.ADMIN_API_KEY;
+  if (!key) return null; // unconfigured → endpoints stay open (legacy behaviour)
+
+  const auth = req.headers.get("authorization") ?? "";
+  const token = auth.startsWith("Bearer ") ? auth.slice(7).trim() : "";
+  if (token !== key) return errorJson("Unauthorized", 401, req);
+  return null;
+}
 
 /** Valid `LeadStatus` values (shared by Lead and CourseEnquiry). */
 export const LEAD_STATUSES = new Set([

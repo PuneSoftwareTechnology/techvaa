@@ -10,7 +10,8 @@ import { FloatingContact } from "@/components/layout/floating-contact";
 import { FloatingEnquiry } from "@/components/layout/floating-enquiry";
 import { JsonLd } from "@/components/seo/json-ld";
 import { organizationSchema, websiteSchema } from "@/lib/jsonld";
-import { GoogleAnalytics } from "@/components/analytics/google-analytics";
+import { CookieConsent } from "@/components/analytics/consent";
+import { WebVitals } from "@/components/analytics/web-vitals";
 
 const geistSans = Geist({
   variable: "--font-sans",
@@ -42,7 +43,9 @@ export const metadata: Metadata = {
       ? { google: process.env.NEXT_PUBLIC_GSC_VERIFICATION }
       : {}),
     ...(process.env.NEXT_PUBLIC_BING_VERIFICATION
-      ? { other: { "msvalidate.01": process.env.NEXT_PUBLIC_BING_VERIFICATION } }
+      ? {
+          other: { "msvalidate.01": process.env.NEXT_PUBLIC_BING_VERIFICATION },
+        }
       : {}),
   },
   openGraph: {
@@ -81,7 +84,8 @@ export default function RootLayout({
           <FloatingContact />
           <FloatingEnquiry />
         </Providers>
-        <GoogleAnalytics />
+        <CookieConsent />
+        <WebVitals />
       </body>
     </html>
   );

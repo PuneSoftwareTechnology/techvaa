@@ -4,6 +4,7 @@ import { prisma } from "@/lib/prisma";
 import type { Prisma } from "@/generated/prisma/client";
 import {
   buildMeta,
+  guardAdmin,
   json,
   LEAD_STATUSES,
   parsePagination,
@@ -20,6 +21,9 @@ export async function OPTIONS(req: NextRequest) {
 
 /** GET /api/course-enquiries — paginated list for the admin. */
 export async function GET(req: NextRequest) {
+  const denied = guardAdmin(req);
+  if (denied) return denied;
+
   const sp = req.nextUrl.searchParams;
   const pg = parsePagination(sp);
   const orderBy = parseSort(sp, SORTABLE, "createdAt");

@@ -13,7 +13,13 @@ export default defineConfig({
 
   // Required for migration / introspection commands. The runtime PrismaClient
   // uses a driver adapter (see src/lib/prisma.ts) rather than this URL.
+  //
+  // Migrations MUST use a direct (non-pooled) connection: PgBouncer breaks the
+  // session-level advisory lock that `prisma migrate deploy` acquires, which
+  // surfaces as P1002 "Timed out trying to acquire a postgres advisory lock".
+  // Set DATABASE_DIRECT to the Neon endpoint WITHOUT `-pooler` in the host.
+  // Falls back to DATABASE so local/dev still works if unset.
   datasource: {
-    url: env("DATABASE"),
+    url: process.env.DATABASE_DIRECT ? env("DATABASE_DIRECT") : env("DATABASE"),
   },
 });

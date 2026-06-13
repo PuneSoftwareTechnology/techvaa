@@ -15,19 +15,13 @@ export type AdminPaginationMeta = {
  * these over HTTP). They mirror the admin's `ListParams` / `Paginated<T>` /
  * `ApiError` contract so the existing repository layer works unchanged.
  *
- * AUTH: route handlers call `guardAdmin(req)` first. It rate-limits by IP and,
- * when `ADMIN_API_KEY` is set, requires `Authorization: Bearer <key>`. The key
- * is env-gated so the mock admin keeps working until you opt in: set
- * `ADMIN_API_KEY` here AND have the admin send the same bearer token. These
- * endpoints serve private lead data — lock them down before going public.
+ * AUTH: handled in the admin repo, so route handlers only rate-limit by IP.
  */
 
 /**
  * Gate an admin API request. Returns an error `NextResponse` to short-circuit
  * with, or `null` when the request may proceed.
- *  - Always rate-limits by client IP (60 req/min) to blunt scraping/brute force.
- *  - Requires a bearer token equal to `ADMIN_API_KEY` when that env var is set;
- *    when it's unset the check is skipped (preserves the current open behaviour).
+ *  - Rate-limits by client IP (60 req/min) to blunt scraping/brute force.
  */
 export function guardAdmin(req: Request): NextResponse | null {
   const rl = rateLimit(`api:${ipFromRequest(req)}`, {
@@ -41,12 +35,6 @@ export function guardAdmin(req: Request): NextResponse | null {
     );
   }
 
-  const key = process.env.ADMIN_API_KEY;
-  if (!key) return null; // unconfigured → endpoints stay open (legacy behaviour)
-
-  const auth = req.headers.get("authorization") ?? "";
-  const token = auth.startsWith("Bearer ") ? auth.slice(7).trim() : "";
-  if (token !== key) return errorJson("Unauthorized", 401, req);
   return null;
 }
 

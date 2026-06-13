@@ -1,13 +1,15 @@
 import type { MetadataRoute } from "next";
 import { absoluteUrl } from "@/lib/seo";
 
-// Search-engine crawlers we WANT — these drive SEO, so allow them fully.
-const SEARCH_ENGINES = ["Googlebot", "Bingbot", "DuckDuckBot", "Applebot"];
-
-// Bandwidth-hungry bots with no SEO value: AI training scrapers + 3rd-party
-// SEO-analytics crawlers. Blocking these does NOT affect Google/Bing rankings.
-const BLOCKED_BOTS = [
-  // AI scrapers
+// Crawlers we explicitly welcome: search engines (drive SEO) plus AI and
+// SEO-analytics bots. All crawl freely, minus private routes.
+const ALLOWED_BOTS = [
+  // Search engines
+  "Googlebot",
+  "Bingbot",
+  "DuckDuckBot",
+  "Applebot",
+  // AI crawlers
   "GPTBot",
   "OAI-SearchBot",
   "ChatGPT-User",
@@ -40,16 +42,11 @@ const BLOCKED_BOTS = [
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: [
-      // Major search engines: crawl freely (minus private routes).
+      // Welcomed crawlers (search + AI + SEO): crawl freely, minus private routes.
       {
-        userAgent: SEARCH_ENGINES,
+        userAgent: ALLOWED_BOTS,
         allow: "/",
         disallow: ["/api/", "/admin/"],
-      },
-      // Junk bots: fully disallowed to conserve bandwidth.
-      {
-        userAgent: BLOCKED_BOTS,
-        disallow: "/",
       },
       // Everyone else: allowed but throttled to one page every 10s.
       {

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Mail, Phone, MessageCircle, Clock } from "lucide-react";
+import { Mail, MapPin, Phone, MessageCircle, Clock } from "lucide-react";
 import { pageMetadata } from "@/lib/page-seo";
 import { JsonLd } from "@/components/seo/json-ld";
 import { breadcrumbSchema } from "@/lib/jsonld";
@@ -8,16 +8,29 @@ import { Container } from "@/components/common/container";
 import { Card } from "@/components/ui/card";
 import { LeadForm } from "@/components/forms/lead-form";
 import { SOCIAL_ICON_MAP } from "@/components/common/social-icons";
-import { SITE, SOCIAL_LINKS } from "@/constants/site";
+import { SITE, LOCATION, HAS_ADDRESS, SOCIAL_LINKS } from "@/constants/site";
 
 export async function generateMetadata(): Promise<Metadata> {
   return pageMetadata("/contact", {
-    title: "Contact Us",
+    title: "Contact Our SAP Training Institute in Pune",
     description:
-      "Talk to a Techvaa SAP advisor about courses, batch schedules and placements. We respond within one business day.",
-    keywords: ["contact Techvaa", "SAP training enquiry"],
+      "Talk to a Techvaa SAP advisor in Pune about courses, batch schedules and placements. We respond within one business day.",
+    keywords: ["contact Techvaa", "SAP training Pune", "SAP institute Pune contact"],
   });
 }
+
+/** Full street line when configured, else the city/region we can state today. */
+const addressLine = HAS_ADDRESS
+  ? [
+      LOCATION.address.street,
+      LOCATION.address.locality,
+      LOCATION.city,
+      LOCATION.region,
+      LOCATION.address.postalCode,
+    ]
+      .filter(Boolean)
+      .join(", ")
+  : `${LOCATION.city}, ${LOCATION.region}, ${LOCATION.country}`;
 
 export default function ContactPage() {
   return (
@@ -99,7 +112,26 @@ export default function ContactPage() {
                 </span>
                 <div>
                   <p className="text-sm font-semibold text-foreground">Hours</p>
-                  <p className="text-sm text-muted-foreground">Mon–Sat, 9 AM – 8 PM</p>
+                  <p className="text-sm text-muted-foreground">{LOCATION.hours.display}</p>
+                </div>
+              </li>
+              <li className="flex items-start gap-4">
+                <span className="grid size-11 shrink-0 place-items-center rounded-xl bg-brand/10 text-brand">
+                  <MapPin className="size-5" aria-hidden="true" />
+                </span>
+                <div>
+                  <p className="text-sm font-semibold text-foreground">Address</p>
+                  <p className="text-sm text-muted-foreground">{addressLine}</p>
+                  {LOCATION.mapLink && (
+                    <a
+                      href={LOCATION.mapLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-sm font-medium text-brand hover:underline"
+                    >
+                      Get directions
+                    </a>
+                  )}
                 </div>
               </li>
             </ul>
@@ -140,6 +172,28 @@ export default function ContactPage() {
             </div>
           </Card>
         </div>
+
+        {/* Google Map — renders only once a real embed URL is configured in
+            LOCATION.mapEmbedUrl (see src/constants/site.ts). */}
+        {LOCATION.mapEmbedUrl && (
+          <div className="mt-12">
+            <h2 className="font-heading text-2xl font-bold text-foreground">
+              Find us in {LOCATION.city}
+            </h2>
+            <div className="mt-4 overflow-hidden rounded-2xl border">
+              <iframe
+                src={LOCATION.mapEmbedUrl}
+                title={`Techvaa SAP training institute location in ${LOCATION.city}`}
+                width="100%"
+                height="420"
+                style={{ border: 0 }}
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                allowFullScreen
+              />
+            </div>
+          </div>
+        )}
       </Container>
     </>
   );

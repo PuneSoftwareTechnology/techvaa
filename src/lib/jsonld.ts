@@ -1,4 +1,4 @@
-import { SITE, SOCIAL_LINKS } from "@/constants/site";
+import { SITE, SOCIAL_LINKS, LOCATION } from "@/constants/site";
 import { absoluteUrl } from "./seo";
 import { htmlToPlainText } from "./sanitize";
 import type {
@@ -8,6 +8,31 @@ import type {
   RatingSummary,
   ReviewDTO,
 } from "@/types";
+
+/**
+ * schema.org PostalAddress for the business. City / region / country are always
+ * present (true today); street + postcode are added only once configured in
+ * `LOCATION.address` so we never publish a placeholder NAP.
+ */
+function postalAddress() {
+  const { address, city, region, regionCode, countryCode } = LOCATION;
+  return {
+    "@type": "PostalAddress",
+    addressLocality: address.locality || city,
+    addressRegion: regionCode || region,
+    addressCountry: countryCode,
+    ...(address.street ? { streetAddress: address.street } : {}),
+    ...(address.postalCode ? { postalCode: address.postalCode } : {}),
+  };
+}
+
+/** Pune + the localities we serve, as schema.org areaServed entries. */
+function areaServed() {
+  return [LOCATION.city, ...LOCATION.localities].map((name) => ({
+    "@type": "City",
+    name,
+  }));
+}
 
 export function organizationSchema() {
   return {
@@ -21,6 +46,8 @@ export function organizationSchema() {
     email: SITE.email,
     telephone: SITE.phone,
     foundingDate: String(SITE.foundingYear),
+    address: postalAddress(),
+    areaServed: areaServed(),
     sameAs: SOCIAL_LINKS.map((s) => s.href),
   };
 }
@@ -36,6 +63,19 @@ export function localBusinessSchema(rating?: RatingSummary) {
     email: SITE.email,
     telephone: SITE.phone,
     priceRange: "$$",
+    address: postalAddress(),
+    areaServed: areaServed(),
+    openingHours: LOCATION.hours.schema,
+    ...(LOCATION.geo
+      ? {
+          geo: {
+            "@type": "GeoCoordinates",
+            latitude: LOCATION.geo.lat,
+            longitude: LOCATION.geo.lng,
+          },
+        }
+      : {}),
+    ...(LOCATION.mapLink ? { hasMap: LOCATION.mapLink } : {}),
     ...(rating && rating.count > 0
       ? {
           aggregateRating: {

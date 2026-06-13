@@ -1,9 +1,15 @@
 import Link from "next/link";
-import { Mail, Phone } from "lucide-react";
+import { Mail, MapPin, Phone } from "lucide-react";
 import { Container } from "@/components/common/container";
 import { Logo } from "@/components/common/logo";
 import { SOCIAL_ICON_MAP } from "@/components/common/social-icons";
-import { SITE, FOOTER_LINKS, SOCIAL_LINKS } from "@/constants/site";
+import {
+  SITE,
+  LOCATION,
+  HAS_ADDRESS,
+  FOOTER_LINKS,
+  SOCIAL_LINKS,
+} from "@/constants/site";
 
 export function Footer() {
   const year = 2026; // server-rendered; avoids hydration drift from Date.now()
@@ -29,7 +35,46 @@ export function Footer() {
               >
                 <Phone className="size-4" aria-hidden="true" /> {SITE.phone}
               </a>
+              <p className="flex items-start gap-2">
+                <MapPin
+                  className="mt-0.5 size-4 shrink-0"
+                  aria-hidden="true"
+                />
+                <span>
+                  {HAS_ADDRESS && (
+                    <>
+                      {LOCATION.address.street}
+                      <br />
+                    </>
+                  )}
+                  {[
+                    HAS_ADDRESS ? LOCATION.address.locality : null,
+                    LOCATION.city,
+                    LOCATION.region,
+                    HAS_ADDRESS ? LOCATION.address.postalCode : null,
+                  ]
+                    .filter(Boolean)
+                    .join(", ")}
+                  {LOCATION.mapLink && (
+                    <>
+                      {" · "}
+                      <a
+                        href={LOCATION.mapLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="underline hover:text-white"
+                      >
+                        Get directions
+                      </a>
+                    </>
+                  )}
+                </span>
+              </p>
             </div>
+            <p className="mt-4 text-xs leading-relaxed text-white/55">
+              SAP training in {LOCATION.city} — serving{" "}
+              {LOCATION.localities.join(", ")}.
+            </p>
           </div>
 
           <div className="grid grid-cols-2 gap-10 md:contents">

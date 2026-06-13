@@ -20,10 +20,17 @@ export const revalidate = 3600;
 
 export async function generateMetadata(): Promise<Metadata> {
   return pageMetadata("/", {
-    title: "Techvaa — #1 SAP Training Institute in India",
+    title: "SAP Training Institute in Pune",
     description:
-      "Master SAP with India's leading institute. Live S/4HANA labs, expert trainers and 100% placement assistance.",
-    keywords: ["SAP training", "SAP course", "S/4HANA", "SAP institute"],
+      "Techvaa is Pune's leading SAP training institute — live S/4HANA labs, SAP-certified trainers and 100% placement support. SAP FICO, MM, ABAP & S/4HANA courses in Pune.",
+    keywords: [
+      "SAP training in Pune",
+      "SAP course in Pune",
+      "SAP institute Pune",
+      "SAP FICO course Pune",
+      "S/4HANA training Pune",
+      "SAP classes Pune",
+    ],
   });
 }
 

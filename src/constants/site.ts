@@ -9,7 +9,7 @@ export const SITE = {
   legalName: "Techvaa SAP Academy",
   tagline: "Your Training Partner in Technology and Automation",
   description:
-    "Techvaa is a premier SAP training institute offering job-oriented SAP S/4HANA, FICO, MM, ABAP and SuccessFactors courses with real-time projects and 100% placement support.",
+    "Techvaa is a premier SAP training institute in Pune offering job-oriented SAP S/4HANA, FICO, MM, ABAP and SuccessFactors courses with real-time projects and 100% placement support.",
 
   // Used for absolute URLs (canonical, OG, sitemap). Override via env in prod.
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://techvaa.com",
@@ -18,9 +18,70 @@ export const SITE = {
   // Display format; tel:/wa.me links strip non-digits at the call site.
   phone: "+91 91755 99880",
   whatsapp: "+91 91755 99880",
-  // No public street address yet — the footer/contact page omit one by design.
   foundingYear: 2018,
 } as const;
+
+/**
+ * Local-SEO geography. Techvaa operates from Pune, Maharashtra. The city /
+ * region / area-served signals below are always emitted (they're true today).
+ *
+ * The street address, geo-coordinates and Google Map go live the MOMENT the
+ * real values are filled in here — the footer postal block, the contact-page
+ * map and the PostalAddress/GeoCoordinates JSON-LD all render conditionally on
+ * these fields being non-empty. Do NOT invent a street address: an inconsistent
+ * NAP (name/address/phone) actively hurts local ranking.
+ *
+ * To finish setup, fill in:
+ *   - address.street / address.locality / address.postalCode
+ *   - geo (right-click the pin in Google Maps → the lat,lng is copied)
+ *   - mapEmbedUrl (Maps → Share → "Embed a map" → copy the src="" URL)
+ *   - mapLink     (Maps → Share → "Send a link" → the short maps URL)
+ */
+type SiteLocation = {
+  city: string;
+  region: string;
+  regionCode: string;
+  country: string;
+  countryCode: string;
+  /** Localities Techvaa serves — fuels footer copy, schema areaServed and (later) location landing pages. */
+  localities: readonly string[];
+  address: { street: string; locality: string; postalCode: string };
+  geo: { lat: number; lng: number } | null;
+  /** Google Maps iframe `src` URL. Empty until provided → map block stays hidden. */
+  mapEmbedUrl: string;
+  /** Public Google Maps share link for the "Get directions" CTA. */
+  mapLink: string;
+  /** Human display + schema.org openingHours value (e.g. "Mo-Sa 09:00-20:00"). */
+  hours: { display: string; schema: string };
+};
+
+export const LOCATION: SiteLocation = {
+  city: "Pune",
+  region: "Maharashtra",
+  regionCode: "MH",
+  country: "India",
+  countryCode: "IN",
+  localities: [
+    "Hinjewadi",
+    "Wakad",
+    "Baner",
+    "Kharadi",
+    "Aundh",
+    "Pimpri-Chinchwad",
+  ],
+  // TODO: fill in the real office address (see block comment above).
+  address: { street: "", locality: "", postalCode: "" },
+  // TODO: { lat: 18.xxxx, lng: 73.xxxx }
+  geo: null,
+  // TODO: paste the Google Maps embed src URL.
+  mapEmbedUrl: "",
+  // TODO: paste the Google Maps share link.
+  mapLink: "",
+  hours: { display: "Mon–Sat, 9 AM – 8 PM", schema: "Mo-Sa 09:00-20:00" },
+};
+
+/** True once a real street address has been configured. */
+export const HAS_ADDRESS = LOCATION.address.street.trim().length > 0;
 
 export type NavItem = {
   label: string;

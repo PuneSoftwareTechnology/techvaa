@@ -5,9 +5,11 @@ import { motion, useReducedMotion } from "framer-motion";
 import { ArrowRight, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/common/container";
+import { MapPin } from "lucide-react";
 import { HeroBackground } from "@/components/common/hero-background";
 import { Shimmer } from "@/components/common/shimmer";
 import { HERO_HIGHLIGHTS } from "@/constants/home";
+import { LOCATION } from "@/constants/site";
 
 export function Hero() {
   const reduce = useReducedMotion();
@@ -30,6 +32,14 @@ export function Hero() {
 
       <Container className="relative grid items-center gap-12 py-20 lg:grid-cols-2 lg:py-28">
         <div>
+          <motion.p
+            {...fade(0)}
+            className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-white/90 ring-1 ring-white/15"
+          >
+            <MapPin className="size-3.5 text-accent-orange" aria-hidden="true" />
+            SAP Training Institute in {LOCATION.city}
+          </motion.p>
+
           <motion.h1
             {...fade(0.08)}
             className="mt-5 text-balance font-heading text-4xl font-extrabold leading-[1.05] tracking-tight sm:text-5xl lg:text-6xl"
@@ -42,8 +52,8 @@ export function Hero() {
             {...fade(0.16)}
             className="mt-5 max-w-xl text-pretty text-lg text-white/80"
           >
-            Comprehensive SAP training with real-time Projects and 100%
-            placement support.
+            Comprehensive SAP training in {LOCATION.city} with real-time Projects
+            and 100% placement support.
           </motion.p>
 
           <motion.div {...fade(0.24)} className="mt-8 flex flex-wrap gap-3">

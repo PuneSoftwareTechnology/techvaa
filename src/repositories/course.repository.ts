@@ -5,12 +5,24 @@ import type { BatchScheduleRow, CourseDTO } from "@/types";
 
 const PUBLISHED = { isPublished: true, deletedAt: null } as const;
 
+// Fields the course CARD renders. List queries select only these so the heavy
+// `description` (rich HTML) and the unused `seo` relation never leave the DB.
+const CARD_SELECT = {
+  id: true,
+  title: true,
+  slug: true,
+  shortDescription: true,
+  image: true,
+  isFeatured: true,
+  createdAt: true,
+} as const;
+
 export const courseRepository = {
   async findPublished(): Promise<CourseDTO[]> {
     const rows = await prisma.course.findMany({
       where: PUBLISHED,
       orderBy: [{ isFeatured: "desc" }, { createdAt: "desc" }],
-      include: { seo: true },
+      select: CARD_SELECT,
     });
     return rows.map(toCourseDTO);
   },
@@ -20,7 +32,7 @@ export const courseRepository = {
       where: { ...PUBLISHED, isFeatured: true },
       orderBy: { createdAt: "desc" },
       take: limit,
-      include: { seo: true },
+      select: CARD_SELECT,
     });
     return rows.map(toCourseDTO);
   },

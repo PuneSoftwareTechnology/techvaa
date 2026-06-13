@@ -79,7 +79,8 @@ export function toCourseDTO(c: any): CourseDTO {
     title: c.title,
     slug: c.slug,
     shortDescription: c.shortDescription ?? null,
-    description: c.description,
+    // List queries omit the heavy `description`; default so the DTO stays valid.
+    description: c.description ?? "",
     duration: c.duration ?? null,
     image: c.image ?? null,
     isFeatured: c.isFeatured,

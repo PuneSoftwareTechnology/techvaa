@@ -108,8 +108,6 @@ export default async function BlogDetailPage({
       <PageHero
         eyebrow="Blog"
         title={blog.title}
-        image={blog.featuredImage}
-        imageAlt={blog.title}
         breadcrumbs={[
           { name: "Home", href: "/" },
           { name: "Blog", href: "/blog" },

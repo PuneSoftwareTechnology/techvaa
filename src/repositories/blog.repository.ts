@@ -5,13 +5,27 @@ import type { BlogDTO } from "@/types";
 
 const PUBLISHED = { isPublished: true, deletedAt: null } as const;
 
+// Fields the blog CARD renders. List queries select only these so the heavy
+// body sections (primary/secondary/tertiary text, conclusion) and the unused
+// `seo` relation never leave the DB. `introduction` stays as the excerpt
+// fallback when a post has no metaDescription.
+const CARD_SELECT = {
+  id: true,
+  title: true,
+  slug: true,
+  metaDescription: true,
+  featuredImage: true,
+  introduction: true,
+  publishedAt: true,
+} as const;
+
 export const blogRepository = {
   async findPublished(opts?: { take?: number }): Promise<BlogDTO[]> {
     const rows = await prisma.blog.findMany({
       where: PUBLISHED,
       orderBy: { publishedAt: "desc" },
       take: opts?.take,
-      include: { seo: true },
+      select: CARD_SELECT,
     });
     return rows.map(toBlogDTO);
   },

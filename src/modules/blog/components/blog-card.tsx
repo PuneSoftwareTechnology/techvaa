@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
@@ -23,23 +22,6 @@ export function BlogCard({
         className
       )}
     >
-      <div className="relative aspect-[16/9] overflow-hidden bg-brand">
-        {blog.featuredImage ? (
-          <Image
-            src={blog.featuredImage}
-            alt={blog.title}
-            fill
-            sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-            className="object-cover transition-transform duration-300 group-hover:scale-105"
-          />
-        ) : (
-          <div
-            aria-hidden="true"
-            className="absolute inset-0 bg-[radial-gradient(120%_120%_at_100%_0%,oklch(0.46_0.11_258),oklch(0.26_0.07_258))]"
-          />
-        )}
-      </div>
-
       <div className="flex flex-1 flex-col p-5">
         <h3
           className={cn(

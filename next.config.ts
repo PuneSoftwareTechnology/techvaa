@@ -35,13 +35,30 @@ const nextConfig: NextConfig = {
       { protocol: "https", hostname: "picsum.photos" },
     ],
     deviceSizes: [360, 640, 768, 1024, 1280, 1536, 1920],
+    // Cache optimized images for 30 days so re-crawls / repeat visits don't
+    // re-trigger optimization (each re-optimization re-fetches the source).
+    minimumCacheTTL: 2592000,
   },
 
   // Keep server-only DB packages out of the client bundle.
   serverExternalPackages: ["@prisma/client", "@prisma/adapter-pg", "pg"],
 
   async headers() {
-    return [{ source: "/:path*", headers: securityHeaders }];
+    return [
+      { source: "/:path*", headers: securityHeaders },
+      // Static media is content-hashed or rarely changes — cache hard so
+      // repeat visitors and bot re-crawls don't re-download it (saves transfer).
+      {
+        source:
+          "/:all*(svg|png|jpg|jpeg|gif|webp|avif|ico|woff|woff2|ttf|otf)",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
+          },
+        ],
+      },
+    ];
   },
 };
 

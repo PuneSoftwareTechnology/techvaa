@@ -69,8 +69,11 @@ export const LOCATION: SiteLocation = {
     "Aundh",
     "Pimpri-Chinchwad",
   ],
-  // TODO: fill in the real office address (see block comment above).
-  address: { street: "", locality: "", postalCode: "" },
+  address: {
+    street: "Royal Tranquil, near Kokane Chowk, Deepmala Society",
+    locality: "Pimple Saudagar, Pimpri-Chinchwad",
+    postalCode: "411017",
+  },
   // TODO: { lat: 18.xxxx, lng: 73.xxxx }
   geo: null,
   // TODO: paste the Google Maps embed src URL.

@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import Image from "next/image";
 import { notFound } from "next/navigation";
-import { CalendarDays } from "lucide-react";
+import { CalendarDays, Clock } from "lucide-react";
 import type { BlogContentBlockDTO } from "@/types";
 import { blogService } from "@/services/blog.service";
 import { buildMetadata } from "@/lib/seo";
@@ -72,7 +71,7 @@ export async function generateMetadata({
       seo?.metaDescription ??
       blog.metaDescription ??
       htmlToPlainText(blog.introduction).slice(0, 160),
-    path: `/blog/${blog.slug}`,
+    path: `/blogs/${blog.slug}`,
     canonical: seo?.canonicalUrl,
     image: seo?.ogImage ?? blog.featuredImage,
     keywords: seo?.keywords,
@@ -92,6 +91,32 @@ export default async function BlogDetailPage({
 
   const related = await blogService.getRelated(blog.slug);
 
+  // Short summary shown under the hero title.
+  const excerpt =
+    blog.metaDescription ?? htmlToPlainText(blog.introduction).slice(0, 180);
+
+  // Rough read time from the full article body (~200 words/min).
+  const bodyText = [
+    blog.introduction,
+    blog.primary.intro,
+    blog.primary.text,
+    ...blog.primary.points,
+    blog.secondary.intro,
+    blog.secondary.text,
+    ...blog.secondary.points,
+    blog.tertiary.intro,
+    blog.tertiary.text,
+    ...blog.tertiary.points,
+    blog.conclusion,
+  ]
+    .filter(Boolean)
+    .map((html) => htmlToPlainText(html as string))
+    .join(" ");
+  const wordCount = bodyText.trim().split(/\s+/).filter(Boolean).length;
+  const readMinutes = Math.max(1, Math.round(wordCount / 200));
+
+  const tags = (blog.seo?.keywords ?? []).slice(0, 4);
+
   return (
     <>
       <JsonLd
@@ -99,8 +124,8 @@ export default async function BlogDetailPage({
           articleSchema(blog),
           breadcrumbSchema([
             { name: "Home", path: "/" },
-            { name: "Blog", path: "/blog" },
-            { name: blog.title, path: `/blog/${blog.slug}` },
+            { name: "Blog", path: "/blogs" },
+            { name: blog.title, path: `/blogs/${blog.slug}` },
           ]),
         ]}
       />
@@ -108,20 +133,39 @@ export default async function BlogDetailPage({
       <PageHero
         eyebrow="Blog"
         title={blog.title}
+        description={excerpt}
+        image={blog.featuredImage}
+        imageAlt={blog.title}
         breadcrumbs={[
           { name: "Home", href: "/" },
-          { name: "Blog", href: "/blog" },
-          { name: blog.title, href: `/blog/${blog.slug}` },
+          { name: "Blog", href: "/blogs" },
+          { name: blog.title, href: `/blogs/${blog.slug}` },
         ]}
       >
-        <div className="flex flex-wrap items-center gap-3 text-sm text-white/80">
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-white/80">
           {blog.publishedAt && (
-            <span className="inline-flex items-center gap-1">
+            <span className="inline-flex items-center gap-1.5">
               <CalendarDays className="size-4" aria-hidden="true" />
               {formatDate(blog.publishedAt)}
             </span>
           )}
+          <span className="inline-flex items-center gap-1.5">
+            <Clock className="size-4" aria-hidden="true" />
+            {readMinutes} min read
+          </span>
         </div>
+        {tags.length > 0 && (
+          <div className="mt-4 flex flex-wrap gap-2">
+            {tags.map((tag) => (
+              <span
+                key={tag}
+                className="rounded-full border border-white/15 bg-white/5 px-3 py-1 text-xs font-medium text-white/85 backdrop-blur-sm"
+              >
+                {tag}
+              </span>
+            ))}
+          </div>
+        )}
       </PageHero>
 
       <Container className="py-14">
@@ -156,15 +200,6 @@ export default async function BlogDetailPage({
                     href={`/courses/${course.slug}`}
                     className="flex items-center gap-4 rounded-xl border bg-secondary/40 p-5 transition-colors hover:bg-secondary/60"
                   >
-                    {course.image && (
-                      <Image
-                        src={course.image}
-                        alt={course.title}
-                        width={80}
-                        height={80}
-                        className="size-20 shrink-0 rounded-lg object-cover"
-                      />
-                    )}
                     <p className="font-semibold text-foreground">{course.title}</p>
                   </Link>
                 ))}

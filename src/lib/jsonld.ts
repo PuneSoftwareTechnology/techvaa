@@ -200,7 +200,7 @@ export function articleSchema(blog: BlogDTO) {
     description: blog.metaDescription ?? htmlToPlainText(blog.introduction),
     image: blog.featuredImage ? absoluteUrl(blog.featuredImage) : undefined,
     datePublished: blog.publishedAt ?? undefined,
-    url: absoluteUrl(`/blog/${blog.slug}`),
+    url: absoluteUrl(`/blogs/${blog.slug}`),
     author: { "@type": "Organization", name: SITE.name },
     publisher: {
       "@type": "Organization",

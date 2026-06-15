@@ -72,6 +72,15 @@ const nextConfig: NextConfig = {
   // Keep server-only DB packages out of the client bundle.
   serverExternalPackages: ["@prisma/client", "@prisma/adapter-pg", "pg"],
 
+  // The blog section moved from /blog to /blogs. Permanently redirect the old
+  // URLs so existing links, bookmarks and indexed pages keep working.
+  async redirects() {
+    return [
+      { source: "/blog", destination: "/blogs", permanent: true },
+      { source: "/blog/:slug", destination: "/blogs/:slug", permanent: true },
+    ];
+  },
+
   async headers() {
     return [
       { source: "/:path*", headers: securityHeaders },

@@ -42,7 +42,7 @@ export function BatchSchedule({
   if (rows.length === 0) return null;
 
   return (
-    <section aria-labelledby="batches-title" className="bg-secondary/40 py-20">
+    <section aria-labelledby="batches-title" className="bg-secondary/40 py-14 sm:py-20">
       <Container>
         <SectionHeader
           as="h2"
@@ -51,7 +51,7 @@ export function BatchSchedule({
           description={description}
         />
 
-        <Reveal className="mt-12 overflow-hidden rounded-2xl border bg-card shadow-sm">
+        <Reveal className="mt-8 overflow-hidden rounded-2xl border bg-card shadow-sm sm:mt-12">
           {/* Desktop table */}
           <table className="hidden w-full text-left md:table">
             <thead className="bg-brand text-brand-foreground">
@@ -131,7 +131,7 @@ export function BatchSchedule({
                     {b.status}
                   </Badge>
                 </div>
-                <dl className="mt-3 grid grid-cols-2 gap-x-4 gap-y-3 text-sm">
+                <dl className="mt-3 grid grid-cols-3 gap-x-3 text-sm">
                   <div>
                     <dt className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
                       Mode
@@ -148,7 +148,7 @@ export function BatchSchedule({
                       {formatDate(b.startDate)}
                     </dd>
                   </div>
-                  <div className="col-span-2">
+                  <div>
                     <dt className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
                       Duration
                     </dt>

@@ -17,11 +17,14 @@ export const leadSchema = z.object({
     .min(7, "Please enter your phone number")
     .max(20, "Phone number is too long")
     .regex(/^[+()\d\s-]+$/, "Enter a valid phone number"),
+  // Optional — the UI shows no required marker, so requiring it here silently
+  // blocked submissions with an error users couldn't see. Matches courseEnquiry.
   message: z
     .string()
     .trim()
-    .min(1, "Please enter your message")
-    .max(1000, "Message is too long"),
+    .max(1000, "Message is too long")
+    .optional()
+    .or(z.literal("")),
   courseInterest: z.string().trim().max(120).optional().or(z.literal("")),
   // Honeypot. Humans never see it; bots fill every field. We do NOT reject a
   // filled value here — that would block a real user whose browser/password

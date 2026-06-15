@@ -72,7 +72,8 @@ export async function submitCourseEnquiry(
       status: "success",
       message: "Thanks! Our team will call you about this batch within one business day.",
     };
-  } catch {
+  } catch (error) {
+    console.error("[submit-course-enquiry] failed to persist enquiry:", error);
     return {
       status: "error",
       message: "Something went wrong. Please try again or email us directly.",

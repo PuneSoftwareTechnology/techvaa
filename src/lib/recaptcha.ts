@@ -35,7 +35,14 @@ export async function verifyRecaptcha(
   // Not configured → don't block submissions.
   if (!secret) return { ok: true, reason: "skipped: no secret configured" };
 
-  if (!token) return { ok: false, reason: "missing token" };
+  // No token from the client (script blocked, not yet loaded, or the site key
+  // isn't registered for this domain). FAIL OPEN: a missing token must never
+  // cost us a real lead — the honeypot still guards against simple bots. We log
+  // it so a misconfigured site key is still visible in server logs.
+  if (!token) {
+    console.warn("[recaptcha] missing token — allowing submission (failing open)");
+    return { ok: true, reason: "missing token — failing open" };
+  }
 
   try {
     const res = await fetch(VERIFY_URL, {

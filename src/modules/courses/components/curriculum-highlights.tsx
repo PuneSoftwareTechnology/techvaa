@@ -9,19 +9,30 @@ import type { CurriculumItemDTO } from "@/types";
 /** Rotating accents so each curriculum card reads as its own colored module. */
 const CARD_ACCENTS = [
   { badge: "bg-brand/10 text-brand", bar: "before:bg-brand" },
-  { badge: "bg-accent-orange/10 text-accent-orange", bar: "before:bg-accent-orange" },
+  {
+    badge: "bg-accent-orange/10 text-accent-orange",
+    bar: "before:bg-accent-orange",
+  },
   { badge: "bg-emerald-500/10 text-emerald-600", bar: "before:bg-emerald-500" },
   { badge: "bg-violet-500/10 text-violet-600", bar: "before:bg-violet-500" },
   { badge: "bg-sky-500/10 text-sky-600", bar: "before:bg-sky-500" },
   { badge: "bg-rose-500/10 text-rose-600", bar: "before:bg-rose-500" },
 ];
 
-export function CurriculumHighlights({ items }: { items?: CurriculumItemDTO[] }) {
+export function CurriculumHighlights({
+  items,
+}: {
+  items?: CurriculumItemDTO[];
+}) {
   // Prefer the course's own Key Curriculum; fall back to editorial defaults so
   // the section never renders empty for a course that has none authored yet.
   const highlights =
     items && items.length > 0
-      ? items.map((i) => ({ key: i.id, title: i.heading, description: i.description }))
+      ? items.map((i) => ({
+          key: i.id,
+          title: i.heading,
+          description: i.description,
+        }))
       : CURRICULUM_HIGHLIGHTS.map((h) => ({
           key: h.title,
           title: h.title,
@@ -31,7 +42,7 @@ export function CurriculumHighlights({ items }: { items?: CurriculumItemDTO[] })
   return (
     <section
       aria-labelledby="curriculum-title"
-      className="relative overflow-hidden bg-gradient-to-b from-secondary/40 to-background py-14"
+      className="relative overflow-hidden bg-gradient-to-b from-secondary/40 to-background py-10 sm:py-14"
     >
       <Container>
         <SectionHeader
@@ -40,30 +51,34 @@ export function CurriculumHighlights({ items }: { items?: CurriculumItemDTO[] })
           title="Key curriculum highlights"
           gradient
         />
-        <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-8 grid gap-4 sm:mt-12 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3">
           {highlights.map((item, i) => {
             const accent = CARD_ACCENTS[i % CARD_ACCENTS.length];
             return (
               <Reveal as="div" index={i % 3} key={item.key}>
                 <Card
                   className={cn(
-                    "relative h-full p-6 pl-7 transition-all duration-200 hover:-translate-y-1 hover:ring-foreground/20",
-                    "before:absolute before:inset-y-4 before:left-0 before:w-1 before:rounded-full",
+                    "relative flex h-full gap-3 p-4 pl-5 transition-all duration-200 hover:-translate-y-1 hover:ring-foreground/20 sm:block sm:gap-0 sm:p-6 sm:pl-7",
+                    "before:absolute before:inset-y-3 before:left-0 before:w-1 before:rounded-full sm:before:inset-y-4",
                     accent.bar,
                   )}
                 >
                   <div
                     className={cn(
-                      "mb-3 grid size-10 place-items-center rounded-lg font-bold",
+                      "grid size-9 shrink-0 place-items-center rounded-lg text-sm font-bold sm:mb-3 sm:size-10 sm:text-base",
                       accent.badge,
                     )}
                   >
                     {String(i + 1).padStart(2, "0")}
                   </div>
-                  <h3 className="font-heading text-base font-semibold text-foreground">
-                    {item.title}
-                  </h3>
-                  <p className="mt-2 text-sm text-muted-foreground">{item.description}</p>
+                  <div>
+                    <h3 className="font-heading text-base font-semibold text-foreground">
+                      {item.title}
+                    </h3>
+                    <p className="mt-1 text-sm text-muted-foreground sm:mt-2">
+                      {item.description}
+                    </p>
+                  </div>
                 </Card>
               </Reveal>
             );

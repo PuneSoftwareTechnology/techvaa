@@ -12,7 +12,7 @@ import { BlogCard } from "@/modules/blog/components/blog-card";
 export const revalidate = 3600;
 
 export async function generateMetadata(): Promise<Metadata> {
-  return pageMetadata("/blog", {
+  return pageMetadata("/blogs", {
     title: "SAP Insights Hub — Blog",
     description:
       "Expert articles, tutorials and career guidance across SAP S/4HANA, FICO, MM, ABAP, BTP and SuccessFactors from the Techvaa team.",
@@ -31,7 +31,7 @@ export default async function BlogPage() {
       <JsonLd
         data={breadcrumbSchema([
           { name: "Home", path: "/" },
-          { name: "Blog", path: "/blog" },
+          { name: "Blog", path: "/blogs" },
         ])}
       />
 
@@ -41,7 +41,7 @@ export default async function BlogPage() {
         description="Comprehensive articles, expert analysis and the latest trends across all SAP modules."
         breadcrumbs={[
           { name: "Home", href: "/" },
-          { name: "Blog", href: "/blog" },
+          { name: "Blog", href: "/blogs" },
         ]}
       />
 

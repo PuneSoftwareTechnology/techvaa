@@ -73,7 +73,8 @@ export async function submitLead(
       status: "success",
       message: "Thanks! Our team will reach out within one business day.",
     };
-  } catch {
+  } catch (error) {
+    console.error("[submit-lead] failed to persist lead:", error);
     return {
       status: "error",
       message: "Something went wrong. Please try again or email us directly.",

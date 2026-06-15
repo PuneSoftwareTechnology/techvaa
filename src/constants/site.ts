@@ -93,7 +93,7 @@ export const NAV_ITEMS: readonly NavItem[] = [
   { label: "Home", href: "/" },
   { label: "Courses", href: "/courses" },
   { label: "Placement Services", href: "/placements" },
-  { label: "Blog", href: "/blog" },
+  { label: "Blog", href: "/blogs" },
   { label: "Reviews", href: "/reviews" },
 ] as const;
 
@@ -102,7 +102,7 @@ export const PRIMARY_CTA = { label: "Enroll Now", href: "/courses" } as const;
 /** Footer link columns. */
 export const FOOTER_LINKS = {
   company: [
-    { label: "Blog", href: "/blog" },
+    { label: "Blog", href: "/blogs" },
     { label: "Reviews", href: "/reviews" },
     { label: "Contact", href: "/contact" },
   ],

@@ -27,11 +27,28 @@ export function PageHero({
 }) {
   return (
     <section className="relative overflow-hidden bg-brand text-brand-foreground">
+      {/* Mobile / tablet: the featured image becomes a full-bleed backdrop
+          behind the hero text, dimmed with the brand navy so the copy stays
+          legible — the same text-on-background treatment as the home hero.
+          On desktop this is hidden and the image shows as a card on the right
+          (below) instead. Rendered first so the decorative grid/bubbles below
+          layer on top of the photo. */}
+      {image && (
+        <div aria-hidden="true" className="absolute inset-0 lg:hidden">
+          <Image src={image} alt="" fill priority sizes="100vw" className="object-cover" />
+          <div className="absolute inset-0 bg-gradient-to-b from-brand/85 via-brand/70 to-brand/90" />
+        </div>
+      )}
+
+      {/* Decorative grid lines, glows and floating circles — layered over the
+          navy section background (desktop) and over the mobile featured-image
+          backdrop, matching the home hero. */}
       <HeroBackground />
+
       <Container
         className={
           image
-            ? "relative grid items-center gap-10 py-14 lg:grid-cols-2 lg:py-20"
+            ? "relative grid items-center gap-10 py-14 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] lg:py-20"
             : "relative py-14 lg:py-20"
         }
       >
@@ -73,20 +90,21 @@ export function PageHero({
         {children && <div className="mt-8">{children}</div>}
         </div>
         {image && (
-          <div className="relative">
+          <div className="group relative hidden lg:block">
             {/* soft warm glow so the card lifts off the navy backdrop */}
             <div
               aria-hidden="true"
-              className="absolute -inset-4 rounded-[2rem] bg-accent-orange/20 blur-3xl"
+              className="absolute -inset-6 rounded-[2.5rem] bg-accent-orange/25 blur-3xl transition-opacity duration-500 group-hover:opacity-80"
             />
-            <div className="relative aspect-[16/10] overflow-hidden rounded-2xl border border-white/15 bg-white/5 shadow-2xl ring-1 ring-white/10 backdrop-blur-sm">
+            {/* slight tilt at rest; straightens and lifts on hover */}
+            <div className="relative aspect-[16/10] rotate-[2.5deg] overflow-hidden rounded-2xl border border-white/15 bg-white/5 shadow-2xl ring-1 ring-white/10 backdrop-blur-sm transition-transform duration-500 ease-out group-hover:rotate-0 group-hover:scale-[1.03]">
               <Image
                 src={image}
                 alt={imageAlt ?? title}
                 fill
                 priority
-                sizes="(min-width: 1024px) 50vw, 100vw"
-                className="object-contain p-5"
+                sizes="(min-width: 1024px) 55vw, 100vw"
+                className="object-cover"
               />
             </div>
           </div>

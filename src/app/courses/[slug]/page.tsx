@@ -107,8 +107,6 @@ export default async function CourseDetailPage({
         eyebrow="SAP Certification Bootcamp"
         title={course.title}
         description={course.shortDescription ?? undefined}
-        image={course.image}
-        imageAlt={course.title}
         breadcrumbs={[
           { name: "Home", href: "/" },
           { name: "Courses", href: "/courses" },

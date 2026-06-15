@@ -11,9 +11,13 @@ export function ReviewsList({ reviews }: { reviews: ReviewDTO[] }) {
   }
 
   return (
-    <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+    <div className="gap-4 [column-fill:_balance] columns-2 sm:gap-6 lg:columns-3">
       {reviews.map((r) => (
-        <ReviewCard key={r.id} review={r} />
+        <ReviewCard
+          key={r.id}
+          review={r}
+          className="mb-4 break-inside-avoid sm:mb-6"
+        />
       ))}
     </div>
   );

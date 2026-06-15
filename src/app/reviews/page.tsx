@@ -90,29 +90,29 @@ export default async function ReviewsPage() {
           <h2 id="overview-title" className="sr-only">
             Rating overview
           </h2>
-          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-[1.5fr_1.5fr_1fr_1fr_1fr] lg:items-stretch">
-            <Reveal className="h-full" index={0}>
+          <div className="grid grid-cols-6 gap-3 sm:grid-cols-2 sm:gap-5 lg:grid-cols-[1.5fr_1.5fr_1fr_1fr_1fr] lg:items-stretch">
+            <Reveal className="col-span-3 h-full sm:col-span-1" index={0}>
               <RatingOverview summary={summary} />
             </Reveal>
-            <Reveal className="h-full" index={1}>
+            <Reveal className="col-span-3 h-full sm:col-span-1" index={1}>
               <RatingDistribution summary={summary} />
             </Reveal>
             {REVIEW_STATS.map((s, i) => (
-              <Reveal key={s.label} className="h-full" index={i + 2}>
-                <Card className="relative h-full items-center justify-center gap-3 overflow-hidden p-6 text-center">
+              <Reveal key={s.label} className="col-span-2 h-full sm:col-span-1" index={i + 2}>
+                <Card className="relative h-full items-center justify-center gap-3 overflow-hidden p-4 text-center sm:p-6">
                   <div
                     className="absolute inset-x-0 top-0 h-1.5"
                     style={{ background: s.accent }}
                   />
                   <div
-                    className={`grid size-12 place-items-center rounded-xl ${s.tint}`}
+                    className={`grid size-10 place-items-center rounded-xl sm:size-12 ${s.tint}`}
                   >
-                    <DynamicIcon name={s.icon} className="size-6" />
+                    <DynamicIcon name={s.icon} className="size-5 sm:size-6" />
                   </div>
-                  <p className={`font-heading text-3xl font-extrabold leading-none ${s.text}`}>
+                  <p className={`font-heading text-2xl font-extrabold leading-none sm:text-3xl ${s.text}`}>
                     {s.value}
                   </p>
-                  <p className="text-sm text-muted-foreground">{s.label}</p>
+                  <p className="text-xs text-muted-foreground sm:text-sm">{s.label}</p>
                 </Card>
               </Reveal>
             ))}

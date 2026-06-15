@@ -58,9 +58,11 @@ export function PlacementCard({ placement }: { placement: PlacementDTO }) {
         </div>
       </div>
 
-      <div className="relative mt-4 flex items-center gap-2 text-sm text-foreground">
-        <Briefcase className={`size-4 ${p.icon}`} aria-hidden="true" />
-        Placed at <span className="font-semibold">{placement.company}</span>
+      <div className="relative mt-4 flex items-start gap-2 text-sm text-foreground">
+        <Briefcase className={`mt-0.5 size-4 shrink-0 ${p.icon}`} aria-hidden="true" />
+        <span className="min-w-0">
+          Placed at <span className="font-semibold">{placement.company}</span>
+        </span>
       </div>
     </Card>
   );

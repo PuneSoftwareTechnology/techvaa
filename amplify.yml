@@ -14,6 +14,15 @@ frontend:
         - npx prisma generate
         # Apply pending migrations to the connected database
         - npx prisma migrate deploy
+        # Amplify exposes Console env vars at BUILD time only — its managed
+        # Next.js SSR/compute runtime gets none of them. So server code that
+        # reads process.env at request time (prisma.ts's DATABASE check, the
+        # reCAPTCHA verifier, the revalidate webhook) throws on the live site —
+        # most visibly the dynamic /sitemap.xml route 500s, because prisma.ts
+        # throws "Missing DATABASE" at import. Write the server-side vars into
+        # .env.production so `next build` captures them into the runtime bundle.
+        # (NEXT_PUBLIC_* are inlined at build and don't need this.)
+        - env | grep -E '^(DATABASE|RECAPTCHA_SECRET_KEY|RECAPTCHA_MIN_SCORE|REVALIDATE_SECRET)=' >> .env.production
         - npm run build
   artifacts:
     # Next.js SSR build output

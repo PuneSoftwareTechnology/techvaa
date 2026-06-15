@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { placementService } from "@/services/social-proof.service";
+import { placementService, reviewService } from "@/services/social-proof.service";
 import { pageMetadata } from "@/lib/page-seo";
 import { JsonLd } from "@/components/seo/json-ld";
 import { breadcrumbSchema } from "@/lib/jsonld";
@@ -15,6 +15,7 @@ import { Shimmer } from "@/components/common/shimmer";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { PlacementCard } from "@/modules/placements/components/placement-card";
+import { GoogleRatingBadge } from "@/modules/reviews/components/google-rating-badge";
 import {
   CAREER_TOOLS,
   PLACEMENT_PROCESS,
@@ -39,7 +40,10 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function PlacementsPage() {
-  const placements = await placementService.getTop(12);
+  const [placements, ratingSummary] = await Promise.all([
+    placementService.getTop(12),
+    reviewService.getRatingSummary(),
+  ]);
 
   return (
     <>
@@ -59,12 +63,15 @@ export default async function PlacementsPage() {
           { name: "Placement Services", href: "/placements" },
         ]}
       >
-        <Button asChild variant="accent" size="xl" className="relative overflow-hidden">
-          <Link href="#enquiry-form">
-            <Shimmer />
-            Schedule a Placement Session <ArrowRight aria-hidden="true" />
-          </Link>
-        </Button>
+        <div className="flex flex-col items-start gap-5 sm:flex-row sm:items-center">
+          <Button asChild variant="accent" size="xl" className="relative overflow-hidden">
+            <Link href="#enquiry-form">
+              <Shimmer />
+              Schedule a Placement Session <ArrowRight aria-hidden="true" />
+            </Link>
+          </Button>
+          {ratingSummary.count > 0 && <GoogleRatingBadge summary={ratingSummary} />}
+        </div>
       </PageHero>
 
       {/* Career prep tools */}
@@ -75,7 +82,7 @@ export default async function PlacementsPage() {
             eyebrow="Career Prep Tools"
             title="Everything you need to get hired"
           />
-          <div className="mt-8 grid gap-6 sm:mt-12 md:grid-cols-3">
+          <div className="mt-8 grid grid-cols-2 gap-4 sm:mt-12 sm:gap-6 md:grid-cols-3">
             {CAREER_TOOLS.map((t, i) => (
               <Reveal as="div" index={i} key={t.title}>
                 <Card
@@ -112,7 +119,7 @@ export default async function PlacementsPage() {
               eyebrow="Recent Placements"
               title="Our students, placed"
             />
-            <div className="mt-8 grid gap-6 sm:mt-12 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="mt-8 grid grid-cols-2 gap-4 sm:mt-12 sm:gap-6 lg:grid-cols-4">
               {placements.map((p, i) => (
                 <Reveal as="div" index={i % 4} key={p.id}>
                   <PlacementCard placement={p} />

@@ -15,7 +15,11 @@ export async function generateMetadata(): Promise<Metadata> {
     title: "Contact Our SAP Training Institute in Pune",
     description:
       "Talk to a Techvaa SAP advisor in Pune about courses, batch schedules and placements. We respond within one business day.",
-    keywords: ["contact Techvaa", "SAP training Pune", "SAP institute Pune contact"],
+    keywords: [
+      "contact Techvaa",
+      "SAP training Pune",
+      "SAP institute Pune contact",
+    ],
   });
 }
 
@@ -54,8 +58,8 @@ export default function ContactPage() {
 
       <Container className="py-10 sm:py-16">
         <div className="grid gap-10 lg:grid-cols-[1fr_1.4fr] lg:gap-16">
-          {/* Contact details */}
-          <div>
+          {/* Contact details — shown after the form on mobile, left column on desktop */}
+          <div className="order-2 lg:order-1">
             <h2 className="font-heading text-2xl font-bold text-foreground">
               Get in touch
             </h2>
@@ -71,7 +75,10 @@ export default function ContactPage() {
                 </span>
                 <div>
                   <p className="text-sm font-semibold text-foreground">Email</p>
-                  <a href={`mailto:${SITE.email}`} className="text-sm text-muted-foreground hover:text-brand">
+                  <a
+                    href={`mailto:${SITE.email}`}
+                    className="text-sm text-muted-foreground hover:text-brand"
+                  >
                     {SITE.email}
                   </a>
                 </div>
@@ -95,7 +102,9 @@ export default function ContactPage() {
                   <MessageCircle className="size-5" aria-hidden="true" />
                 </span>
                 <div>
-                  <p className="text-sm font-semibold text-foreground">WhatsApp</p>
+                  <p className="text-sm font-semibold text-foreground">
+                    WhatsApp
+                  </p>
                   <a
                     href={`https://wa.me/${SITE.whatsapp.replace(/\D/g, "")}`}
                     target="_blank"
@@ -112,7 +121,9 @@ export default function ContactPage() {
                 </span>
                 <div>
                   <p className="text-sm font-semibold text-foreground">Hours</p>
-                  <p className="text-sm text-muted-foreground">{LOCATION.hours.display}</p>
+                  <p className="text-sm text-muted-foreground">
+                    {LOCATION.hours.display}
+                  </p>
                 </div>
               </li>
               <li className="flex items-start gap-4">
@@ -120,7 +131,9 @@ export default function ContactPage() {
                   <MapPin className="size-5" aria-hidden="true" />
                 </span>
                 <div>
-                  <p className="text-sm font-semibold text-foreground">Address</p>
+                  <p className="text-sm font-semibold text-foreground">
+                    Address
+                  </p>
                   <p className="text-sm text-muted-foreground">{addressLine}</p>
                   {LOCATION.mapLink && (
                     <a
@@ -140,7 +153,8 @@ export default function ContactPage() {
               <p className="text-sm font-semibold text-foreground">Follow us</p>
               <ul className="mt-3 flex gap-3">
                 {SOCIAL_LINKS.map((s) => {
-                  const Icon = SOCIAL_ICON_MAP[s.icon as keyof typeof SOCIAL_ICON_MAP];
+                  const Icon =
+                    SOCIAL_ICON_MAP[s.icon as keyof typeof SOCIAL_ICON_MAP];
                   return (
                     <li key={s.label}>
                       <a
@@ -159,8 +173,8 @@ export default function ContactPage() {
             </div>
           </div>
 
-          {/* Form */}
-          <Card className="p-6 sm:p-8">
+          {/* Form — shown first on mobile, right column on desktop */}
+          <Card className="order-1 p-6 sm:p-8 lg:order-2">
             <h2 className="font-heading text-xl font-bold text-foreground">
               Send us a message
             </h2>

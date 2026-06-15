@@ -30,7 +30,7 @@ export function Hero() {
     <section className="relative overflow-hidden bg-brand text-brand-foreground">
       <HeroBackground />
 
-      <Container className="relative grid items-center gap-12 py-20 lg:grid-cols-2 lg:py-28">
+      <Container className="relative grid items-center gap-10 py-12 lg:grid-cols-2 lg:gap-12 lg:py-28">
         <div>
           <motion.p
             {...fade(0)}

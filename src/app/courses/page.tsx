@@ -42,7 +42,7 @@ export default async function CoursesPage() {
         description="Choose a track and start learning on live S/4HANA systems with mentors who hire."
       />
 
-      <Container className="py-16">
+      <Container className="py-10 sm:py-16">
         <SectionHeader
           align="left"
           as="h2"

@@ -42,7 +42,7 @@ export function BatchSchedule({
   if (rows.length === 0) return null;
 
   return (
-    <section aria-labelledby="batches-title" className="bg-secondary/40 py-14 sm:py-20">
+    <section aria-labelledby="batches-title" className="bg-secondary/40 py-12 sm:py-20">
       <Container>
         <SectionHeader
           as="h2"

@@ -15,9 +15,8 @@ export const courseEnquirySchema = z.object({
   phone: z
     .string()
     .trim()
-    .min(7, "Please enter your phone number")
-    .max(20, "Phone number is too long")
-    .regex(/^[+()\d\s-]+$/, "Enter a valid phone number"),
+    .min(1, "Please enter your phone number")
+    .regex(/^\d{10}$/, "Enter a valid 10-digit phone number"),
   course: z
     .string()
     .trim()

@@ -52,7 +52,7 @@ export default function ContactPage() {
         ]}
       />
 
-      <Container className="py-16">
+      <Container className="py-10 sm:py-16">
         <div className="grid gap-10 lg:grid-cols-[1fr_1.4fr] lg:gap-16">
           {/* Contact details */}
           <div>
@@ -176,7 +176,7 @@ export default function ContactPage() {
         {/* Google Map — renders only once a real embed URL is configured in
             LOCATION.mapEmbedUrl (see src/constants/site.ts). */}
         {LOCATION.mapEmbedUrl && (
-          <div className="mt-12">
+          <div className="mt-8 sm:mt-12">
             <h2 className="font-heading text-2xl font-bold text-foreground">
               Find us in {LOCATION.city}
             </h2>

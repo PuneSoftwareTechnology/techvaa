@@ -48,8 +48,8 @@ export function PageHero({
       <Container
         className={
           image
-            ? "relative grid items-center gap-10 py-14 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] lg:py-20"
-            : "relative py-14 lg:py-20"
+            ? "relative grid items-center gap-8 py-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] lg:gap-10 lg:py-20"
+            : "relative py-10 lg:py-20"
         }
       >
         <div>

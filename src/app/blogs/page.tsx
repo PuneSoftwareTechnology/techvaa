@@ -47,7 +47,7 @@ export default async function BlogPage() {
 
       {/* Featured posts */}
       {featured.length > 0 && (
-        <section aria-labelledby="featured-title" className="py-16">
+        <section aria-labelledby="featured-title" className="py-10 sm:py-16">
           <Container>
             <SectionHeader align="left" as="h2" title="Featured posts" />
             <div className="mt-8 grid gap-6 md:grid-cols-3">
@@ -62,10 +62,16 @@ export default async function BlogPage() {
       )}
 
       {/* All posts */}
-      <section aria-labelledby="all-posts-title" className="bg-secondary/40 py-16">
+      <section
+        aria-labelledby="all-posts-title"
+        className="bg-secondary/40 py-4 lg:py-16"
+      >
         <Container>
           <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
-            <h2 id="all-posts-title" className="font-heading text-2xl font-bold text-foreground">
+            <h2
+              id="all-posts-title"
+              className="font-heading text-2xl font-bold text-foreground"
+            >
               Explore all modules
             </h2>
           </div>

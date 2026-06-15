@@ -18,7 +18,7 @@ import { RichTextContent } from "@/components/common/rich-text-content";
 export function FaqSection({ faqs }: { faqs: FaqDTO[] }) {
   if (faqs.length === 0) return null;
   return (
-    <section aria-labelledby="faq-title" className="py-20">
+    <section aria-labelledby="faq-title" className="py-12 sm:py-20">
       <Container className="max-w-3xl">
         <SectionHeader
           as="h2"

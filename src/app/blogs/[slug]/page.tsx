@@ -168,8 +168,8 @@ export default async function BlogDetailPage({
         )}
       </PageHero>
 
-      <Container className="py-14">
-        <div className="grid gap-12 lg:grid-cols-[minmax(0,1fr)_20rem]">
+      <Container className="py-10 sm:py-14">
+        <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_20rem] lg:gap-12">
           <article className="prose prose-neutral max-w-none">
             <RichTextContent
               html={blog.introduction}
@@ -210,7 +210,7 @@ export default async function BlogDetailPage({
       </Container>
 
       {related.length > 0 && (
-        <section aria-labelledby="related-title" className="bg-secondary/40 py-16">
+        <section aria-labelledby="related-title" className="bg-secondary/40 py-10 sm:py-16">
           <Container>
             <SectionHeader align="left" as="h2" title="Related articles" />
             <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">

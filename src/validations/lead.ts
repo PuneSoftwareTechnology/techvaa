@@ -14,9 +14,8 @@ export const leadSchema = z.object({
   phone: z
     .string()
     .trim()
-    .min(7, "Please enter your phone number")
-    .max(20, "Phone number is too long")
-    .regex(/^[+()\d\s-]+$/, "Enter a valid phone number"),
+    .min(1, "Please enter your phone number")
+    .regex(/^\d{10}$/, "Enter a valid 10-digit phone number"),
   // Optional — the UI shows no required marker, so requiring it here silently
   // blocked submissions with an error users couldn't see. Matches courseEnquiry.
   message: z

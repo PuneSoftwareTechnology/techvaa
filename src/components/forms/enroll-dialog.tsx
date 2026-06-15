@@ -190,10 +190,17 @@ export function EnrollDialog({ course, className, trigger }: EnrollDialogProps) 
             <Input
               id="enroll-phone"
               type="tel"
+              inputMode="numeric"
+              maxLength={10}
               autoComplete="tel"
-              placeholder="+1 555 000 0000"
+              placeholder="10-digit mobile number"
               aria-invalid={!!errors.phone}
-              {...register("phone")}
+              {...register("phone", {
+                // Allow digits only, capped at 10 — strip anything else as the user types.
+                onChange: (e) => {
+                  e.target.value = e.target.value.replace(/\D/g, "").slice(0, 10);
+                },
+              })}
             />
             {errors.phone && (
               <p className="mt-1 text-xs text-destructive">

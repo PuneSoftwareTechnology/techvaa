@@ -133,7 +133,7 @@ export default async function CourseDetailPage({
       </PageHero>
 
       {course.description && (
-        <Container className="py-12">
+        <Container className="py-8 sm:py-12">
           <p className="mb-2 text-sm font-semibold uppercase tracking-wider text-accent-orange">
             Overview
           </p>
@@ -170,7 +170,7 @@ export default async function CourseDetailPage({
       <FaqSection faqs={faqs} />
 
       {course.relatedCourses.length > 0 && (
-        <Container className="py-14">
+        <Container className="py-10 sm:py-14">
           <div className="text-center">
             <p className="mb-2 text-sm font-semibold uppercase tracking-wider text-accent-orange">
               Keep exploring
@@ -192,7 +192,7 @@ export default async function CourseDetailPage({
       )}
 
       {relatedArticles.length > 0 && (
-        <Container className="pb-16">
+        <Container className="pb-10 sm:pb-16">
           <div className="text-center">
             <p className="mb-2 text-sm font-semibold uppercase tracking-wider text-accent-orange">
               From the blog

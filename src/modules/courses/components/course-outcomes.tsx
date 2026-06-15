@@ -18,7 +18,7 @@ export function CourseOutcomes({ courseTitle }: { courseTitle: string }) {
   return (
     <section
       aria-labelledby="outcomes-title"
-      className="relative overflow-hidden bg-gradient-to-br from-brand via-brand to-[oklch(0.26_0.09_262)] py-14 text-white"
+      className="relative overflow-hidden bg-gradient-to-br from-brand via-brand to-[oklch(0.26_0.09_262)] py-10 text-white sm:py-14"
     >
       {/* decorative warm glow */}
       <div
@@ -41,7 +41,7 @@ export function CourseOutcomes({ courseTitle }: { courseTitle: string }) {
             Outcomes you can count on
           </h2>
         </Reveal>
-        <Reveal className="mt-12">
+        <Reveal className="mt-8 sm:mt-12">
           <dl className="grid grid-cols-2 gap-6 lg:grid-cols-4">
             {COURSE_OUTCOME_STATS.map((s, i) => (
               <div

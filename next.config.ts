@@ -52,6 +52,18 @@ const nextConfig: NextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
 
+  // Server Actions run a CSRF check that compares the request `origin` against
+  // the `host`/`x-forwarded-host` header. Behind the production reverse proxy /
+  // CDN these differ, so Next rejects every form submission with a 500
+  // ("Invalid Server Actions request.") even though it works locally (origin ==
+  // host). Allowlist the real public origins so the enrollment / lead forms
+  // post successfully in production.
+  experimental: {
+    serverActions: {
+      allowedOrigins: ["techvaa.com", "www.techvaa.com"],
+    },
+  },
+
   // Multiple lockfiles exist on this machine; pin the workspace root.
   turbopack: { root: import.meta.dirname },
 

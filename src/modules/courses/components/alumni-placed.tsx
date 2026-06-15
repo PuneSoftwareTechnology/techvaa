@@ -11,7 +11,7 @@ export function AlumniPlaced({ courseTitle }: { courseTitle: string }) {
   return (
     <section
       aria-labelledby="alumni-placed-title"
-      className="border-y bg-secondary/40 py-12"
+      className="border-y bg-secondary/40 py-8 sm:py-12"
     >
       <Container>
         <h2

@@ -15,7 +15,7 @@ export default function CourseDetailLoading() {
   return (
     <>
       {/* Hero */}
-      <div className="bg-brand py-14 lg:py-20">
+      <div className="bg-brand py-10 lg:py-20">
         <Container>
           <Skeleton className="h-4 w-48 bg-white/20" />
           <Skeleton className="mt-4 h-4 w-32 bg-white/20" />
@@ -28,7 +28,7 @@ export default function CourseDetailLoading() {
       </div>
 
       {/* About this course */}
-      <Container className="py-12">
+      <Container className="py-8 sm:py-12">
         <Skeleton className="h-7 w-56" />
         <div className="mt-4 space-y-3">
           <Skeleton className="h-4 w-full" />
@@ -39,7 +39,7 @@ export default function CourseDetailLoading() {
       </Container>
 
       {/* Upcoming batch */}
-      <Container className="max-w-4xl py-16">
+      <Container className="max-w-4xl py-10 sm:py-16">
         <div className="mx-auto max-w-md text-center">
           <Skeleton className="mx-auto h-4 w-32" />
           <Skeleton className="mx-auto mt-3 h-8 w-56" />
@@ -60,12 +60,12 @@ export default function CourseDetailLoading() {
       </Container>
 
       {/* What our graduates say */}
-      <Container className="py-20">
+      <Container className="py-12 sm:py-20">
         <div className="mx-auto max-w-md text-center">
           <Skeleton className="mx-auto h-4 w-28" />
           <Skeleton className="mx-auto mt-3 h-8 w-64" />
         </div>
-        <div className="mt-12 flex gap-6 overflow-hidden">
+        <div className="mt-8 flex gap-6 overflow-hidden sm:mt-12">
           {Array.from({ length: 4 }).map((_, i) => (
             <Card key={i} className="w-[320px] shrink-0 p-6 sm:w-[380px]">
               <Skeleton className="size-7 rounded" />

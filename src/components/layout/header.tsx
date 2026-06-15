@@ -79,8 +79,8 @@ export function Header() {
                 <Menu />
               </Button>
             </SheetTrigger>
-            <SheetContent side="right" className="w-80">
-              <SheetHeader>
+            <SheetContent side="right" className="w-64 sm:max-w-xs">
+              <SheetHeader className="border-b border-brand/10 bg-gradient-to-br from-brand-muted to-accent-orange/10">
                 <SheetTitle asChild>
                   <Logo />
                 </SheetTitle>
@@ -94,10 +94,10 @@ export function Header() {
                         isActive(pathname, item.href) ? "page" : undefined
                       }
                       className={cn(
-                        "rounded-md px-3 py-3 text-base font-medium transition-colors",
+                        "rounded-md border-l-2 px-3 py-3 text-base font-medium transition-colors",
                         isActive(pathname, item.href)
-                          ? "bg-accent text-brand"
-                          : "text-foreground hover:bg-accent"
+                          ? "border-accent-orange bg-brand/10 text-brand"
+                          : "border-transparent text-foreground hover:border-brand/40 hover:bg-brand/5 hover:text-brand"
                       )}
                     >
                       {item.label}

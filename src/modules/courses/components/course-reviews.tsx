@@ -20,7 +20,7 @@ export function CourseReviews({
   if (testimonials.length === 0) return null;
 
   return (
-    <section aria-labelledby="course-reviews-title" className="py-14">
+    <section aria-labelledby="course-reviews-title" className="py-10 sm:py-14">
       <Container>
         <SectionHeader
           as="h2"

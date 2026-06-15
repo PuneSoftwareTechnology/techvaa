@@ -9,7 +9,7 @@ import type { TestimonialDTO } from "@/types";
 export function GraduatesSay({ testimonials }: { testimonials: TestimonialDTO[] }) {
   if (testimonials.length === 0) return null;
   return (
-    <section aria-labelledby="grads-title" className="py-20">
+    <section aria-labelledby="grads-title" className="py-12 sm:py-20">
       <Container>
         <SectionHeader
           as="h2"

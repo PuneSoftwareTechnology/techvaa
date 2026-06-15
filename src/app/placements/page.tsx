@@ -75,7 +75,7 @@ export default async function PlacementsPage() {
             eyebrow="Career Prep Tools"
             title="Everything you need to get hired"
           />
-          <div className="mt-12 grid gap-6 md:grid-cols-3">
+          <div className="mt-8 grid gap-6 sm:mt-12 md:grid-cols-3">
             {CAREER_TOOLS.map((t, i) => (
               <Reveal as="div" index={i} key={t.title}>
                 <Card
@@ -105,14 +105,14 @@ export default async function PlacementsPage() {
 
       {/* Recent placements */}
       {placements.length > 0 && (
-        <section aria-labelledby="placed-title" className="py-20">
+        <section aria-labelledby="placed-title" className="py-12 sm:py-20">
           <Container>
             <SectionHeader
               as="h2"
               eyebrow="Recent Placements"
               title="Our students, placed"
             />
-            <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="mt-8 grid gap-6 sm:mt-12 sm:grid-cols-2 lg:grid-cols-4">
               {placements.map((p, i) => (
                 <Reveal as="div" index={i % 4} key={p.id}>
                   <PlacementCard placement={p} />
@@ -126,7 +126,7 @@ export default async function PlacementsPage() {
       {/* Companies that hired from us */}
       <section
         aria-labelledby="alumni-title"
-        className="border-t bg-secondary/40 py-14"
+        className="border-t bg-secondary/40 py-10 sm:py-14"
       >
         <Container>
           <h2
@@ -142,7 +142,7 @@ export default async function PlacementsPage() {
       {/* Placement process */}
       <section
         aria-labelledby="process-title"
-        className="pt-20 pb-12"
+        className="pb-8 pt-12 sm:pb-12 sm:pt-20"
       >
         <Container>
           <SectionHeader
@@ -152,7 +152,7 @@ export default async function PlacementsPage() {
             description="A guided, step-by-step process — book one session and we take it from there."
           />
 
-          <div className="mt-12 overflow-hidden rounded-3xl bg-gradient-to-br from-brand via-indigo-800 to-violet-700 p-6 sm:p-8 lg:p-10">
+          <div className="mt-8 overflow-hidden rounded-3xl bg-gradient-to-br from-brand via-indigo-800 to-violet-700 p-6 sm:mt-12 sm:p-8 lg:p-10">
             <ol className="flex flex-col gap-3 lg:flex-row lg:items-stretch lg:gap-1">
               {PLACEMENT_PROCESS.map((p, i) => (
                 <li
@@ -203,7 +203,7 @@ export default async function PlacementsPage() {
       </section>
 
       {/* Placement assistance guarantee */}
-      <section aria-labelledby="guarantee-title" className="pb-20 pt-4">
+      <section aria-labelledby="guarantee-title" className="pb-12 pt-4 sm:pb-20">
         <Container>
           <Reveal className="rounded-3xl bg-brand p-6 text-brand-foreground sm:p-12">
             <h2

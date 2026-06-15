@@ -15,7 +15,7 @@ export function Footer() {
   const year = 2026; // server-rendered; avoids hydration drift from Date.now()
   return (
     <footer className="bg-brand text-brand-foreground">
-      <Container className="py-14">
+      <Container className="py-10 sm:py-14">
         <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-4">
           <div className="lg:col-span-2 lg:max-w-sm">
             <Logo variant="light" />
@@ -116,7 +116,7 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-white/15 pt-6 sm:flex-row">
+        <div className="mt-8 flex flex-col items-center justify-between gap-4 border-t border-white/15 pt-6 sm:mt-12 sm:flex-row">
           <div className="space-y-2">
             <p className="text-sm text-white/60">
               © {year} {SITE.legalName}. All rights reserved.

@@ -4,7 +4,7 @@ import { HIRING_PARTNERS } from "@/constants/site";
 
 export function HiringPartners() {
   return (
-    <section aria-labelledby="partners-title" className="border-y bg-secondary/40 py-12">
+    <section aria-labelledby="partners-title" className="border-y bg-secondary/40 py-8 sm:py-12">
       <Container>
         <h2
           id="partners-title"

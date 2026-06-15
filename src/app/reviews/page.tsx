@@ -85,7 +85,7 @@ export default async function ReviewsPage() {
       />
 
       {/* Overview + stats */}
-      <section aria-labelledby="overview-title" className="py-16">
+      <section aria-labelledby="overview-title" className="py-10 sm:py-16">
         <Container>
           <h2 id="overview-title" className="sr-only">
             Rating overview
@@ -121,7 +121,7 @@ export default async function ReviewsPage() {
       </section>
 
       {/* Detailed feedback with filters */}
-      <section aria-labelledby="feedback-title" className="bg-secondary/40 py-16">
+      <section aria-labelledby="feedback-title" className="bg-secondary/40 py-10 sm:py-16">
         <Container>
           <SectionHeader align="left" as="h2" title="Detailed student feedback" />
           <div className="mt-8">
@@ -131,10 +131,10 @@ export default async function ReviewsPage() {
       </section>
 
       {/* Why choose us */}
-      <section aria-labelledby="whyus-title" className="py-16">
+      <section aria-labelledby="whyus-title" className="py-10 sm:py-16">
         <Container>
           <SectionHeader as="h2" eyebrow="Why Choose Us" title="Built around your success" />
-          <div className="mt-12 grid gap-6 md:grid-cols-3">
+          <div className="mt-8 grid gap-6 sm:mt-12 md:grid-cols-3">
             {WHY_US.map((w, i) => (
               <Reveal as="div" index={i} key={w.title}>
                 <Card className="h-full p-7 text-center">

@@ -10,7 +10,7 @@ import type { CourseDTO } from "@/types";
 export function TopModules({ courses }: { courses: CourseDTO[] }) {
   if (courses.length === 0) return null;
   return (
-    <section aria-labelledby="modules-title" className="bg-secondary/40 py-20">
+    <section aria-labelledby="modules-title" className="bg-secondary/40 py-12 sm:py-20">
       <Container>
         <SectionHeader
           as="h2"
@@ -19,7 +19,7 @@ export function TopModules({ courses }: { courses: CourseDTO[] }) {
           description="Industry-aligned tracks across finance, logistics and development — each with live projects and certification guidance."
         />
 
-        <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-8 grid gap-6 sm:mt-12 sm:grid-cols-2 lg:grid-cols-3">
           {courses.slice(0, 3).map((course, i) => (
             <Reveal as="div" index={i} key={course.id}>
               <CourseCard course={course} />

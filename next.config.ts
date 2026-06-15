@@ -69,8 +69,20 @@ const nextConfig: NextConfig = {
     minimumCacheTTL: 2592000,
   },
 
-  // Keep server-only DB packages out of the client bundle.
-  serverExternalPackages: ["@prisma/client", "@prisma/adapter-pg", "pg"],
+  // Keep server-only DB packages external (unbundled) on the server. These are
+  // the packages prisma.ts actually imports at runtime — the Neon serverless
+  // driver, its Prisma adapter and the `ws` WebSocket implementation. Bundling
+  // `ws`/the Neon driver can break the WebSocket connection in production, so
+  // they must stay external. (`@prisma/adapter-pg`/`pg` are kept for the
+  // migration/seed scripts that still use the direct pg connection.)
+  serverExternalPackages: [
+    "@prisma/client",
+    "@prisma/adapter-neon",
+    "@neondatabase/serverless",
+    "ws",
+    "@prisma/adapter-pg",
+    "pg",
+  ],
 
   // The blog section moved from /blog to /blogs. Permanently redirect the old
   // URLs so existing links, bookmarks and indexed pages keep working.

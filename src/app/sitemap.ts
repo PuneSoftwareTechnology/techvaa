@@ -7,14 +7,18 @@ export const revalidate = 3600;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const [courseSlugs, blogSlugs] = await Promise.all([
-    courseService.getAllSlugs(),
-    blogService.getAllSlugs(),
+    courseService.getAllSlugs().catch(() => [] as string[]),
+    blogService.getAllSlugs().catch(() => [] as string[]),
   ]);
 
   const staticRoutes: MetadataRoute.Sitemap = [
     { url: absoluteUrl("/"), changeFrequency: "weekly", priority: 1 },
     { url: absoluteUrl("/courses"), changeFrequency: "weekly", priority: 0.9 },
-    { url: absoluteUrl("/placements"), changeFrequency: "monthly", priority: 0.8 },
+    {
+      url: absoluteUrl("/placements"),
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
     { url: absoluteUrl("/blogs"), changeFrequency: "weekly", priority: 0.8 },
     { url: absoluteUrl("/reviews"), changeFrequency: "monthly", priority: 0.7 },
     { url: absoluteUrl("/contact"), changeFrequency: "yearly", priority: 0.6 },

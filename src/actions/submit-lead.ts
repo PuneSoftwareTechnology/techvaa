@@ -79,6 +79,7 @@ export async function submitLead(
       phone: parsed.data.phone ?? "",
       email: parsed.data.email,
       course: parsed.data.courseInterest ?? "",
+      message: parsed.data.message ?? "",
     });
     return {
       status: "success",

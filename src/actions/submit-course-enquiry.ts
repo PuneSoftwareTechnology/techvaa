@@ -77,6 +77,7 @@ export async function submitCourseEnquiry(
       name: parsed.data.name,
       phone: parsed.data.phone,
       course: parsed.data.course,
+      message: parsed.data.message ?? "",
     });
     return {
       status: "success",

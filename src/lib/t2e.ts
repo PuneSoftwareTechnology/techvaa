@@ -19,6 +19,8 @@ export type T2EEnquiry = {
   /** Course enquiries don't capture an email — pass "" / omit. */
   email?: string;
   course?: string;
+  /** Free-text message the enquirer typed — mirrored into the T2E comment. */
+  message?: string;
 };
 
 // Cap how long a slow/hung T2E can stall the visitor's form response.
@@ -36,7 +38,8 @@ export async function syncEnquiryToT2E(
   }
 
   // Fixed mapping agreed with T2E. Fields Techvaa doesn't capture get the
-  // agreed defaults; demoDate/comment are intentionally left empty.
+  // agreed defaults; demoDate is intentionally left empty. The comment carries
+  // the enquirer's own message when they typed one.
   const payload = {
     enquiryDate: new Date().toISOString().slice(0, 10), // YYYY-MM-DD
     name: enquiry.name,
@@ -47,7 +50,7 @@ export async function syncEnquiryToT2E(
     leadStatus: "PROSPECTIVE",
     demoStatus: "PENDING",
     demoDate: "",
-    comment: "",
+    comment: enquiry.message?.trim() ?? "",
   };
 
   try {

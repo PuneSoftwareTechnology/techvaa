@@ -22,7 +22,9 @@ frontend:
         # throws "Missing DATABASE" at import. Write the server-side vars into
         # .env.production so `next build` captures them into the runtime bundle.
         # (NEXT_PUBLIC_* are inlined at build and don't need this.)
-        - env | grep -E '^(DATABASE|RECAPTCHA_SECRET_KEY|RECAPTCHA_MIN_SCORE|REVALIDATE_SECRET)=' >> .env.production
+        # NOTE: every new server-only var (e.g. the T2E lead-sync creds) must be
+        # added here too, or it'll read undefined at request time on the live site.
+        - env | grep -E '^(DATABASE|RECAPTCHA_SECRET_KEY|RECAPTCHA_MIN_SCORE|REVALIDATE_SECRET|T2E_API_URL|T2E_API_TOKEN)=' >> .env.production
         - npm run build
   artifacts:
     # Next.js SSR build output

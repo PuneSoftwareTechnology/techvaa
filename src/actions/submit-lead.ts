@@ -4,11 +4,14 @@ import { leadSchema } from "@/validations/lead";
 import { leadService } from "@/services/lead.service";
 import { verifyRecaptcha } from "@/lib/recaptcha";
 import { rateLimit, clientIp } from "@/lib/rate-limit";
+import { syncEnquiryToT2E, type T2ESyncResult } from "@/lib/t2e";
 
 export type LeadActionState = {
   status: "idle" | "success" | "error";
   message?: string;
   fieldErrors?: Record<string, string[]>;
+  /** Result of mirroring the lead to Training2Expert (drives a separate toast). */
+  t2e?: T2ESyncResult;
 };
 
 /**
@@ -69,9 +72,18 @@ export async function submitLead(
 
   try {
     await leadService.submit(parsed.data);
+    // Mirror to Training2Expert (best-effort; the local save above is the
+    // source of truth, so a T2E hiccup never loses the lead).
+    const t2e = await syncEnquiryToT2E({
+      name: parsed.data.name,
+      phone: parsed.data.phone ?? "",
+      email: parsed.data.email,
+      course: parsed.data.courseInterest ?? "",
+    });
     return {
       status: "success",
       message: "Thanks! Our team will reach out within one business day.",
+      t2e,
     };
   } catch (error) {
     console.error("[submit-lead] failed to persist lead:", error);

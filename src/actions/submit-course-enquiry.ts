@@ -4,11 +4,14 @@ import { courseEnquirySchema } from "@/validations/course-enquiry";
 import { courseEnquiryService } from "@/services/course-enquiry.service";
 import { verifyRecaptcha } from "@/lib/recaptcha";
 import { rateLimit, clientIp } from "@/lib/rate-limit";
+import { syncEnquiryToT2E, type T2ESyncResult } from "@/lib/t2e";
 
 export type CourseEnquiryActionState = {
   status: "idle" | "success" | "error";
   message?: string;
   fieldErrors?: Record<string, string[]>;
+  /** Result of mirroring the enquiry to Training2Expert (drives a separate toast). */
+  t2e?: T2ESyncResult;
 };
 
 /**
@@ -68,9 +71,17 @@ export async function submitCourseEnquiry(
 
   try {
     await courseEnquiryService.submit(parsed.data);
+    // Mirror to Training2Expert. Course enquiries don't capture an email, so it
+    // goes across blank; the local save above is the source of truth.
+    const t2e = await syncEnquiryToT2E({
+      name: parsed.data.name,
+      phone: parsed.data.phone,
+      course: parsed.data.course,
+    });
     return {
       status: "success",
       message: "Thanks! Our team will call you about this batch within one business day.",
+      t2e,
     };
   } catch (error) {
     console.error("[submit-course-enquiry] failed to persist enquiry:", error);

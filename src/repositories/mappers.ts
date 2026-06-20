@@ -85,6 +85,8 @@ export function toCourseDTO(c: any): CourseDTO {
     image: c.image ?? null,
     isFeatured: c.isFeatured,
     createdAt: c.createdAt.toISOString(),
+    trainerHeading: c.trainerHeading ?? null,
+    trainerDescription: c.trainerDescription ?? null,
     curriculum: Array.isArray(c.curriculum)
       ? c.curriculum.map((i: any) => ({
           id: i.id,

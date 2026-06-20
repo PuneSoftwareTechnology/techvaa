@@ -16,7 +16,7 @@ import { Reveal } from "@/components/common/reveal";
 import { formatDate } from "@/lib/format";
 import { BlogCard } from "@/modules/blog/components/blog-card";
 
-export const revalidate = 3600;
+export const revalidate = 60;
 export const dynamicParams = true;
 
 /** Renders one templated content block; nothing if the block is empty. */

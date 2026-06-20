@@ -20,13 +20,14 @@ import { htmlToPlainText } from "@/lib/sanitize";
 import { CourseCard } from "@/modules/courses/components/course-card";
 import { BlogCard } from "@/modules/blog/components/blog-card";
 import { CurriculumHighlights } from "@/modules/courses/components/curriculum-highlights";
+import { AboutTrainer } from "@/modules/courses/components/about-trainer";
 import { CourseOutcomes } from "@/modules/courses/components/course-outcomes";
 import { BatchSchedule } from "@/modules/courses/components/batch-schedule";
 import { AlumniPlaced } from "@/modules/courses/components/alumni-placed";
 import { CourseReviews } from "@/modules/courses/components/course-reviews";
 import { FaqSection } from "@/modules/home/components/faq-section";
 
-export const revalidate = 3600;
+export const revalidate = 60;
 export const dynamicParams = true;
 
 export async function generateStaticParams() {
@@ -154,6 +155,11 @@ export default async function CourseDetailPage({
       )}
 
       <CurriculumHighlights items={course.curriculum} />
+
+      <AboutTrainer
+        heading={course.trainerHeading}
+        description={course.trainerDescription}
+      />
 
       <CourseOutcomes courseTitle={course.title} />
       <BatchSchedule

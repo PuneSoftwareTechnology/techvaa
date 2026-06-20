@@ -16,7 +16,7 @@ import type { TestimonialDTO } from "@/types";
  */
 export function ReviewsMarquee({
   testimonials,
-  durationSeconds = 48,
+  durationSeconds = 12,
 }: {
   testimonials: TestimonialDTO[];
   durationSeconds?: number;
@@ -38,7 +38,10 @@ export function ReviewsMarquee({
           aria-hidden="true"
         >
           {track.map((t, i) => (
-            <li key={`${t.id}-${i}`} className="w-[300px] shrink-0 sm:w-[360px]">
+            <li
+              key={`${t.id}-${i}`}
+              className="w-[300px] shrink-0 sm:w-[360px]"
+            >
               <TestimonialCard
                 testimonial={t}
                 accent={TESTIMONIAL_ACCENTS[i % TESTIMONIAL_ACCENTS.length]}

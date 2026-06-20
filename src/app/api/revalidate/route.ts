@@ -20,7 +20,17 @@ import { corsHeaders, preflight } from "@/lib/api/rest";
  * The list / home pages are always revalidated too, since most content types
  * surface there (featured courses, latest blogs, etc.).
  */
-const ALWAYS_REVALIDATE = ["/", "/courses", "/blogs"];
+// All public listing pages refresh on any admin edit. Most content types
+// surface across several of them (featured courses + latest blogs on home,
+// testimonials on /reviews and home, etc.), so broad revalidation is the
+// reliable choice for this marketing site — the cost is just a rebuild on the
+// next request to each page.
+const ALWAYS_REVALIDATE = ["/", "/courses", "/blogs", "/placements", "/reviews"];
+
+// Dynamic detail routes are revalidated by pattern so edits to a course's
+// curriculum / FAQs (rows that carry no slug of their own) still refresh the
+// affected detail pages, not just the listings.
+const DETAIL_ROUTES = ["/courses/[slug]", "/blogs/[slug]"];
 
 export async function OPTIONS(req: NextRequest) {
   return preflight(req);
@@ -53,9 +63,17 @@ export async function POST(req: NextRequest) {
 
   const revalidated = [...new Set([...ALWAYS_REVALIDATE, ...paths])];
   for (const path of revalidated) revalidatePath(path);
+  // Invalidate every page under the dynamic detail routes.
+  for (const route of DETAIL_ROUTES) revalidatePath(route, "page");
+
+  // NOTE: this refreshes the ORIGIN's ISR cache only. The site runs on Amplify
+  // Hosting, whose managed CloudFront still serves its edge copy until the
+  // page's `s-maxage` (= `revalidate`) lapses — Amplify exposes no API to purge
+  // it. Edge freshness is therefore bounded by the low `revalidate` we set on
+  // each page, not by this call.
 
   return Response.json(
-    { revalidated, now: Date.now() },
+    { revalidated: [...revalidated, ...DETAIL_ROUTES], now: Date.now() },
     { status: 200, headers: corsHeaders(req) }
   );
 }

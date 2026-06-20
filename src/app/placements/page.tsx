@@ -26,7 +26,7 @@ import {
   ALUMNI_PARTNERS,
 } from "@/constants/placements";
 
-export const revalidate = 3600;
+export const revalidate = 60;
 
 export async function generateMetadata(): Promise<Metadata> {
   return pageMetadata("/placements", {

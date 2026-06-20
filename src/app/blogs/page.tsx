@@ -9,7 +9,7 @@ import { SectionHeader } from "@/components/common/section-header";
 import { Reveal } from "@/components/common/reveal";
 import { BlogCard } from "@/modules/blog/components/blog-card";
 
-export const revalidate = 3600;
+export const revalidate = 60;
 
 export async function generateMetadata(): Promise<Metadata> {
   return pageMetadata("/blogs", {

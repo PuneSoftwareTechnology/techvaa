@@ -74,6 +74,10 @@ export interface CourseDTO {
   image: string | null;
   isFeatured: boolean;
   createdAt: string;
+  /** "About the Trainer" heading. Populated on the detail query. */
+  trainerHeading: string | null;
+  /** "About the Trainer" description (HTML). Populated on the detail query. */
+  trainerDescription: string | null;
   /** Key Curriculum sections, ordered. Populated on the detail query. */
   curriculum: CurriculumItemDTO[];
   /** Upcoming batches, soonest first. Populated on the detail query. */

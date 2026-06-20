@@ -11,7 +11,7 @@ import { CourseCard } from "@/modules/courses/components/course-card";
 import { HiringPartners } from "@/modules/home/components/hiring-partners";
 import { BatchSchedule } from "@/modules/courses/components/batch-schedule";
 
-export const revalidate = 3600;
+export const revalidate = 60;
 
 export async function generateMetadata(): Promise<Metadata> {
   return pageMetadata("/courses", {

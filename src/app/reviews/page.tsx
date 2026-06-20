@@ -12,7 +12,7 @@ import { Card } from "@/components/ui/card";
 import { RatingOverview, RatingDistribution } from "@/modules/reviews/components/rating-overview";
 import { ReviewsList } from "@/modules/reviews/components/reviews-list";
 
-export const revalidate = 3600;
+export const revalidate = 60;
 
 export async function generateMetadata(): Promise<Metadata> {
   return pageMetadata("/reviews", {

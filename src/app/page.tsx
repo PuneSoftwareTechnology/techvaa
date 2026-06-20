@@ -16,7 +16,7 @@ import { BatchSchedule } from "@/modules/courses/components/batch-schedule";
 import { FaqSection } from "@/modules/home/components/faq-section";
 
 // ISR: regenerate the home page at most once an hour.
-export const revalidate = 3600;
+export const revalidate = 60;
 
 export async function generateMetadata(): Promise<Metadata> {
   return pageMetadata("/", {

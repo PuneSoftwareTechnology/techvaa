@@ -37,9 +37,9 @@ export function SectionHeader({
       {eyebrow ? (
         <p
           className={cn(
-            "mb-2 inline-flex items-center gap-2 text-sm font-semibold tracking-wider text-accent-orange uppercase",
+            "mb-2 inline-flex items-center gap-3 text-2xl sm:text-3xl font-extrabold tracking-wider text-accent-orange uppercase",
             align === "center" &&
-              "before:h-px before:w-6 before:bg-accent-orange/50 after:h-px after:w-6 after:bg-accent-orange/50",
+              "before:h-px before:w-12 before:bg-accent-orange/50 after:h-px after:w-12 after:bg-accent-orange/50",
           )}
         >
           {eyebrow}
@@ -47,7 +47,7 @@ export function SectionHeader({
       ) : null}
       <Heading
         className={cn(
-          "text-balance font-heading text-3xl font-bold tracking-tight sm:text-4xl",
+          "text-balance font-heading text-xl font-bold tracking-tight sm:text-3xl",
           gradient
             ? "bg-gradient-to-l from-brand  to-accent-orange bg-clip-text text-transparent"
             : "text-foreground",

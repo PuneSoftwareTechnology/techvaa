@@ -15,6 +15,13 @@ const STATUS_STYLES: Record<BatchStatus, string> = {
   "Filling Fast": "bg-rose-100 text-rose-700",
 };
 
+/** Colored accent stripe on mobile cards so each batch reads as distinct. */
+const STATUS_ACCENT: Record<BatchStatus, string> = {
+  "Enrollment Open": "border-l-emerald-500",
+  "Limited Seats": "border-l-amber-500",
+  "Filling Fast": "border-l-rose-500",
+};
+
 interface BatchScheduleProps {
   /** Batch rows to render — either the next batches across courses or one
    *  course's batches. The table is omitted entirely when this is empty. */
@@ -51,7 +58,7 @@ export function BatchSchedule({
           description={description}
         />
 
-        <Reveal className="mt-8 overflow-hidden rounded-2xl border bg-card shadow-sm sm:mt-12">
+        <Reveal className="mt-8 sm:mt-12 md:overflow-hidden md:rounded-2xl md:border md:bg-card md:shadow-sm">
           {/* Desktop table */}
           <table className="hidden w-full text-left md:table">
             <thead className="bg-brand text-brand-foreground">
@@ -119,11 +126,18 @@ export function BatchSchedule({
             </tbody>
           </table>
 
-          {/* Mobile cards */}
-          <ul className="divide-y md:hidden">
+          {/* Mobile cards — each batch is its own distinct card with a
+              status-colored accent stripe so they don't blur together. */}
+          <ul className="space-y-4 md:hidden">
             {rows.map((b) => (
-              <li key={b.id} className="p-5">
-                <div className="flex items-start justify-between gap-3">
+              <li
+                key={b.id}
+                className={cn(
+                  "rounded-2xl border border-l-4 bg-card p-5 shadow-sm",
+                  STATUS_ACCENT[b.status]
+                )}
+              >
+                <div className="flex items-start justify-between gap-3 border-b pb-3">
                   <h3 className="text-lg font-bold leading-snug text-foreground">
                     {b.courseTitle}
                   </h3>
@@ -131,28 +145,28 @@ export function BatchSchedule({
                     {b.status}
                   </Badge>
                 </div>
-                <dl className="mt-3 grid grid-cols-3 gap-x-3 text-sm">
+                <dl className="mt-4 grid grid-cols-3 gap-x-3 rounded-xl bg-secondary/60 p-3 text-sm">
                   <div>
                     <dt className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
                       Mode
                     </dt>
-                    <dd className="mt-0.5 font-medium text-foreground">
+                    <dd className="mt-0.5 font-semibold text-foreground">
                       {b.mode}
                     </dd>
                   </div>
-                  <div>
+                  <div className="border-l pl-3">
                     <dt className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
                       Start
                     </dt>
-                    <dd className="mt-0.5 font-medium text-foreground">
+                    <dd className="mt-0.5 font-semibold text-brand">
                       {formatDate(b.startDate)}
                     </dd>
                   </div>
-                  <div>
+                  <div className="border-l pl-3">
                     <dt className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
                       Duration
                     </dt>
-                    <dd className="mt-0.5 font-medium text-foreground">
+                    <dd className="mt-0.5 font-semibold text-foreground">
                       {b.duration}
                     </dd>
                   </div>

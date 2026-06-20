@@ -36,10 +36,7 @@ export function Footer() {
                 <Phone className="size-4" aria-hidden="true" /> {SITE.phone}
               </a>
               <p className="flex items-start gap-2">
-                <MapPin
-                  className="mt-0.5 size-4 shrink-0"
-                  aria-hidden="true"
-                />
+                <MapPin className="mt-0.5 size-4 shrink-0" aria-hidden="true" />
                 <span>
                   {HAS_ADDRESS && (
                     <>
@@ -71,10 +68,6 @@ export function Footer() {
                 </span>
               </p>
             </div>
-            <p className="mt-4 text-xs leading-relaxed text-white/55">
-              SAP training in {LOCATION.city} — serving{" "}
-              {LOCATION.localities.join(", ")}.
-            </p>
           </div>
 
           <div className="grid grid-cols-2 gap-10 md:contents">

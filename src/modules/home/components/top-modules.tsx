@@ -10,7 +10,10 @@ import type { CourseDTO } from "@/types";
 export function TopModules({ courses }: { courses: CourseDTO[] }) {
   if (courses.length === 0) return null;
   return (
-    <section aria-labelledby="modules-title" className="bg-secondary/40 py-12 sm:py-20">
+    <section
+      aria-labelledby="modules-title"
+      className="bg-secondary/40 py-12 sm:py-20"
+    >
       <Container>
         <SectionHeader
           as="h2"
@@ -30,7 +33,7 @@ export function TopModules({ courses }: { courses: CourseDTO[] }) {
         <div className="mt-10 text-center">
           <Button asChild variant="outline" size="xl">
             <Link href="/courses">
-              View all 25+ modules <ArrowRight aria-hidden="true" />
+              View all 15+ modules <ArrowRight aria-hidden="true" />
             </Link>
           </Button>
         </div>

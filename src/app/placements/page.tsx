@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { placementService, reviewService } from "@/services/social-proof.service";
+import {
+  placementService,
+  reviewService,
+} from "@/services/social-proof.service";
 import { pageMetadata } from "@/lib/page-seo";
 import { JsonLd } from "@/components/seo/json-ld";
 import { breadcrumbSchema } from "@/lib/jsonld";
@@ -57,20 +60,27 @@ export default async function PlacementsPage() {
       <PageHero
         eyebrow="Career Services"
         title="Launch your career with Techvaa"
-        description="From your first resume to your final job offer, our placement engine and Big-4 hiring network get you hired."
+        description="Master the skills that matter. Our expert-led training sharpens your edge for clearing interviews with confidence."
         breadcrumbs={[
           { name: "Home", href: "/" },
           { name: "Placement Services", href: "/placements" },
         ]}
       >
         <div className="flex flex-col items-start gap-5 sm:flex-row sm:items-center">
-          <Button asChild variant="accent" size="xl" className="relative overflow-hidden">
+          <Button
+            asChild
+            variant="accent"
+            size="xl"
+            className="relative overflow-hidden"
+          >
             <Link href="#enquiry-form">
               <Shimmer />
               Schedule a Placement Session <ArrowRight aria-hidden="true" />
             </Link>
           </Button>
-          {ratingSummary.count > 0 && <GoogleRatingBadge summary={ratingSummary} />}
+          {ratingSummary.count > 0 && (
+            <GoogleRatingBadge summary={ratingSummary} />
+          )}
         </div>
       </PageHero>
 
@@ -130,7 +140,7 @@ export default async function PlacementsPage() {
         </section>
       )}
 
-      {/* Companies that hired from us */}
+      {/* Our Students Are Placed In */}
       <section
         aria-labelledby="alumni-title"
         className="border-t bg-secondary/40 py-10 sm:py-14"
@@ -140,7 +150,7 @@ export default async function PlacementsPage() {
             id="alumni-title"
             className="mb-8 text-center text-sm font-semibold uppercase tracking-wider text-muted-foreground"
           >
-            Companies That Hired From Us
+            Our Students Are Placed In
           </h2>
           <LogoMarquee items={ALUMNI_PARTNERS} durationSeconds={40} />
         </Container>
@@ -199,7 +209,12 @@ export default async function PlacementsPage() {
           </div>
 
           <div className="mt-10 text-center">
-            <Button asChild variant="accent" size="xl" className="relative overflow-hidden">
+            <Button
+              asChild
+              variant="accent"
+              size="xl"
+              className="relative overflow-hidden"
+            >
               <Link href="#enquiry-form">
                 <Shimmer />
                 Schedule a Placement Session
@@ -210,18 +225,21 @@ export default async function PlacementsPage() {
       </section>
 
       {/* Placement assistance guarantee */}
-      <section aria-labelledby="guarantee-title" className="pb-12 pt-4 sm:pb-20">
+      <section
+        aria-labelledby="guarantee-title"
+        className="pb-12 pt-4 sm:pb-20"
+      >
         <Container>
           <Reveal className="rounded-3xl bg-brand p-6 text-brand-foreground sm:p-12">
             <h2
               id="guarantee-title"
               className="font-heading text-2xl font-bold sm:text-3xl"
             >
-              Placement assistance guarantee
+              From beginner to job ready
             </h2>
-            <p className="mt-2 max-w-2xl text-white/80">
-              A structured commitment that carries you from training to a signed
-              offer.
+            <p className="mt-2 max-w-2xl sm:max-w-4xl text-white/80">
+              A structured path that builds your skills and supports you at
+              every step — from training to interview-ready.
             </p>
             <ol className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
               {PLACEMENT_GUARANTEE.map((g, i) => (
@@ -239,7 +257,6 @@ export default async function PlacementsPage() {
           </Reveal>
         </Container>
       </section>
-
     </>
   );
 }

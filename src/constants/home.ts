@@ -9,25 +9,29 @@ export const WHY_CHOOSE = [
   {
     icon: "award",
     title: "Certified Mentors",
-    description: "Learn from SAP-certified consultants with 10+ years of real industry experience.",
+    description:
+      "Learn from SAP-certified consultants with 10+ years of real industry experience.",
     iconClass: "bg-blue-100 text-blue-600",
   },
   {
     icon: "monitor-play",
     title: "Live Projects",
-    description: "Real-time server access and case studies that mirror actual enterprise rollouts.",
+    description:
+      "Real-time server access and case studies that mirror actual enterprise rollouts.",
     iconClass: "bg-emerald-100 text-emerald-600",
   },
   {
     icon: "calendar-clock",
     title: "Flexible Learning",
-    description: "Virtual and classroom sessions with lifetime access to recordings.",
+    description:
+      "Virtual and classroom sessions with lifetime access to recordings.",
     iconClass: "bg-amber-100 text-amber-600",
   },
   {
     icon: "briefcase",
     title: "Job Placement",
-    description: "Dedicated career services and a hiring-partner network to get you placed.",
+    description:
+      "Dedicated career services and a hiring-partner network to get you placed.",
     iconClass: "bg-violet-100 text-violet-600",
   },
 ] as const;
@@ -40,7 +44,7 @@ export const TRUST_STATS = [
 ] as const;
 
 export const HERO_HIGHLIGHTS = [
-  "Comprehensive SAP training with live Projects",
+  "Comprehensive SAP training with Projects",
   "100% placement support & career services",
-  "Real-time S/4HANA server access",
+  "Real time S4HANA server access with Practical training by working professinals",
 ] as const;

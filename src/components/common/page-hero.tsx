@@ -27,22 +27,8 @@ export function PageHero({
 }) {
   return (
     <section className="relative overflow-hidden bg-brand text-brand-foreground">
-      {/* Mobile / tablet: the featured image becomes a full-bleed backdrop
-          behind the hero text, dimmed with the brand navy so the copy stays
-          legible — the same text-on-background treatment as the home hero.
-          On desktop this is hidden and the image shows as a card on the right
-          (below) instead. Rendered first so the decorative grid/bubbles below
-          layer on top of the photo. */}
-      {image && (
-        <div aria-hidden="true" className="absolute inset-0 lg:hidden">
-          <Image src={image} alt="" fill priority sizes="100vw" className="object-cover" />
-          <div className="absolute inset-0 bg-gradient-to-b from-brand/85 via-brand/70 to-brand/90" />
-        </div>
-      )}
-
       {/* Decorative grid lines, glows and floating circles — layered over the
-          navy section background (desktop) and over the mobile featured-image
-          backdrop, matching the home hero. */}
+          navy section background, matching the home hero. */}
       <HeroBackground />
 
       <Container
@@ -90,14 +76,15 @@ export function PageHero({
         {children && <div className="mt-8">{children}</div>}
         </div>
         {image && (
-          <div className="group relative hidden lg:block">
+          <div className="group relative">
             {/* soft warm glow so the card lifts off the navy backdrop */}
             <div
               aria-hidden="true"
               className="absolute -inset-6 rounded-[2.5rem] bg-accent-orange/25 blur-3xl transition-opacity duration-500 group-hover:opacity-80"
             />
-            {/* slight tilt at rest; straightens and lifts on hover */}
-            <div className="relative aspect-[16/10] rotate-[2.5deg] overflow-hidden rounded-2xl border border-white/15 bg-white/5 shadow-2xl ring-1 ring-white/10 backdrop-blur-sm transition-transform duration-500 ease-out group-hover:rotate-0 group-hover:scale-[1.03]">
+            {/* flat on mobile (stacked below the copy); slight tilt at rest on
+                desktop that straightens and lifts on hover */}
+            <div className="relative aspect-[16/10] overflow-hidden rounded-2xl border border-white/15 bg-white/5 shadow-2xl ring-1 ring-white/10 backdrop-blur-sm transition-transform duration-500 ease-out lg:rotate-[2.5deg] lg:group-hover:rotate-0 lg:group-hover:scale-[1.03]">
               <Image
                 src={image}
                 alt={imageAlt ?? title}

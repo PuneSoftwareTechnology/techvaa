@@ -2,6 +2,7 @@ import { ArrowRight } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { EnrollDialog } from "@/components/forms/enroll-dialog";
 import { MediaCard } from "@/components/common/media-card";
+import { richTextToInlineHtml } from "@/lib/sanitize";
 import type { CourseDTO } from "@/types";
 
 /** The subset of course fields the card renders — lets related-course links reuse it. */
@@ -17,12 +18,18 @@ export function CourseCard({
   course: CourseCardData;
   className?: string;
 }) {
+  // shortDescription is authored in the rich text editor; flatten it to inline
+  // HTML so bold/links survive but block tags (<p>, …) don't leak as text.
+  const blurb = richTextToInlineHtml(course.shortDescription);
+
   return (
     <MediaCard
       href={`/courses/${course.slug}`}
       image={course.image}
       title={course.title}
-      subtitle={course.shortDescription}
+      subtitle={
+        blurb ? <span dangerouslySetInnerHTML={{ __html: blurb }} /> : undefined
+      }
       className={className}
       imageOverlay={
         course.isFeatured ? (

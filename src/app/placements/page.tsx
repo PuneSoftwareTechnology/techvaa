@@ -92,27 +92,25 @@ export default async function PlacementsPage() {
             eyebrow="Career Prep Tools"
             title="Everything you need to get hired"
           />
-          <div className="mt-8 grid grid-cols-2 gap-4 sm:mt-12 sm:gap-6 md:grid-cols-3">
+          <div className="mt-8 grid grid-cols-1 gap-4 sm:mt-12 sm:grid-cols-2 sm:gap-6 md:grid-cols-3">
             {CAREER_TOOLS.map((t, i) => (
               <Reveal as="div" index={i} key={t.title}>
                 <Card
-                  className={`group relative h-full overflow-hidden p-7 text-center ring-1 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg ${t.ring}`}
+                  className={`group relative flex justify-start items-center h-full items-start gap-4 overflow-hidden p-7 ring-1 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg ${t.ring}`}
                 >
                   <div
-                    aria-hidden="true"
-                    className={`pointer-events-none absolute -right-10 -top-10 size-32 rounded-full blur-2xl ${t.glow}`}
-                  />
-                  <div
-                    className={`relative mx-auto mb-4 grid size-14 place-items-center rounded-2xl bg-gradient-to-br text-white shadow-md transition-transform duration-300 group-hover:scale-110 ${t.gradient}`}
+                    className={` grid size-14 shrink-0 place-items-center rounded-2xl bg-gradient-to-br text-white shadow-md transition-transform duration-300 group-hover:scale-110 ${t.gradient}`}
                   >
                     <DynamicIcon name={t.icon} className="size-7" />
                   </div>
-                  <h3 className="relative font-heading text-lg font-semibold text-foreground">
-                    {t.title}
-                  </h3>
-                  <p className="relative mt-2 text-sm text-muted-foreground">
-                    {t.description}
-                  </p>
+                  <div className="">
+                    <h3 className="font-heading text-lg font-semibold text-foreground">
+                      {t.title}
+                    </h3>
+                    <p className="mt-1 text-sm text-muted-foreground">
+                      {t.description}
+                    </p>
+                  </div>
                 </Card>
               </Reveal>
             ))}

@@ -46,5 +46,5 @@ export const TRUST_STATS = [
 export const HERO_HIGHLIGHTS = [
   "Comprehensive SAP training with Projects",
   "100% placement support & career services",
-  "Real time S4HANA server access with Practical training by working professinals",
+  "Practical training by working professinals",
 ] as const;

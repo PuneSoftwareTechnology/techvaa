@@ -35,7 +35,7 @@ export function FloatingContact() {
       {/* Action stack — rendered above the toggle, revealed when open. */}
       <div
         className={cn(
-          "flex flex-col items-end gap-3 transition-all duration-300 ease-out",
+          "absolute bottom-full right-0 mb-3 flex flex-col items-end gap-3 transition-all duration-300 ease-out",
           open
             ? "pointer-events-auto translate-y-0 opacity-100"
             : "pointer-events-none translate-y-3 opacity-0",

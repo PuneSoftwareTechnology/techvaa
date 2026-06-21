@@ -181,6 +181,30 @@ function linkifyOutsideTags(html: string): string {
     .join("");
 }
 
+// Inline marks kept when flattening rich text to a single line. Everything else
+// (p, headings, lists, blockquote, br, …) is treated as a block separator.
+const INLINE_MARK_TAGS = new Set([
+  "strong", "b", "em", "i", "u", "s", "strike", "mark", "sub", "sup", "a", "span", "code",
+]);
+
+/**
+ * Flattens sanitised rich-text HTML to a single inline run: keeps inline
+ * formatting (bold, italics, links, highlight, …) but drops block wrappers like
+ * `<p>` and headings. Use for one-line card blurbs where the field is authored
+ * in the rich text editor — avoids leaking literal `<p>` tags and avoids nesting
+ * block elements inside the card's own `<p>`.
+ */
+export function richTextToInlineHtml(html: string | null | undefined): string {
+  const clean = sanitizeRichText(html);
+  if (!clean) return "";
+  return clean
+    .replace(/<\/?([a-zA-Z0-9]+)[^>]*>/g, (tag, name: string) =>
+      INLINE_MARK_TAGS.has(name.toLowerCase()) ? tag : " ",
+    )
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
 /**
  * Strips all markup to plain text — for meta descriptions, JSON-LD and card
  * excerpts where rich-text fields must not leak HTML tags.

@@ -53,11 +53,22 @@ export const placementService = {
 };
 
 export const testimonialService = {
-  /** Falls back to published reviews so the UI is never empty. */
-  getForDisplay: cache(async (take = 3): Promise<TestimonialDTO[]> => {
-    const own = await testimonialRepository.findPublished(take);
+  /**
+   * Homepage success stories. Only testimonials flagged `showOnHomepage` are
+   * used; falls back to published reviews so the section is never empty.
+   */
+  getForHomepage: cache(async (take = 3): Promise<TestimonialDTO[]> => {
+    const own = await testimonialRepository.findForHomepage(take);
     if (own.length > 0) return own;
     const reviews = await reviewRepository.findPublished(take);
     return reviewsAsTestimonials(reviews);
   }),
+
+  /**
+   * Testimonials attached to a specific course. Strictly scoped — no fallback,
+   * so a course with no tagged testimonials simply hides the section.
+   */
+  getForCourse: cache((courseId: string, take = 8): Promise<TestimonialDTO[]> =>
+    testimonialRepository.findForCourse(courseId, take)
+  ),
 };

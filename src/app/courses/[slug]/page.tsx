@@ -77,7 +77,7 @@ export default async function CourseDetailPage({
 
   const [faqs, testimonials, relatedArticles] = await Promise.all([
     faqService.getForCourse(course.id),
-    testimonialService.getForDisplay(8),
+    testimonialService.getForCourse(course.id, 8),
     blogService.getForCourse(course.slug),
   ]);
 

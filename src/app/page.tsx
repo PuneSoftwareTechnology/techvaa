@@ -43,7 +43,7 @@ export default async function HomePage() {
   const [featured, batches, testimonials, faqs, rating] = await Promise.all([
     courseService.getFeatured(3),
     courseService.getUpcomingBatches(5),
-    testimonialService.getForDisplay(3),
+    testimonialService.getForHomepage(3),
     faqService.getForHomepage(),
     reviewService.getRatingSummary(),
   ]);

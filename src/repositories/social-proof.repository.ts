@@ -21,9 +21,20 @@ export const reviewRepository = {
 };
 
 export const testimonialRepository = {
-  async findPublished(take?: number): Promise<TestimonialDTO[]> {
+  /** Testimonials flagged to appear in the homepage success-stories section. */
+  async findForHomepage(take?: number): Promise<TestimonialDTO[]> {
     const rows = await prisma.testimonial.findMany({
-      where: PUBLISHED,
+      where: { ...PUBLISHED, showOnHomepage: true },
+      orderBy: { createdAt: "desc" },
+      take,
+    });
+    return rows.map(toTestimonialDTO);
+  },
+
+  /** Testimonials attached to a specific course. */
+  async findForCourse(courseId: string, take?: number): Promise<TestimonialDTO[]> {
+    const rows = await prisma.testimonial.findMany({
+      where: { ...PUBLISHED, courses: { some: { id: courseId } } },
       orderBy: { createdAt: "desc" },
       take,
     });

@@ -27,8 +27,10 @@ import { AlumniPlaced } from "@/modules/courses/components/alumni-placed";
 import { CourseReviews } from "@/modules/courses/components/course-reviews";
 import { FaqSection } from "@/modules/home/components/faq-section";
 
-export const revalidate = 60;
-export const dynamicParams = true;
+// Render on every request (live DB read) — see the home page for why Amplify's
+// multi-instance ISR cache makes a cached page flap stale. `generateStaticParams`
+// below is kept only as a build-time warm-up; pages render dynamically.
+export const dynamic = "force-dynamic";
 
 export async function generateStaticParams() {
   const slugs = await courseService.getAllSlugs();

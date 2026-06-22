@@ -110,10 +110,13 @@ export const FOOTER_LINKS = {
     { label: "Contact", href: "/contact" },
   ],
   courses: [
+    { label: "SAP S/4HANA", href: "/courses/sap-s4hana-foundation" },
     { label: "SAP FICO", href: "/courses/sap-fico-end-to-end-training" },
-    { label: "SAP MM", href: "/courses/sap-mm-materials-management" },
+    { label: "SAP MM", href: "/courses/sap-mm" },
+    { label: "SAP PP", href: "/courses/sap-pp" },
+    { label: "SAP SD", href: "/courses/sap-sd" },
     { label: "SAP ABAP", href: "/courses/sap-abap-programming" },
-    { label: "SAP S/4HANA", href: "/courses/sap-s4hana-simple-finance" },
+    { label: "SAP SuccessFactors", href: "/courses/sap-successfactors" },
   ],
   legal: [
     { label: "Terms of Use", href: "/terms" },

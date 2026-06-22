@@ -15,8 +15,13 @@ import { TransformCta } from "@/modules/home/components/transform-cta";
 import { BatchSchedule } from "@/modules/courses/components/batch-schedule";
 import { FaqSection } from "@/modules/home/components/faq-section";
 
-// ISR: regenerate the home page at most once an hour.
-export const revalidate = 60;
+// Render on every request (live DB read). Amplify Hosting runs Next.js across
+// multiple ephemeral compute instances with no shared ISR cache, so a cached
+// page (`revalidate`) only refreshes on whichever instance handled the
+// revalidation — other/cold instances keep serving the stale build snapshot,
+// making admin edits "vanish" minutes later. Dynamic rendering removes the
+// snapshot entirely so the page can never go stale.
+export const dynamic = "force-dynamic";
 
 export async function generateMetadata(): Promise<Metadata> {
   return pageMetadata("/", {

@@ -12,7 +12,9 @@ import { Card } from "@/components/ui/card";
 import { RatingOverview, RatingDistribution } from "@/modules/reviews/components/rating-overview";
 import { ReviewsList } from "@/modules/reviews/components/reviews-list";
 
-export const revalidate = 60;
+// Render on every request (live DB read) — see the home page for why Amplify's
+// multi-instance ISR cache makes a cached page flap stale.
+export const dynamic = "force-dynamic";
 
 export async function generateMetadata(): Promise<Metadata> {
   return pageMetadata("/reviews", {

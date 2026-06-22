@@ -16,8 +16,10 @@ import { Reveal } from "@/components/common/reveal";
 import { formatDate } from "@/lib/format";
 import { BlogCard } from "@/modules/blog/components/blog-card";
 
-export const revalidate = 60;
-export const dynamicParams = true;
+// Render on every request (live DB read) — see the home page for why Amplify's
+// multi-instance ISR cache makes a cached page flap stale. `generateStaticParams`
+// below is kept only as a build-time warm-up; pages render dynamically.
+export const dynamic = "force-dynamic";
 
 /** Renders one templated content block; nothing if the block is empty. */
 function ContentBlock({ block }: { block: BlogContentBlockDTO }) {

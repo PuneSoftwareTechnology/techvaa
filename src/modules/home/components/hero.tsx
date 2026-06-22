@@ -70,7 +70,7 @@ export function Hero() {
             </Button>
           </motion.div>
 
-          <motion.ul {...fade(0.32)} className="mt-8 grid gap-2 sm:grid-cols-2">
+          <motion.ul {...fade(0.32)} className="mt-8 grid gap-2">
             {HERO_HIGHLIGHTS.map((h) => (
               <li
                 key={h}

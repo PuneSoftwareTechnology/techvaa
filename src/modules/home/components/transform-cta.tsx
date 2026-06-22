@@ -67,7 +67,11 @@ export function TransformCta() {
             >
               <Link href="#contact">
                 <Shimmer />
-                <CalendarCheck aria-hidden="true" /> Book a Free Demo
+                <CalendarCheck
+                  className="hidden md:block"
+                  aria-hidden="true"
+                />{" "}
+                Book a Free Demo
               </Link>
             </Button>
             <Button
@@ -77,7 +81,8 @@ export function TransformCta() {
               className="flex-1 border-white/30 bg-white/5 px-3 text-sm text-white hover:bg-white/15 hover:text-white sm:flex-initial sm:px-6 sm:text-base"
             >
               <Link href="/courses">
-                <Eye aria-hidden="true" /> View Catalog
+                <Eye aria-hidden="true" className="hidden md:block" /> View
+                Catalog
               </Link>
             </Button>
           </div>

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { CalendarDays, Clock } from "lucide-react";
@@ -25,6 +26,7 @@ export const dynamic = "force-dynamic";
 function ContentBlock({ block }: { block: BlogContentBlockDTO }) {
   const isEmpty =
     !block.title &&
+    !block.image &&
     !block.intro &&
     !block.text &&
     block.points.length === 0;
@@ -34,6 +36,17 @@ function ContentBlock({ block }: { block: BlogContentBlockDTO }) {
     <section className="mt-10">
       {block.title && (
         <h2 className="text-2xl font-semibold text-foreground">{block.title}</h2>
+      )}
+      {block.image && (
+        <div className="relative mt-4 aspect-[16/9] overflow-hidden rounded-xl border bg-secondary/40">
+          <Image
+            src={block.image}
+            alt={block.title ?? ""}
+            fill
+            sizes="(min-width: 1024px) 50vw, 100vw"
+            className="object-cover"
+          />
+        </div>
       )}
       <RichTextContent
         html={block.intro}

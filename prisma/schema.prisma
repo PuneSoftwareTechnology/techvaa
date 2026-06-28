@@ -178,11 +178,13 @@ model Blog {
 
   // Primary content block
   primaryTitle String?
+  primaryImage String? // optional photo shown between the title and intro
   primaryIntro String?
   primaryText  String?
 
   // Secondary content block
   secondaryTitle String?
+  secondaryImage String? // optional photo shown between the title and intro
   secondaryIntro String?
   secondaryText  String?
 
@@ -204,11 +206,10 @@ model Blog {
   // Curated related courses (implicit M2M join table _BlogRelatedCourses).
   relatedCourses Course[] @relation("BlogRelatedCourses")
 
-  // Self many-to-many: other blogs surfaced as "related" on the detail page.
-  // `relatedBlogs` is the curated set this blog points at; `relatedFrom` is the
-  // inverse. Implicit join table _RelatedBlogs.
-  relatedBlogs Blog[] @relation("RelatedBlogs")
-  relatedFrom  Blog[] @relation("RelatedBlogs")
+  // Curated "related" blogs surfaced on the detail page, stored as an ordered
+  // list of blog ids. A plain array (instead of a self M2M join table) keeps the
+  // schema simple; ids are resolved to live blogs at read time in the repository.
+  relatedBlogIds String[]
 
   // Optional one-to-one SEO metadata (FK lives on SeoMetadata).
   seo SeoMetadata?

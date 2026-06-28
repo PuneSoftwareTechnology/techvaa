@@ -130,18 +130,21 @@ export function toBlogDTO(b: any): BlogDTO {
     introduction: b.introduction,
     primary: {
       title: b.primaryTitle ?? null,
+      image: b.primaryImage ?? null,
       intro: b.primaryIntro ?? null,
       text: b.primaryText ?? null,
       points: [],
     },
     secondary: {
       title: b.secondaryTitle ?? null,
+      image: b.secondaryImage ?? null,
       intro: b.secondaryIntro ?? null,
       text: b.secondaryText ?? null,
       points: [],
     },
     tertiary: {
       title: b.tertiaryTitle ?? null,
+      image: null,
       intro: b.tertiaryIntro ?? null,
       text: b.tertiaryText ?? null,
       points: b.tertiaryPoints ?? [],

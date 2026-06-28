@@ -53,22 +53,29 @@ export const blogRepository = {
 
   /**
    * Blogs shown as "Related articles". Prefers the post's curated
-   * `relatedBlogs`; falls back to the latest published posts (excluding the
-   * current one) when none are curated.
+   * `relatedBlogIds` (resolved to live blogs, in the curated order); falls back
+   * to the latest published posts (excluding the current one) when none are
+   * curated.
    */
   async findRelated(slug: string, take = 3): Promise<BlogDTO[]> {
-    const row = await prisma.blog.findFirst({
+    const blog = await prisma.blog.findFirst({
       where: { slug, ...PUBLISHED },
-      select: {
-        relatedBlogs: {
-          where: PUBLISHED,
-          orderBy: { publishedAt: "desc" },
-          take,
-          include: { seo: true },
-        },
-      },
+      select: { relatedBlogIds: true },
     });
-    if (row?.relatedBlogs.length) return row.relatedBlogs.map(toBlogDTO);
+
+    if (blog?.relatedBlogIds.length) {
+      const curated = await prisma.blog.findMany({
+        where: { id: { in: blog.relatedBlogIds }, ...PUBLISHED },
+        include: { seo: true },
+      });
+      // `IN` doesn't preserve order; restore the curated order and cap to `take`.
+      const byId = new Map(curated.map((b) => [b.id, b]));
+      const ordered = blog.relatedBlogIds
+        .map((id) => byId.get(id))
+        .filter((b): b is (typeof curated)[number] => b !== undefined)
+        .slice(0, take);
+      if (ordered.length) return ordered.map(toBlogDTO);
+    }
 
     const rows = await prisma.blog.findMany({
       where: { ...PUBLISHED, slug: { not: slug } },

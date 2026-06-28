@@ -491,11 +491,9 @@ async function main() {
             .filter((s) => courseIds[s])
             .map((s) => ({ id: courseIds[s] })),
         },
-        relatedBlogs: {
-          set: b.relatedBlogSlugs
-            .filter((s) => blogIds[s])
-            .map((s) => ({ id: blogIds[s] })),
-        },
+        relatedBlogIds: b.relatedBlogSlugs
+          .filter((s) => blogIds[s])
+          .map((s) => blogIds[s]),
       },
     });
   }

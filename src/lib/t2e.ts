@@ -47,7 +47,7 @@ export async function syncEnquiryToT2E(
     email: enquiry.email ?? "",
     course: enquiry.course ?? "",
     institute: "Techvaa",
-    leadStatus: "PROSPECTIVE",
+    leadStatus: "NEW",
     demoStatus: "PENDING",
     demoDate: "",
     comment: enquiry.message?.trim() ?? "",

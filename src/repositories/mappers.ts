@@ -144,7 +144,7 @@ export function toBlogDTO(b: any): BlogDTO {
     },
     tertiary: {
       title: b.tertiaryTitle ?? null,
-      image: null,
+      image: b.tertiaryImage ?? null,
       intro: b.tertiaryIntro ?? null,
       text: b.tertiaryText ?? null,
       points: b.tertiaryPoints ?? [],

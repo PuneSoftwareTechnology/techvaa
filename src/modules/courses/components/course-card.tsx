@@ -24,6 +24,7 @@ export function CourseCard({
 
   return (
     <MediaCard
+      stacked
       href={`/courses/${course.slug}`}
       image={course.image}
       title={course.title}

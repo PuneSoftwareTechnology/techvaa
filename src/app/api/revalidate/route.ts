@@ -65,10 +65,6 @@ export async function POST(req: NextRequest) {
   for (const path of revalidated) revalidatePath(path);
   // Invalidate every page under the dynamic detail routes.
   for (const route of DETAIL_ROUTES) revalidatePath(route, "page");
-  // The sitemap is DB-driven (slugs from published courses/blogs), so any
-  // content edit can change it — refresh it on every revalidation too, else a
-  // renamed/added/removed slug lingers until its own ISR window lapses.
-  revalidatePath("/sitemap.xml");
 
   // NOTE: this refreshes the ORIGIN's ISR cache only. The site runs on Amplify
   // Hosting, whose managed CloudFront still serves its edge copy until the
@@ -77,7 +73,7 @@ export async function POST(req: NextRequest) {
   // each page, not by this call.
 
   return Response.json(
-    { revalidated: [...revalidated, ...DETAIL_ROUTES, "/sitemap.xml"], now: Date.now() },
+    { revalidated: [...revalidated, ...DETAIL_ROUTES], now: Date.now() },
     { status: 200, headers: corsHeaders(req) }
   );
 }

@@ -19,6 +19,7 @@ export function BlogCard({
 
   return (
     <MediaCard
+      stacked
       href={`/blogs/${blog.slug}`}
       image={blog.featuredImage}
       title={blog.title}

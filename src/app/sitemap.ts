@@ -1,7 +1,11 @@
 import type { MetadataRoute } from "next";
 import { absoluteUrl } from "@/lib/seo";
 
-export const revalidate = 3600;
+// Match every content route (see the force-dynamic switch in commit 83d19c8):
+// the sitemap is DB-driven, so ISR left it serving stale slugs after admin
+// edits while the pages themselves updated. Rendering it dynamically keeps it
+// in sync at both the origin and the Amplify/CloudFront edge.
+export const dynamic = "force-dynamic";
 
 // Fetch the dynamic slugs without ever letting a DB problem crash the route.
 // The services import prisma.ts, which throws at *module load* if the DATABASE

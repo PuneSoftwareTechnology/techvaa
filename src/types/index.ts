@@ -90,7 +90,7 @@ export interface CourseDTO {
 /** One templated content block (primary/secondary/tertiary) of a blog. */
 export interface BlogContentBlockDTO {
   title: string | null;
-  /** Optional photo shown between the title and intro. Tertiary has none. */
+  /** Optional photo shown between the title and intro. */
   image: string | null;
   intro: string | null;
   text: string | null;

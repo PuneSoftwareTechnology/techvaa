@@ -7,8 +7,10 @@ import { cn } from "@/lib/utils";
 /**
  * Shared content-card shell used by blog and course cards.
  *
- * Mobile: compact horizontal row (image left, copy right) to fit more cards
- * per screen. sm+: classic vertical card with a top banner image.
+ * Default: mobile is a compact horizontal row (image left, copy right) to fit
+ * more cards per screen; sm+ is a classic vertical card with a top banner.
+ * `stacked`: image-on-top at every breakpoint — for one-per-row grids where the
+ * horizontal row wastes width and truncates the copy.
  *
  * The whole card is clickable via a stretched link; interactive footer
  * elements must set `relative z-10` to sit above it.
@@ -21,6 +23,7 @@ export function MediaCard({
   imageOverlay,
   footer,
   featured = false,
+  stacked = false,
   className,
 }: {
   href: string;
@@ -33,25 +36,39 @@ export function MediaCard({
   footer?: ReactNode;
   /** Bumps the title size on emphasised cards. */
   featured?: boolean;
+  /** Image-on-top at all breakpoints (vs the default mobile horizontal row). */
+  stacked?: boolean;
   className?: string;
 }) {
   return (
     <Card
       className={cn(
-        "group relative flex h-full flex-row overflow-hidden p-0 transition-shadow hover:shadow-lg sm:flex-col",
+        "group relative flex h-full overflow-hidden p-0 transition-shadow hover:shadow-lg",
+        stacked ? "flex-col" : "flex-row sm:flex-col",
         className,
       )}
     >
       {/* Stretched link — makes the whole card clickable */}
       <Link href={href} aria-label={title} className="absolute inset-0 z-0" />
 
-      <div className="relative w-28 shrink-0 self-stretch overflow-hidden bg-brand sm:aspect-[16/9] sm:w-full sm:self-auto">
+      <div
+        className={cn(
+          "relative overflow-hidden bg-brand",
+          stacked
+            ? "aspect-[16/9] w-full"
+            : "w-28 shrink-0 self-stretch sm:aspect-[16/9] sm:w-full sm:self-auto",
+        )}
+      >
         {image ? (
           <Image
             src={image}
             alt={title}
             fill
-            sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 7rem"
+            sizes={
+              stacked
+                ? "(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                : "(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 7rem"
+            }
             className="object-cover object-center transition-transform duration-300 group-hover:scale-105"
           />
         ) : (
@@ -66,25 +83,34 @@ export function MediaCard({
       <div className="flex flex-1 flex-col p-4 sm:p-5">
         <h3
           className={cn(
-            "line-clamp-1 font-heading font-semibold leading-snug text-foreground transition-colors group-hover:text-accent-orange sm:line-clamp-none",
+            "font-heading font-semibold leading-snug text-foreground transition-colors group-hover:text-accent-orange",
+            stacked ? "line-clamp-2" : "line-clamp-1 sm:line-clamp-none",
             featured ? "text-base sm:text-xl" : "text-base sm:text-lg",
           )}
         >
           {title}
         </h3>
         {subtitle && (
-          <p className="mt-2 line-clamp-1 text-sm text-muted-foreground sm:line-clamp-2">
+          <p
+            className={cn(
+              "mt-2 text-sm text-muted-foreground",
+              stacked ? "line-clamp-2" : "line-clamp-1 sm:line-clamp-2",
+            )}
+          >
             {subtitle}
           </p>
         )}
         {footer && <div className="mt-auto pt-4">{footer}</div>}
       </div>
 
-      {/* Mobile-only: subtle fade along the bottom edge for a little depth. */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-brand/15 to-transparent sm:hidden"
-      />
+      {/* Mobile-only: subtle fade along the bottom edge for a little depth.
+          Skipped when stacked — the fade is tuned for the horizontal row. */}
+      {!stacked && (
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-brand/15 to-transparent sm:hidden"
+        />
+      )}
     </Card>
   );
 }

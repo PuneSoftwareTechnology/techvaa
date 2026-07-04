@@ -1,12 +1,12 @@
 "use client";
 
-import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
 import { ArrowRight, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/common/container";
 import { MapPin } from "lucide-react";
 import { HeroBackground } from "@/components/common/hero-background";
+import { ScrollLink } from "@/components/common/scroll-link";
 import { Shimmer } from "@/components/common/shimmer";
 import { HERO_HIGHLIGHTS } from "@/constants/home";
 import { LOCATION } from "@/constants/site";
@@ -63,10 +63,10 @@ export function Hero() {
               size="xl"
               className="relative overflow-hidden"
             >
-              <Link href="#contact">
+              <ScrollLink href="#contact">
                 <Shimmer />
                 Enroll Now <ArrowRight aria-hidden="true" />
-              </Link>
+              </ScrollLink>
             </Button>
           </motion.div>
 

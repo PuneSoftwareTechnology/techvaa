@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { RatingStars } from "@/components/common/rating-stars";
 import { cn } from "@/lib/utils";
@@ -29,6 +32,9 @@ function themeFor(seed: string) {
   return THEMES[h % THEMES.length];
 }
 
+// Reviews longer than this are clamped with an inline "Read more" toggle.
+const PREVIEW_LENGTH = 130;
+
 export function ReviewCard({
   review,
   className,
@@ -36,8 +42,16 @@ export function ReviewCard({
   review: ReviewDTO;
   className?: string;
 }) {
+  const [expanded, setExpanded] = useState(false);
   const meta = [review.designation, review.company].filter(Boolean).join(" · ");
   const theme = themeFor(review.id ?? review.studentName);
+
+  const isLong = review.review.length > PREVIEW_LENGTH;
+  const shown =
+    isLong && !expanded
+      ? review.review.slice(0, PREVIEW_LENGTH).trimEnd() + "…"
+      : review.review;
+
   return (
     <Card
       className={cn(
@@ -67,7 +81,17 @@ export function ReviewCard({
       </div>
       <RatingStars rating={review.rating} className="mt-4" />
       <p className="mt-3 flex-1 text-sm leading-relaxed text-foreground/90">
-        “{review.review}”
+        “{shown}”
+        {isLong && (
+          <button
+            type="button"
+            onClick={() => setExpanded((v) => !v)}
+            aria-expanded={expanded}
+            className="ml-1 font-medium text-accent-orange underline underline-offset-2 hover:text-accent-orange/80"
+          >
+            {expanded ? "Read Less" : "Read More"}
+          </button>
+        )}
       </p>
     </Card>
   );

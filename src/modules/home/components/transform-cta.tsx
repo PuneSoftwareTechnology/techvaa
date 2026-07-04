@@ -2,6 +2,7 @@ import Link from "next/link";
 import { CalendarCheck, Download, Eye, Sparkles, Star } from "lucide-react";
 import { Container } from "@/components/common/container";
 import { Reveal } from "@/components/common/reveal";
+import { ScrollLink } from "@/components/common/scroll-link";
 import { Shimmer } from "@/components/common/shimmer";
 import { Button } from "@/components/ui/button";
 
@@ -65,14 +66,14 @@ export function TransformCta() {
               size="xl"
               className="relative flex-1 overflow-hidden px-3 text-sm sm:flex-initial sm:px-6 sm:text-base"
             >
-              <Link href="#contact">
+              <ScrollLink href="#contact">
                 <Shimmer />
                 <CalendarCheck
                   className="hidden md:block"
                   aria-hidden="true"
                 />{" "}
                 Book a Free Demo
-              </Link>
+              </ScrollLink>
             </Button>
             <Button
               asChild

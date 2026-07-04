@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { CalendarDays, Clock } from "lucide-react";
+import { ArrowRight, CalendarDays, Clock } from "lucide-react";
 import type { BlogContentBlockDTO } from "@/types";
 import { blogService } from "@/services/blog.service";
 import { buildMetadata } from "@/lib/seo";
@@ -33,12 +33,18 @@ function ContentBlock({ block }: { block: BlogContentBlockDTO }) {
   if (isEmpty) return null;
 
   return (
-    <section className="mt-10">
+    <section className="mt-12 scroll-mt-24">
       {block.title && (
-        <h2 className="text-2xl font-semibold text-foreground">{block.title}</h2>
+        <h2 className="!mb-5 flex items-center gap-3 text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+          <span
+            className="h-7 w-1.5 shrink-0 rounded-full bg-accent-orange"
+            aria-hidden="true"
+          />
+          {block.title}
+        </h2>
       )}
       {block.image && (
-        <div className="relative mt-4 aspect-[16/9] overflow-hidden rounded-xl border bg-secondary/40">
+        <div className="relative mt-4 aspect-[16/9] overflow-hidden rounded-xl border bg-secondary/40 shadow-sm">
           <Image
             src={block.image}
             alt={block.title ?? ""}
@@ -53,11 +59,17 @@ function ContentBlock({ block }: { block: BlogContentBlockDTO }) {
         bare
         className="mt-2 [&_p]:font-medium [&_p]:leading-relaxed [&_p]:text-foreground"
       />
-      <RichTextContent html={block.text} bare className="mt-4 text-muted-foreground" />
+      <RichTextContent html={block.text} bare className="mt-4" />
       {block.points.length > 0 && (
-        <ul className="mt-4 list-disc space-y-1 pl-6 text-muted-foreground">
+        <ul className="mt-5 space-y-2.5">
           {block.points.map((p, i) => (
-            <li key={i}>{p}</li>
+            <li key={i} className="flex gap-3 text-foreground/80">
+              <span
+                className="mt-2 size-1.5 shrink-0 rounded-full bg-accent-orange"
+                aria-hidden="true"
+              />
+              <span className="leading-relaxed">{p}</span>
+            </li>
           ))}
         </ul>
       )}
@@ -77,7 +89,11 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   const blog = await blogService.getBySlug(slug);
-  if (!blog) return buildMetadata({ title: "Article not found", robots: "NOINDEX_FOLLOW" });
+  if (!blog)
+    return buildMetadata({
+      title: "Article not found",
+      robots: "NOINDEX_FOLLOW",
+    });
 
   const seo = blog.seo;
   return buildMetadata({
@@ -185,11 +201,13 @@ export default async function BlogDetailPage({
 
       <Container className="py-10 sm:py-14">
         <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_20rem] lg:gap-12">
-          <article className="prose prose-neutral max-w-none">
+          <article
+            className="prose prose-lg prose-neutral max-w-none prose-headings:scroll-mt-24 prose-headings:font-heading prose-headings:font-bold prose-headings:tracking-tight prose-headings:text-foreground prose-h3:text-xl prose-h4:text-lg prose-p:leading-relaxed prose-p:text-foreground/80 prose-a:font-medium prose-a:text-accent-orange prose-a:underline-offset-4 prose-strong:font-semibold prose-strong:text-foreground prose-ul:text-foreground/80 prose-ol:text-foreground/80 prose-li:marker:text-accent-orange prose-blockquote:rounded-r-lg prose-blockquote:border-l-accent-orange prose-blockquote:bg-secondary/40 prose-blockquote:py-1 prose-blockquote:font-normal prose-blockquote:not-italic prose-blockquote:text-foreground/90 prose-hr:border-border prose-img:rounded-xl prose-img:border prose-img:shadow-sm prose-table:text-sm prose-th:text-foreground prose-code:rounded prose-code:bg-secondary prose-code:px-1.5 prose-code:py-0.5 prose-code:font-medium prose-code:text-foreground prose-code:before:content-[''] prose-code:after:content-['']"
+          >
             <RichTextContent
               html={blog.introduction}
               bare
-              className="[&_p]:text-lg [&_p]:font-medium [&_p]:text-foreground"
+              className="border-l-4 border-accent-orange/60 pl-5 [&_p:last-child]:mb-0 [&_p]:text-lg [&_p]:font-medium [&_p]:leading-relaxed [&_p]:text-foreground"
             />
 
             <ContentBlock block={blog.primary} />
@@ -199,7 +217,7 @@ export default async function BlogDetailPage({
             <RichTextContent
               html={blog.conclusion}
               bare
-              className="mt-10 text-muted-foreground"
+              className="mt-12 border-t border-border pt-8"
             />
           </article>
 
@@ -213,9 +231,17 @@ export default async function BlogDetailPage({
                   <Link
                     key={course.id}
                     href={`/courses/${course.slug}`}
-                    className="flex items-center gap-4 rounded-xl border bg-secondary/40 p-5 transition-colors hover:bg-secondary/60"
+                    className="group flex items-center gap-4 rounded-xl border border-border bg-secondary/40 p-5 shadow-sm transition-all hover:-translate-y-0.5 hover:border-primary/50 hover:bg-secondary/70 hover:shadow-md"
                   >
-                    <p className="font-semibold text-foreground">{course.title}</p>
+                    <div className="min-w-0 flex-1">
+                      <p className="font-semibold text-foreground transition-colors group-hover:text-primary">
+                        {course.title}
+                      </p>
+                      <span className="mt-1 inline-flex items-center gap-1 text-sm font-medium text-primary">
+                        View course
+                        <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                      </span>
+                    </div>
                   </Link>
                 ))}
               </div>
@@ -225,7 +251,10 @@ export default async function BlogDetailPage({
       </Container>
 
       {related.length > 0 && (
-        <section aria-labelledby="related-title" className="bg-secondary/40 py-10 sm:py-16">
+        <section
+          aria-labelledby="related-title"
+          className="bg-secondary/40 py-10 sm:py-16"
+        >
           <Container>
             <SectionHeader align="left" as="h2" title="Related articles" />
             <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">

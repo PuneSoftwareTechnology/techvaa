@@ -138,7 +138,9 @@ export function EnrollDialog({ course, className, trigger }: EnrollDialogProps) 
             <p className="text-xs uppercase tracking-wide text-muted-foreground">
               Selected course
             </p>
-            <p className="truncate font-semibold text-foreground">{course}</p>
+            <p className="font-semibold text-foreground break-words">
+              {course}
+            </p>
           </div>
         </div>
 
@@ -148,11 +150,13 @@ export function EnrollDialog({ course, className, trigger }: EnrollDialogProps) 
           className="space-y-4"
           aria-label="Course enrollment enquiry form"
         >
-          {/* Honeypot — visually hidden, off the tab order. */}
-          <div
-            aria-hidden="true"
-            className="absolute left-[-9999px] h-0 w-0 overflow-hidden"
-          >
+          {/* Honeypot — visually hidden, off the tab order. Uses `sr-only`
+              (clip-based) rather than off-screen positioning: an absolutely
+              positioned `left-[-9999px]` element inside the dialog forces a
+              horizontal scrollbar, because the dialog's `overflow-y-auto`
+              promotes `overflow-x` to `auto` too and the off-screen box then
+              counts as leftward overflow. */}
+          <div aria-hidden="true" className="sr-only">
             <label htmlFor="enroll-hp">Leave this field empty</label>
             <input
               id="enroll-hp"

@@ -87,8 +87,12 @@ export function LeadForm({ courseInterest, tone = "light", className }: LeadForm
       aria-label="Lead enquiry form"
     >
       {/* Honeypot — visually hidden, off the tab order, and named non-semantically
-          so password managers / browser autofill don't populate it for real users. */}
-      <div aria-hidden="true" className="absolute left-[-9999px] h-0 w-0 overflow-hidden">
+          so password managers / browser autofill don't populate it for real users.
+          Uses `sr-only` (clip-based) rather than off-screen positioning: inside a
+          dialog, an absolutely positioned `left-[-9999px]` element forces a
+          horizontal scrollbar because the dialog's `overflow-y-auto` promotes
+          `overflow-x` to `auto`, and the off-screen box counts as overflow. */}
+      <div aria-hidden="true" className="sr-only">
         <label htmlFor="lf-hp">Leave this field empty</label>
         <input
           id="lf-hp"

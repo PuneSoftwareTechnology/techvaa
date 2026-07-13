@@ -129,12 +129,14 @@ export default async function PlacementsPage() {
               eyebrow="Recent Placements"
               title="Our students, placed"
             />
-            <div className="mt-8 grid grid-cols-1 gap-4 sm:mt-12 sm:grid-cols-2 sm:gap-6 lg:grid-cols-4">
-              {placements.map((p, i) => (
-                <Reveal as="div" index={i % 4} key={p.id}>
-                  <PlacementCard placement={p} />
-                </Reveal>
-              ))}
+            <div className="mt-8 rounded-3xl bg-gradient-to-br from-blue-500 to-accent-orange p-5 ring-1 ring-brand/15 sm:mt-12 sm:p-8">
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-4">
+                {placements.map((p, i) => (
+                  <Reveal as="div" index={i % 4} key={p.id}>
+                    <PlacementCard placement={p} />
+                  </Reveal>
+                ))}
+              </div>
             </div>
           </Container>
         </section>

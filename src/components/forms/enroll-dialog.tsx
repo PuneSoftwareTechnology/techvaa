@@ -83,7 +83,7 @@ export function EnrollDialog({ course, className, trigger }: EnrollDialogProps) 
       const result = await submitCourseEnquiry({ status: "idle" }, fd);
 
       if (result.status === "success") {
-        toast.success(result.message ?? "Thanks! We'll be in touch.");
+        toast.success("Thanks! Our team will contact you soon.");
         reset({ name: "", phone: "", course, message: "", hpField: "" });
         setOpen(false);
         return;

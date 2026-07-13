@@ -83,8 +83,18 @@ export const LOCATION: SiteLocation = {
   hours: { display: "Mon–Sat, 9 AM – 8 PM", schema: "Mo-Sa 09:00-20:00" },
 };
 
-/** True once a real street address has been configured. */
-export const HAS_ADDRESS = LOCATION.address.street.trim().length > 0;
+/**
+ * Date after which the street address stops being published. Techvaa is
+ * vacating this location, so the postal block / map / PostalAddress JSON-LD
+ * must disappear once we're past 31 Aug 2026 (end of day, IST → 31 Aug 18:30 UTC).
+ */
+const ADDRESS_EXPIRY = new Date("2026-08-31T18:30:00Z");
+
+/** True once a real street address is configured AND we're still on/before the expiry date. */
+export const HAS_ADDRESS =
+  LOCATION.address.street.trim().length > 0 && new Date() <= ADDRESS_EXPIRY
+    ? true
+    : false;
 
 export type NavItem = {
   label: string;
@@ -110,13 +120,15 @@ export const FOOTER_LINKS = {
     { label: "Contact", href: "/contact" },
   ],
   courses: [
-    { label: "SAP S/4HANA", href: "/courses/sap-s4hana-foundation" },
-    { label: "SAP FICO", href: "/courses/sap-fico-end-to-end-training" },
-    { label: "SAP MM", href: "/courses/sap-mm" },
-    { label: "SAP PP", href: "/courses/sap-pp" },
-    { label: "SAP SD", href: "/courses/sap-sd" },
-    { label: "SAP ABAP", href: "/courses/sap-abap-programming" },
-    { label: "SAP SuccessFactors", href: "/courses/sap-successfactors" },
+    { label: "SAP FICO", href: "/courses/sap-fico-s4hana-course" },
+    { label: "SAP MM", href: "/courses/sap-mm-s4hana-course" },
+    { label: "SAP PP", href: "/courses/sap-pp-s4hana-course" },
+    { label: "SAP SD", href: "/courses/sap-sd-s4hana-course" },
+    { label: "SAP EWM", href: "/courses/sap-ewm-course" },
+    { label: "SAP ABAP", href: "/courses/sap-abap-s4hana-course" },
+    { label: "SAP BW", href: "/courses/sap-bw-s4hana-course" },
+    { label: "SAP Analytics Cloud", href: "/courses/sap-analytics-cloud-course" },
+    { label: "SAP CO", href: "/courses/sap-co-s4hana-course" },
   ],
   legal: [
     { label: "Terms of Use", href: "/terms" },

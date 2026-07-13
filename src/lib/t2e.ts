@@ -27,7 +27,7 @@ export type T2EEnquiry = {
 const T2E_TIMEOUT_MS = 8000;
 
 export async function syncEnquiryToT2E(
-  enquiry: T2EEnquiry
+  enquiry: T2EEnquiry,
 ): Promise<T2ESyncResult> {
   const url = process.env.T2E_API_URL;
   const token = process.env.T2E_API_TOKEN;
@@ -46,7 +46,7 @@ export async function syncEnquiryToT2E(
     phone: enquiry.phone,
     email: enquiry.email ?? "",
     course: enquiry.course ?? "",
-    institute: "Techvaa",
+    institute: "PST",
     leadStatus: "NEW",
     demoStatus: "PENDING",
     demoDate: "",

@@ -12,14 +12,16 @@ function initials(name: string) {
     .toUpperCase();
 }
 
-/** Distinct accent palettes, picked deterministically per student. */
+/** Distinct accent palettes, picked deterministically per student.
+ *  `wash` is a soft diagonal tint layered over the card's base surface so
+ *  each card carries its accent colour without hurting text legibility. */
 const PALETTES = [
-  { avatar: "from-sky-500 to-blue-600", glow: "bg-sky-500/10", ring: "ring-sky-500/20", icon: "text-sky-600" },
-  { avatar: "from-violet-500 to-purple-600", glow: "bg-violet-500/10", ring: "ring-violet-500/20", icon: "text-violet-600" },
-  { avatar: "from-amber-500 to-orange-600", glow: "bg-amber-500/10", ring: "ring-amber-500/20", icon: "text-amber-600" },
-  { avatar: "from-emerald-500 to-teal-600", glow: "bg-emerald-500/10", ring: "ring-emerald-500/20", icon: "text-emerald-600" },
-  { avatar: "from-rose-500 to-pink-600", glow: "bg-rose-500/10", ring: "ring-rose-500/20", icon: "text-rose-600" },
-  { avatar: "from-indigo-500 to-blue-700", glow: "bg-indigo-500/10", ring: "ring-indigo-500/20", icon: "text-indigo-600" },
+  { avatar: "from-sky-500 to-blue-600", glow: "bg-sky-500/10", ring: "ring-sky-500/25", icon: "text-sky-600", wash: "from-sky-500/15" },
+  { avatar: "from-violet-500 to-purple-600", glow: "bg-violet-500/10", ring: "ring-violet-500/25", icon: "text-violet-600", wash: "from-violet-500/15" },
+  { avatar: "from-amber-500 to-orange-600", glow: "bg-amber-500/10", ring: "ring-amber-500/25", icon: "text-amber-600", wash: "from-amber-500/15" },
+  { avatar: "from-emerald-500 to-teal-600", glow: "bg-emerald-500/10", ring: "ring-emerald-500/25", icon: "text-emerald-600", wash: "from-emerald-500/15" },
+  { avatar: "from-rose-500 to-pink-600", glow: "bg-rose-500/10", ring: "ring-rose-500/25", icon: "text-rose-600", wash: "from-rose-500/15" },
+  { avatar: "from-indigo-500 to-blue-700", glow: "bg-indigo-500/10", ring: "ring-indigo-500/25", icon: "text-indigo-600", wash: "from-indigo-500/15" },
 ] as const;
 
 function pickPalette(seed: string) {
@@ -37,6 +39,10 @@ export function PlacementCard({ placement }: { placement: PlacementDTO }) {
     <Card
       className={`group relative flex h-full flex-col overflow-hidden p-6 ring-1 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg ${p.ring}`}
     >
+      <div
+        aria-hidden="true"
+        className={`pointer-events-none absolute inset-0 bg-gradient-to-br to-transparent ${p.wash}`}
+      />
       <div
         aria-hidden="true"
         className={`pointer-events-none absolute -right-8 -top-8 size-28 rounded-full blur-2xl ${p.glow}`}

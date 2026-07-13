@@ -58,7 +58,7 @@ export function LeadForm({ courseInterest, tone = "light", className }: LeadForm
       const result = await submitLead({ status: "idle" }, fd);
 
       if (result.status === "success") {
-        toast.success(result.message ?? "Thanks! We'll be in touch.");
+        toast.success("Thanks! Our team will contact you soon.");
         reset({ ...values, name: "", email: "", phone: "", message: "" });
         return;
       }

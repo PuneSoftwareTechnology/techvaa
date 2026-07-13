@@ -51,9 +51,11 @@ export function MediaCard({
       {/* Stretched link — makes the whole card clickable */}
       <Link href={href} aria-label={title} className="absolute inset-0 z-0" />
 
+      {/* pointer-events-none lets clicks fall through to the stretched link
+          behind it, so the image is part of the clickable card. */}
       <div
         className={cn(
-          "relative overflow-hidden bg-brand",
+          "pointer-events-none relative overflow-hidden bg-brand",
           stacked
             ? "aspect-[16/9] w-full"
             : "w-28 shrink-0 self-stretch sm:aspect-[16/9] sm:w-full sm:self-auto",

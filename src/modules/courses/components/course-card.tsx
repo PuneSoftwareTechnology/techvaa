@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { EnrollDialog } from "@/components/forms/enroll-dialog";
@@ -49,10 +50,13 @@ export function CourseCard({
                 "relative z-10 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground",
             }}
           />
-          <span className="inline-flex items-center gap-1 text-sm font-semibold text-accent-orange transition-transform group-hover:translate-x-0.5">
+          <Link
+            href={`/courses/${course.slug}`}
+            className="relative z-10 inline-flex items-center gap-1 text-sm font-semibold text-accent-orange transition-transform hover:underline group-hover:translate-x-0.5"
+          >
             Learn more
             <ArrowRight className="size-4" aria-hidden="true" />
-          </span>
+          </Link>
         </div>
       }
     />

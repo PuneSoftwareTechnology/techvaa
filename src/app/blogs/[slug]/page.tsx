@@ -201,13 +201,11 @@ export default async function BlogDetailPage({
 
       <Container className="py-10 sm:py-14">
         <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_20rem] lg:gap-12">
-          <article
-            className="prose prose-lg prose-neutral max-w-none prose-headings:scroll-mt-24 prose-headings:font-heading prose-headings:font-bold prose-headings:tracking-tight prose-headings:text-foreground prose-h3:text-xl prose-h4:text-lg prose-p:leading-relaxed prose-p:text-foreground/80 prose-a:font-medium prose-a:text-accent-orange prose-a:underline-offset-4 prose-strong:font-semibold prose-strong:text-foreground prose-ul:text-foreground/80 prose-ol:text-foreground/80 prose-li:marker:text-accent-orange prose-blockquote:rounded-r-lg prose-blockquote:border-l-accent-orange prose-blockquote:bg-secondary/40 prose-blockquote:py-1 prose-blockquote:font-normal prose-blockquote:not-italic prose-blockquote:text-foreground/90 prose-hr:border-border prose-img:rounded-xl prose-img:border prose-img:shadow-sm prose-table:text-sm prose-th:text-foreground prose-code:rounded prose-code:bg-secondary prose-code:px-1.5 prose-code:py-0.5 prose-code:font-medium prose-code:text-foreground prose-code:before:content-[''] prose-code:after:content-['']"
-          >
+          <article className="prose prose-base prose-neutral max-w-none prose-headings:scroll-mt-24 prose-headings:font-heading prose-headings:font-bold prose-headings:tracking-tight prose-headings:text-foreground prose-h3:text-xl prose-h4:text-lg prose-p:leading-relaxed prose-p:text-foreground/80 prose-a:font-medium prose-a:text-accent-orange prose-a:underline-offset-4 prose-strong:font-semibold prose-strong:text-foreground prose-ul:text-foreground/80 prose-ol:text-foreground/80 prose-li:marker:text-accent-orange prose-blockquote:rounded-r-lg prose-blockquote:border-l-accent-orange prose-blockquote:bg-secondary/40 prose-blockquote:py-1 prose-blockquote:font-normal prose-blockquote:not-italic prose-blockquote:text-foreground/90 prose-hr:border-border prose-img:rounded-xl prose-img:border prose-img:shadow-sm prose-table:text-sm prose-th:text-foreground prose-code:rounded prose-code:bg-secondary prose-code:px-1.5 prose-code:py-0.5 prose-code:font-medium prose-code:text-foreground prose-code:before:content-[''] prose-code:after:content-['']">
             <RichTextContent
               html={blog.introduction}
               bare
-              className="border-l-4 border-accent-orange/60 pl-5 [&_p:last-child]:mb-0 [&_p]:text-lg [&_p]:font-medium [&_p]:leading-relaxed [&_p]:text-foreground"
+              className="border-l-4 border-accent-orange/60 pl-5 [&_p:last-child]:mb-0 [&_p]:text-base [&_p]:font-medium [&_p]:leading-relaxed [&_p]:text-foreground"
             />
 
             <ContentBlock block={blog.primary} />

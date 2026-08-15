@@ -69,10 +69,12 @@ export const LOCATION: SiteLocation = {
     "Aundh",
     "Pimpri-Chinchwad",
   ],
+  // Techvaa is vacating the Pimple Saudagar office, so no street/PIN is
+  // published — the footer, contact page and JSON-LD fall back to city/region.
   address: {
-    street: "Royal Tranquil, near Kokane Chowk, Deepmala Society",
-    locality: "Pimple Saudagar, Pimpri-Chinchwad",
-    postalCode: "411017",
+    street: "",
+    locality: "",
+    postalCode: "",
   },
   // TODO: { lat: 18.xxxx, lng: 73.xxxx }
   geo: null,
@@ -84,17 +86,12 @@ export const LOCATION: SiteLocation = {
 };
 
 /**
- * Date after which the street address stops being published. Techvaa is
- * vacating this location, so the postal block / map / PostalAddress JSON-LD
- * must disappear once we're past 31 Aug 2026 (end of day, IST → 31 Aug 18:30 UTC).
+ * Whether a real street address is published. Techvaa always shows the
+ * city/region ("Pune, Maharashtra"); the postal block / map / PostalAddress
+ * JSON-LD only render once a street address is filled in above. There is no
+ * date-based expiry — the address is not removed after any cutoff.
  */
-const ADDRESS_EXPIRY = new Date("2026-08-31T18:30:00Z");
-
-/** True once a real street address is configured AND we're still on/before the expiry date. */
-export const HAS_ADDRESS =
-  LOCATION.address.street.trim().length > 0 && new Date() <= ADDRESS_EXPIRY
-    ? true
-    : false;
+export const HAS_ADDRESS = LOCATION.address.street.trim().length > 0;
 
 export type NavItem = {
   label: string;
@@ -133,6 +130,7 @@ export const FOOTER_LINKS = {
   legal: [
     { label: "Terms of Use", href: "/terms" },
     { label: "Privacy Policy", href: "/privacy" },
+    { label: "Contact Us", href: "/contact" },
   ],
 } as const;
 
@@ -156,7 +154,7 @@ export const SOCIAL_LINKS = [
 ] as const;
 
 /**
- * Hiring / alumni-placement partners for the marquee (shared with PST).
+ * Hiring / alumni-placement partners for the marquee.
  * Logos are resolved at render time from each domain via Google's favicon
  * service (see LogoMarquee), with a wordmark fallback.
  */

@@ -40,16 +40,20 @@ export async function syncEnquiryToT2E(
   // Fixed mapping agreed with T2E. Fields Techvaa doesn't capture get the
   // agreed defaults; demoDate is intentionally left empty. The comment carries
   // the enquirer's own message when they typed one.
-  // enquiryType marks these as website-sourced on the T2E enquiry sheet.
+  //
+  // institute MUST be "TCH" — that's Techvaa's code in T2E (every existing
+  // enquiry uses it). Any other value (e.g. "TECHVAA") fails the FK check and
+  // T2E returns HTTP 500, silently dropping the lead. leadStatus must be one of
+  // T2E's enum values ("PROSPECTIVE" is what new leads carry there).
   const payload = {
     enquiryDate: new Date().toISOString().slice(0, 10), // YYYY-MM-DD
     name: enquiry.name,
     phone: enquiry.phone,
     email: enquiry.email ?? "",
     course: enquiry.course ?? "",
-    institute: "TECHVAA",
+    institute: "TCH",
     enquiryType: "WEBSITE",
-    leadStatus: "NEW",
+    leadStatus: "PROSPECTIVE",
     demoStatus: "PENDING",
     demoDate: "",
     comment: enquiry.message?.trim() ?? "",

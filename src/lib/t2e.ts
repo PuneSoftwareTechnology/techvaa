@@ -21,6 +21,8 @@ export type T2EEnquiry = {
   course?: string;
   /** Free-text message the enquirer typed — mirrored into the T2E comment. */
   message?: string;
+  /** Source tag on the T2E enquiry sheet. Defaults to "WEBSITE". */
+  enquiryType?: string;
 };
 
 // Cap how long a slow/hung T2E can stall the visitor's form response.
@@ -41,19 +43,29 @@ export async function syncEnquiryToT2E(
   // agreed defaults; demoDate is intentionally left empty. The comment carries
   // the enquirer's own message when they typed one.
   //
-  // institute MUST be "TCH" — that's Techvaa's code in T2E (every existing
-  // enquiry uses it). Any other value (e.g. "TECHVAA") fails the FK check and
-  // T2E returns HTTP 500, silently dropping the lead. leadStatus must be one of
-  // T2E's enum values ("PROSPECTIVE" is what new leads carry there).
+  // Two values are load-bearing:
+  //   - institute: T2E is a shared, multi-institute platform; this free-text
+  //     label is how its reports/dashboards separate one institute's leads from
+  //     another's. THIS website is the Techvaa institute — formerly "PST", now
+  //     rebranded "TECHVAA" (see sms-backend rename-pst-to-techvaa.mjs). It MUST
+  //     be "TECHVAA". Do NOT use "TCH" — that's a *different* institute (TCH
+  //     Software Services); tagging Techvaa's leads "TCH" files them under the
+  //     wrong company.
+  //   - leadStatus: mapped onto Postgres enum lead_status_enum. An unknown label
+  //     throws 22P02 → HTTP 500 → the lead is silently dropped. "NEW" was added
+  //     to the prod enum on 2026-08-15 (migrations/add-new-lead-status.mjs), so
+  //     it's now valid alongside PROSPECTIVE / NON_PROSPECTIVE / ENROLLED and
+  //     marks a fresh, un-triaged website lead. Do NOT introduce a label that
+  //     isn't in the enum without running that migration on prod first.
   const payload = {
     enquiryDate: new Date().toISOString().slice(0, 10), // YYYY-MM-DD
     name: enquiry.name,
     phone: enquiry.phone,
     email: enquiry.email ?? "",
     course: enquiry.course ?? "",
-    institute: "TCH",
-    enquiryType: "WEBSITE",
-    leadStatus: "PROSPECTIVE",
+    institute: "TECHVAA",
+    enquiryType: enquiry.enquiryType ?? "WEBSITE",
+    leadStatus: "NEW",
     demoStatus: "PENDING",
     demoDate: "",
     comment: enquiry.message?.trim() ?? "",

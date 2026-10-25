@@ -3,7 +3,8 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { Menu } from "lucide-react";
+import { ChevronDown, Menu } from "lucide-react";
+import { Collapsible, NavigationMenu } from "radix-ui";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
@@ -20,6 +21,25 @@ import { NAV_ITEMS, PRIMARY_CTA } from "@/constants/site";
 
 function isActive(pathname: string, href: string) {
   return href === "/" ? pathname === "/" : pathname.startsWith(href);
+}
+
+function desktopLinkClass(active: boolean) {
+  return cn(
+    "relative rounded-md px-3 py-2 text-sm font-medium transition-colors",
+    "after:absolute after:inset-x-3 after:-bottom-0.5 after:h-0.5 after:rounded-full after:bg-brand after:transition-transform after:duration-200",
+    active
+      ? "text-brand after:scale-x-100"
+      : "text-muted-foreground hover:text-foreground after:scale-x-0 hover:after:scale-x-100 hover:after:bg-border"
+  );
+}
+
+function mobileLinkClass(active: boolean) {
+  return cn(
+    "rounded-md border-l-2 px-3 py-3 text-base font-medium transition-colors",
+    active
+      ? "border-accent-orange bg-brand/10 text-brand"
+      : "border-transparent text-foreground hover:border-brand/40 hover:bg-brand/5 hover:text-brand"
+  );
 }
 
 export function Header() {
@@ -48,24 +68,73 @@ export function Header() {
         <Logo />
 
         <div className="flex items-center gap-2">
-          <nav aria-label="Primary" className="hidden items-center gap-1 lg:flex">
-            {NAV_ITEMS.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                aria-current={isActive(pathname, item.href) ? "page" : undefined}
-                className={cn(
-                  "relative rounded-md px-3 py-2 text-sm font-medium transition-colors",
-                  "after:absolute after:inset-x-3 after:-bottom-0.5 after:h-0.5 after:rounded-full after:bg-brand after:transition-transform after:duration-200",
-                  isActive(pathname, item.href)
-                    ? "text-brand after:scale-x-100"
-                    : "text-muted-foreground hover:text-foreground after:scale-x-0 hover:after:scale-x-100 hover:after:bg-border"
-                )}
-              >
-                {item.label}
-              </Link>
-            ))}
-          </nav>
+          <NavigationMenu.Root
+            aria-label="Primary"
+            delayDuration={100}
+            className="hidden lg:block"
+          >
+            <NavigationMenu.List className="flex items-center gap-1">
+              {NAV_ITEMS.map((item) => {
+                const active = isActive(pathname, item.href);
+                return (
+                  <NavigationMenu.Item key={item.href} className="relative">
+                    {item.children ? (
+                      <>
+                        <NavigationMenu.Trigger
+                          className={cn(
+                            desktopLinkClass(active),
+                            "group flex items-center gap-1 outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
+                          )}
+                        >
+                          {item.label}
+                          <ChevronDown
+                            className="size-3.5 transition-transform duration-200 group-data-[state=open]:rotate-180"
+                            aria-hidden="true"
+                          />
+                        </NavigationMenu.Trigger>
+                        {/* pt-2 (not mt-2) keeps the hover area continuous between trigger and panel. */}
+                        <NavigationMenu.Content className="absolute left-0 top-full z-50 pt-2 data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95">
+                          <ul className="w-52 rounded-lg border border-border bg-popover p-1.5 text-popover-foreground shadow-lg">
+                            {item.children.map((child) => {
+                              const childActive = pathname === child.href;
+                              return (
+                                <li key={child.href}>
+                                  <NavigationMenu.Link asChild active={childActive}>
+                                    <Link
+                                      href={child.href}
+                                      aria-current={childActive ? "page" : undefined}
+                                      className={cn(
+                                        "block rounded-md px-3 py-2 text-sm font-medium transition-colors outline-none focus-visible:bg-brand/5 focus-visible:text-brand",
+                                        childActive
+                                          ? "bg-brand/10 text-brand"
+                                          : "text-foreground hover:bg-brand/5 hover:text-brand"
+                                      )}
+                                    >
+                                      {child.label}
+                                    </Link>
+                                  </NavigationMenu.Link>
+                                </li>
+                              );
+                            })}
+                          </ul>
+                        </NavigationMenu.Content>
+                      </>
+                    ) : (
+                      <NavigationMenu.Link asChild active={active}>
+                        <Link
+                          href={item.href}
+                          aria-current={active ? "page" : undefined}
+                          className={desktopLinkClass(active)}
+                        >
+                          {item.label}
+                        </Link>
+                      </NavigationMenu.Link>
+                    )}
+                  </NavigationMenu.Item>
+                );
+              })}
+            </NavigationMenu.List>
+          </NavigationMenu.Root>
 
           {/* Mobile menu */}
           <Sheet open={open} onOpenChange={setOpen}>
@@ -85,25 +154,64 @@ export function Header() {
                   <Logo />
                 </SheetTitle>
               </SheetHeader>
-              <nav aria-label="Mobile" className="mt-2 flex flex-col gap-1 px-4">
-                {NAV_ITEMS.map((item) => (
-                  <SheetClose asChild key={item.href}>
-                    <Link
-                      href={item.href}
-                      aria-current={
-                        isActive(pathname, item.href) ? "page" : undefined
-                      }
-                      className={cn(
-                        "rounded-md border-l-2 px-3 py-3 text-base font-medium transition-colors",
-                        isActive(pathname, item.href)
-                          ? "border-accent-orange bg-brand/10 text-brand"
-                          : "border-transparent text-foreground hover:border-brand/40 hover:bg-brand/5 hover:text-brand"
-                      )}
-                    >
-                      {item.label}
-                    </Link>
-                  </SheetClose>
-                ))}
+              <nav
+                aria-label="Mobile"
+                className="mt-2 flex min-h-0 flex-1 flex-col gap-1 overflow-y-auto px-4 pb-6"
+              >
+                {NAV_ITEMS.map((item) => {
+                  const active = isActive(pathname, item.href);
+                  return item.children ? (
+                    <Collapsible.Root key={item.href} defaultOpen={active}>
+                      <Collapsible.Trigger
+                        className={cn(
+                          mobileLinkClass(active),
+                          "group flex w-full items-center justify-between"
+                        )}
+                      >
+                        {item.label}
+                        <ChevronDown
+                          className="size-4 transition-transform duration-200 group-data-[state=open]:rotate-180"
+                          aria-hidden="true"
+                        />
+                      </Collapsible.Trigger>
+                      <Collapsible.Content>
+                        <ul className="mt-1 ml-3 flex flex-col gap-0.5 border-l border-border pl-2">
+                          {item.children.map((child) => {
+                            const childActive = pathname === child.href;
+                            return (
+                              <li key={child.href}>
+                                <SheetClose asChild>
+                                  <Link
+                                    href={child.href}
+                                    aria-current={childActive ? "page" : undefined}
+                                    className={cn(
+                                      "block rounded-md px-3 py-2 text-sm font-medium transition-colors",
+                                      childActive
+                                        ? "bg-brand/10 text-brand"
+                                        : "text-foreground hover:bg-brand/5 hover:text-brand"
+                                    )}
+                                  >
+                                    {child.label}
+                                  </Link>
+                                </SheetClose>
+                              </li>
+                            );
+                          })}
+                        </ul>
+                      </Collapsible.Content>
+                    </Collapsible.Root>
+                  ) : (
+                    <SheetClose asChild key={item.href}>
+                      <Link
+                        href={item.href}
+                        aria-current={active ? "page" : undefined}
+                        className={mobileLinkClass(active)}
+                      >
+                        {item.label}
+                      </Link>
+                    </SheetClose>
+                  );
+                })}
                 <SheetClose asChild>
                   <Button asChild variant="accent" size="xl" className="mt-4">
                     <Link href={PRIMARY_CTA.href}>{PRIMARY_CTA.label}</Link>

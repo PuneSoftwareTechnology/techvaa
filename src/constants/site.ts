@@ -96,12 +96,32 @@ export const HAS_ADDRESS = LOCATION.address.street.trim().length > 0;
 export type NavItem = {
   label: string;
   href: string;
+  /** Sub-links rendered as a dropdown (desktop) / expandable list (mobile). */
+  children?: readonly NavItem[];
 };
+
+/**
+ * Individual course pages listed under the header "Courses" dropdown. Slugs
+ * must match published courses in the DB. The all-courses page (/courses) is
+ * linked from the footer instead.
+ */
+export const NAV_COURSES: readonly NavItem[] = [
+  { label: "SAP FICO", href: "/courses/sap-fico-s4hana-course" },
+  { label: "SAP MM", href: "/courses/sap-mm-s4hana-course" },
+  { label: "SAP SD", href: "/courses/sap-sd-s4hana-course" },
+  { label: "SAP PP", href: "/courses/sap-pp-s4hana-course" },
+  { label: "SAP EWM", href: "/courses/sap-ewm-course" },
+  { label: "SAP CO", href: "/courses/sap-co-s4hana-course" },
+  { label: "SAP ABAP", href: "/courses/sap-abap-s4hana-course" },
+  { label: "SAP BTP", href: "/courses/sap-btp-course" },
+  { label: "SAP SAC", href: "/courses/sap-analytics-cloud-course" },
+  { label: "SAP BW", href: "/courses/sap-bw-s4hana-course" },
+] as const;
 
 /** Primary header navigation. Order mirrors the design reference. */
 export const NAV_ITEMS: readonly NavItem[] = [
   { label: "Home", href: "/" },
-  { label: "Courses", href: "/courses" },
+  { label: "Courses", href: "/courses", children: NAV_COURSES },
   { label: "Placement Services", href: "/placements" },
   { label: "Blogs", href: "/blogs" },
   { label: "Reviews", href: "/reviews" },
@@ -115,6 +135,7 @@ export const FOOTER_LINKS = {
     { label: "Blog", href: "/blogs" },
     { label: "Reviews", href: "/reviews" },
     { label: "Contact", href: "/contact" },
+    { label: "All SAP Courses", href: "/courses" },
   ],
   courses: [
     { label: "SAP FICO", href: "/courses/sap-fico-s4hana-course" },

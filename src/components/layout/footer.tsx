@@ -119,7 +119,7 @@ export function Footer() {
                 <li key={l.href}>
                   <Link
                     href={l.href}
-                    className="text-white/60 transition-colors hover:text-white"
+                    className="text-white/60 underline underline-offset-4 transition-colors hover:text-white"
                   >
                     {l.label}
                   </Link>
@@ -147,7 +147,7 @@ export function Footer() {
             })}
           </ul>
         </div>
-        <p className="text-xs text-center mt-8 font-semibold text-white/45 italic">
+        <p className="text-xs text-center mt-8 mb-16 font-semibold text-white/45 italic">
           Techvaa is not an authorized SAP partner.
         </p>
       </Container>

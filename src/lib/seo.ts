@@ -38,7 +38,14 @@ export function buildMetadata({
 }: BuildMetadataArgs = {}): Metadata {
   const url = absoluteUrl(path);
   const canonicalUrl = canonical ? absoluteUrl(canonical) : url;
-  const resolvedTitle = title ? `${title} | ${SITE.name}` : `${SITE.name} — ${SITE.tagline}`;
+  // A title that already carries the brand (e.g. "Techvaa - SAP Training
+  // Institute in Pune") skips the "%s | Techvaa" template so it isn't doubled.
+  const branded = title?.includes(SITE.name) ?? false;
+  const resolvedTitle = title
+    ? branded
+      ? title
+      : `${title} | ${SITE.name}`
+    : `${SITE.name} — ${SITE.tagline}`;
   const noindex = robots?.startsWith("NOINDEX");
 
   // When no explicit image is supplied we omit openGraph.images so the
@@ -48,7 +55,7 @@ export function buildMetadata({
     : undefined;
 
   return {
-    title: title ?? `${SITE.name} — ${SITE.tagline}`,
+    title: branded ? { absolute: resolvedTitle } : (title ?? resolvedTitle),
     description,
     keywords,
     alternates: { canonical: canonicalUrl },

@@ -25,9 +25,9 @@ export const dynamic = "force-dynamic";
 
 export async function generateMetadata(): Promise<Metadata> {
   return pageMetadata("/", {
-    title: "SAP Training Institute in Pune",
+    title: "Techvaa - SAP Training Institute in Pune",
     description:
-      "Techvaa is Pune's leading SAP training institute — live S/4HANA labs, SAP-certified trainers and 100% placement support. SAP FICO, MM, ABAP & S/4HANA courses in Pune.",
+      "Learn SAP S/4HANA in 3 months with projects. 100% practical training, interview preparation and placement services.",
     keywords: [
       "SAP training in Pune",
       "SAP course in Pune",

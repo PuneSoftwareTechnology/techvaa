@@ -41,10 +41,17 @@ async function main() {
     {
       page: "Home",
       path: "/",
-      metaTitle: "Techvaa — #1 SAP Training Institute in India",
+      metaTitle: "Techvaa - SAP Training Institute in Pune",
       metaDescription:
-        "Master SAP with India's leading institute. Live S/4HANA labs, expert trainers and 100% placement assistance.",
-      keywords: ["SAP training", "SAP course", "S/4HANA", "SAP institute"],
+        "Learn SAP S/4HANA in 3 months with projects. 100% practical training, interview preparation and placement services.",
+      keywords: [
+        "SAP training in Pune",
+        "SAP course in Pune",
+        "SAP institute Pune",
+        "SAP FICO course Pune",
+        "S/4HANA training Pune",
+        "SAP classes Pune",
+      ],
     },
     {
       page: "Courses",
@@ -56,11 +63,11 @@ async function main() {
     },
     {
       page: "Blog",
-      path: "/blog",
-      metaTitle: "SAP Blog — Careers, Tips & Industry News | Techvaa",
+      path: "/blogs",
+      metaTitle: "SAP Insights Hub — Blog",
       metaDescription:
-        "Expert articles on SAP careers, module guides, interview prep and the latest SAP ecosystem news.",
-      keywords: ["SAP blog", "SAP careers", "SAP tips"],
+        "Expert articles, tutorials and career guidance across SAP S/4HANA, FICO, MM, ABAP, BTP and SuccessFactors from the Techvaa team.",
+      keywords: ["SAP blog", "SAP tutorials", "SAP career", "SAP FICO articles"],
     },
     {
       page: "Placements",

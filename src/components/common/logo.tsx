@@ -4,8 +4,8 @@ import { cn } from "@/lib/utils";
 import { SITE } from "@/constants/site";
 
 // Intrinsic size of the source logo files (public/logo.png, public/logo-white.png).
-const LOGO_W = 1430;
-const LOGO_H = 385;
+const LOGO_W = 2029;
+const LOGO_H = 489;
 
 /**
  * Techvaa brand logo. Renders the real artwork:

@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
 import { ArrowRight, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -86,7 +87,7 @@ export function Hero() {
           </motion.ul>
         </div>
 
-        {/* Stylised analytics dashboard mock (pure CSS — zero image weight) */}
+        {/* Placements banner — LCP image, so preload it */}
         <motion.div
           {...(reduce
             ? {}
@@ -99,46 +100,21 @@ export function Hero() {
                   ease: [0.22, 1, 0.36, 1] as const,
                 },
               })}
-          className="relative mx-auto w-full max-w-lg"
-          aria-hidden="true"
+          className="relative mx-auto w-full max-w-xl"
         >
-          <div className="rounded-2xl bg-white/95 p-5 shadow-2xl ring-1 ring-white/20">
-            <div className="mb-4 flex items-center justify-between">
-              <div className="h-3 w-28 rounded-full bg-brand/80" />
-              <div className="flex gap-1.5">
-                <span className="size-2.5 rounded-full bg-accent-orange" />
-                <span className="size-2.5 rounded-full bg-brand/30" />
-                <span className="size-2.5 rounded-full bg-brand/20" />
-              </div>
-            </div>
-            <div className="grid grid-cols-3 gap-3">
-              {[
-                { k: "Modules", v: "25+" },
-                { k: "Placed", v: "500+" },
-                { k: "Rating", v: "4.9" },
-              ].map((s) => (
-                <div
-                  key={s.k}
-                  className="rounded-lg bg-secondary p-3 text-center"
-                >
-                  <div className="text-lg font-bold text-brand">{s.v}</div>
-                  <div className="text-[10px] uppercase tracking-wide text-muted-foreground">
-                    {s.k}
-                  </div>
-                </div>
-              ))}
-            </div>
-            <div className="mt-4 flex h-28 items-end gap-2 rounded-lg bg-secondary/60 p-3">
-              {[40, 65, 50, 80, 70, 95, 85].map((h, i) => (
-                <div
-                  key={i}
-                  className="flex-1 rounded-t bg-gradient-to-t from-brand to-accent-orange"
-                  style={{ height: `${h}%` }}
-                />
-              ))}
-            </div>
-          </div>
-          <div className="absolute -bottom-5 -left-5 rounded-xl bg-accent-orange px-4 py-3 text-sm font-semibold text-white shadow-xl">
+          <Image
+            src="/images/hero-placements.webp"
+            alt="Techvaa students placed at PwC, EY, Deloitte, TCS and Infosys"
+            width={1600}
+            height={900}
+            sizes="(min-width: 640px) 576px, 100vw"
+            preload
+            className="h-auto w-full rounded-2xl shadow-2xl ring-1 ring-white/20"
+          />
+          <div
+            className="absolute -bottom-5 -left-5 rounded-xl bg-accent-orange px-4 py-3 text-sm font-semibold text-white shadow-xl"
+            aria-hidden="true"
+          >
             100% Placement Support
           </div>
         </motion.div>

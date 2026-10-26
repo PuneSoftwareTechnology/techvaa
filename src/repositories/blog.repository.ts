@@ -1,5 +1,6 @@
 import "server-only";
 import { prisma } from "@/lib/prisma";
+import type { Prisma } from "@/generated/prisma/client";
 import { toBlogDTO } from "./mappers";
 import type { BlogDTO } from "@/types";
 
@@ -28,6 +29,48 @@ export const blogRepository = {
       select: CARD_SELECT,
     });
     return rows.map(toBlogDTO);
+  },
+
+  /**
+   * One page of the blog listing, optionally filtered by a free-text query
+   * (case-insensitive match on the title, summary, lede and section titles).
+   * An out-of-range `page` is clamped to the last page so stale links still
+   * land on results.
+   */
+  async findPublishedPage({
+    q,
+    page,
+    pageSize,
+  }: {
+    q?: string;
+    page: number;
+    pageSize: number;
+  }): Promise<{ items: BlogDTO[]; total: number; page: number; pageCount: number }> {
+    const where: Prisma.BlogWhereInput = { ...PUBLISHED };
+    if (q) {
+      const match = { contains: q, mode: "insensitive" } as const;
+      where.OR = [
+        { title: match },
+        { metaDescription: match },
+        { introduction: match },
+        { primaryTitle: match },
+        { secondaryTitle: match },
+        { tertiaryTitle: match },
+      ];
+    }
+
+    const total = await prisma.blog.count({ where });
+    const pageCount = Math.max(1, Math.ceil(total / pageSize));
+    const current = Math.min(Math.max(1, page), pageCount);
+
+    const rows = await prisma.blog.findMany({
+      where,
+      orderBy: { publishedAt: "desc" },
+      skip: (current - 1) * pageSize,
+      take: pageSize,
+      select: CARD_SELECT,
+    });
+    return { items: rows.map(toBlogDTO), total, page: current, pageCount };
   },
 
   async findBySlug(slug: string): Promise<BlogDTO | null> {

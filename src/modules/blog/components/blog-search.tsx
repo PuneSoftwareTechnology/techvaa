@@ -34,7 +34,7 @@ export function BlogSearch({ query }: { query?: string }) {
           name="q"
           defaultValue={query}
           placeholder="Search articles…"
-          className="h-10 bg-card pr-9 pl-9 [&::-webkit-search-cancel-button]:appearance-none"
+          className="h-12 bg-card pr-9 pl-9 text-base sm:h-10 sm:text-sm [&::-webkit-search-cancel-button]:appearance-none"
         />
         {query && (
           <Link
@@ -47,8 +47,14 @@ export function BlogSearch({ query }: { query?: string }) {
           </Link>
         )}
       </div>
-      <Button type="submit" variant="brand" className="h-10 px-4">
-        Search
+      {/* Icon-only on mobile so the text box gets the width. */}
+      <Button
+        type="submit"
+        variant="brand"
+        className="h-12 w-12 shrink-0 px-0 sm:h-10 sm:w-auto sm:px-4"
+      >
+        <Search className="sm:hidden" aria-hidden="true" />
+        <span className="sr-only sm:not-sr-only">Search</span>
       </Button>
     </Form>
   );

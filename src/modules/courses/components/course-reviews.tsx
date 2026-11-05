@@ -3,12 +3,12 @@ import { ArrowRight } from "lucide-react";
 import { Container } from "@/components/common/container";
 import { SectionHeader } from "@/components/common/section-header";
 import { Button } from "@/components/ui/button";
-import { ReviewsMarquee } from "@/modules/reviews/components/reviews-marquee";
+import { ReviewsCarousel } from "@/modules/reviews/components/reviews-carousel";
 import type { TestimonialDTO } from "@/types";
 
 /**
  * "What our graduates say" for a course detail page — wraps the shared
- * {@link ReviewsMarquee} with course-specific copy.
+ * {@link ReviewsCarousel} with course-specific copy.
  */
 export function CourseReviews({
   courseTitle,
@@ -31,7 +31,7 @@ export function CourseReviews({
         />
       </Container>
 
-      <ReviewsMarquee testimonials={testimonials} />
+      <ReviewsCarousel testimonials={testimonials} />
 
       <Container className="mt-8 text-center">
         <Button asChild variant="ghost" className="text-brand">

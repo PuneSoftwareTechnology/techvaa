@@ -43,7 +43,7 @@ export function Hero() {
 
           <motion.h1
             {...fade(0.08)}
-            className="mt-5 text-balance font-heading text-4xl font-extrabold leading-[1.05] tracking-tight sm:text-5xl lg:text-6xl"
+            className="mt-5 text-balance font-heading text-[1.75rem] font-extrabold leading-tight tracking-tight sm:text-5xl sm:leading-[1.05] lg:text-6xl"
           >
             Master SAP. <span className="text-accent-orange">Elevate</span> Your
             Career. Get Hired.

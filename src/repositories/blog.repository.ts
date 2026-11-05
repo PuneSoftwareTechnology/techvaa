@@ -1,6 +1,8 @@
 import "server-only";
 import { prisma } from "@/lib/prisma";
 import type { Prisma } from "@/generated/prisma/client";
+import { fuzzyRank } from "@/lib/fuzzy";
+import { htmlToPlainText } from "@/lib/sanitize";
 import { toBlogDTO } from "./mappers";
 import type { BlogDTO } from "@/types";
 
@@ -21,19 +23,12 @@ const CARD_SELECT = {
 } as const;
 
 export const blogRepository = {
-  async findPublished(opts?: { take?: number }): Promise<BlogDTO[]> {
-    const rows = await prisma.blog.findMany({
-      where: PUBLISHED,
-      orderBy: { publishedAt: "desc" },
-      take: opts?.take,
-      select: CARD_SELECT,
-    });
-    return rows.map(toBlogDTO);
-  },
-
   /**
-   * One page of the blog listing, optionally filtered by a free-text query
-   * (case-insensitive match on the title, summary, lede and section titles).
+   * One page of the blog listing, optionally filtered by a free-text query.
+   * Search is fuzzy (typo-tolerant, see lib/fuzzy) over the title, summary,
+   * lede and section titles, ranked best match first. It ranks in memory, which
+   * is fine at blog scale (tens of posts) — move to Postgres pg_trgm / full-text
+   * search if the archive grows into the thousands.
    * An out-of-range `page` is clamped to the last page so stale links still
    * land on results.
    */
@@ -46,19 +41,33 @@ export const blogRepository = {
     page: number;
     pageSize: number;
   }): Promise<{ items: BlogDTO[]; total: number; page: number; pageCount: number }> {
-    const where: Prisma.BlogWhereInput = { ...PUBLISHED };
     if (q) {
-      const match = { contains: q, mode: "insensitive" } as const;
-      where.OR = [
-        { title: match },
-        { metaDescription: match },
-        { introduction: match },
-        { primaryTitle: match },
-        { secondaryTitle: match },
-        { tertiaryTitle: match },
-      ];
+      const rows = await prisma.blog.findMany({
+        where: PUBLISHED,
+        orderBy: { publishedAt: "desc" },
+        select: {
+          ...CARD_SELECT,
+          primaryTitle: true,
+          secondaryTitle: true,
+          tertiaryTitle: true,
+        },
+      });
+      const ranked = fuzzyRank(q, rows, (b) => [
+        { text: b.title, weight: 3 },
+        { text: b.metaDescription, weight: 1.5 },
+        { text: b.primaryTitle, weight: 1.5 },
+        { text: b.secondaryTitle, weight: 1.5 },
+        { text: b.tertiaryTitle, weight: 1.5 },
+        { text: htmlToPlainText(b.introduction), weight: 1 },
+      ]);
+      const total = ranked.length;
+      const pageCount = Math.max(1, Math.ceil(total / pageSize));
+      const current = Math.min(Math.max(1, page), pageCount);
+      const items = ranked.slice((current - 1) * pageSize, current * pageSize);
+      return { items: items.map(toBlogDTO), total, page: current, pageCount };
     }
 
+    const where: Prisma.BlogWhereInput = { ...PUBLISHED };
     const total = await prisma.blog.count({ where });
     const pageCount = Math.max(1, Math.ceil(total / pageSize));
     const current = Math.min(Math.max(1, page), pageCount);

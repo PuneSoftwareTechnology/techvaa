@@ -54,7 +54,7 @@ export function CourseCard({
             href={`/courses/${course.slug}`}
             className="relative z-10 inline-flex items-center gap-1 text-sm font-semibold text-accent-orange transition-transform hover:underline group-hover:translate-x-0.5"
           >
-            Learn more
+            Explore Course
             <ArrowRight className="size-4" aria-hidden="true" />
           </Link>
         </div>

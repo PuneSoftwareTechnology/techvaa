@@ -30,14 +30,11 @@ export function BlogCard({
       footer={
         <div className="flex items-center justify-between gap-3 text-xs text-muted-foreground">
           <span>{formatDate(blog.publishedAt)}</span>
-          {/* <span className="inline-flex items-center gap-1 text-sm font-semibold text-accent-orange transition-transform group-hover:translate-x-0.5">
-            Read more <ArrowRight className="size-4" aria-hidden="true" />
-          </span> */}
           <Link
             href={`/blogs/${blog.slug}`}
             className="relative z-10 inline-flex items-center gap-1 text-sm font-semibold text-accent-orange transition-transform hover:underline group-hover:translate-x-0.5"
           >
-            Read more
+            Read Blog
             <ArrowRight className="size-4" aria-hidden="true" />
           </Link>
         </div>

@@ -17,7 +17,7 @@ import { LogoMarquee } from "@/components/common/logo-marquee";
 import { Shimmer } from "@/components/common/shimmer";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { PlacementCard } from "@/modules/placements/components/placement-card";
+import { PlacementsGrid } from "@/modules/placements/components/placements-grid";
 import { GoogleRatingBadge } from "@/modules/reviews/components/google-rating-badge";
 import {
   CAREER_TOOLS,
@@ -46,7 +46,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function PlacementsPage() {
   const [placements, ratingSummary] = await Promise.all([
-    placementService.getTop(12),
+    placementService.getAll(),
     reviewService.getRatingSummary(),
   ]);
 
@@ -55,7 +55,7 @@ export default async function PlacementsPage() {
       <JsonLd
         data={breadcrumbSchema([
           { name: "Home", path: "/" },
-          { name: "Placement Services", path: "/placements" },
+          { name: "Placements", path: "/placements" },
         ])}
       />
 
@@ -65,7 +65,7 @@ export default async function PlacementsPage() {
         description="Master the skills that matter. Our expert-led training sharpens your edge for clearing interviews with confidence."
         breadcrumbs={[
           { name: "Home", href: "/" },
-          { name: "Placement Services", href: "/placements" },
+          { name: "Placements", href: "/placements" },
         ]}
       >
         <div className="flex flex-col items-start gap-5 sm:flex-row sm:items-center">
@@ -122,21 +122,27 @@ export default async function PlacementsPage() {
 
       {/* Recent placements */}
       {placements.length > 0 && (
-        <section aria-labelledby="placed-title" className="py-12 sm:py-20">
-          <Container>
+        <section
+          aria-label="Recent placements"
+          className="relative overflow-hidden bg-gradient-to-b from-brand-muted/70 to-background py-12 sm:py-20"
+        >
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute -right-32 -top-32 size-96 rounded-full bg-accent-orange/15 blur-3xl"
+          />
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute -left-32 top-1/3 size-96 rounded-full bg-brand/10 blur-3xl"
+          />
+          <Container className="relative">
             <SectionHeader
               as="h2"
               eyebrow="Recent Placements"
               title="Our students, placed"
+              description="Techvaa learners now working as SAP consultants at leading companies."
             />
-            <div className="mt-8 rounded-3xl bg-gradient-to-br from-blue-500 to-accent-orange p-5 ring-1 ring-brand/15 sm:mt-12 sm:p-8">
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-4">
-                {placements.map((p, i) => (
-                  <Reveal as="div" index={i % 4} key={p.id}>
-                    <PlacementCard placement={p} />
-                  </Reveal>
-                ))}
-              </div>
+            <div className="mt-8 sm:mt-12">
+              <PlacementsGrid placements={placements} />
             </div>
           </Container>
         </section>

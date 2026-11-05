@@ -9,7 +9,7 @@ export const SITE = {
   legalName: "Techvaa SAP Academy",
   tagline: "Your Training Partner in Technology and Automation",
   description:
-    "Techvaa is a premier SAP training institute in Pune offering job-oriented SAP S/4HANA, FICO, MM, ABAP and SuccessFactors courses with real-time projects and 100% placement support.",
+    "Techvaa is a premier SAP training institute in Pune offering job-oriented SAP courses including SAP FICO, SAP MM, SAP SD, SAP PP, SAP BTP and SAP SAC with real-time projects and 100% placement support.",
 
   // Used for absolute URLs (canonical, OG, sitemap). Override via env in prod.
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://techvaa.com",
@@ -122,7 +122,7 @@ export const NAV_COURSES: readonly NavItem[] = [
 export const NAV_ITEMS: readonly NavItem[] = [
   { label: "Home", href: "/" },
   { label: "Courses", href: "/courses", children: NAV_COURSES },
-  { label: "Placement Services", href: "/placements" },
+  { label: "Placements", href: "/placements" },
   { label: "Blogs", href: "/blogs" },
   { label: "Reviews", href: "/reviews" },
 ] as const;

@@ -3,7 +3,7 @@ import { ArrowRight } from "lucide-react";
 import { Container } from "@/components/common/container";
 import { SectionHeader } from "@/components/common/section-header";
 import { Button } from "@/components/ui/button";
-import { ReviewsMarquee } from "@/modules/reviews/components/reviews-marquee";
+import { ReviewsCarousel } from "@/modules/reviews/components/reviews-carousel";
 import type { TestimonialDTO } from "@/types";
 
 export function GraduatesSay({ testimonials }: { testimonials: TestimonialDTO[] }) {
@@ -20,7 +20,7 @@ export function GraduatesSay({ testimonials }: { testimonials: TestimonialDTO[] 
         />
       </Container>
 
-      <ReviewsMarquee testimonials={testimonials} />
+      <ReviewsCarousel testimonials={testimonials} />
 
       <Container className="mt-10 text-center">
         <Button asChild variant="ghost" className="text-brand">

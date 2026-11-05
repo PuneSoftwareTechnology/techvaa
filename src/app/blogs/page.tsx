@@ -7,7 +7,6 @@ import { JsonLd } from "@/components/seo/json-ld";
 import { breadcrumbSchema } from "@/lib/jsonld";
 import { PageHero } from "@/components/common/page-hero";
 import { Container } from "@/components/common/container";
-import { SectionHeader } from "@/components/common/section-header";
 import { Reveal } from "@/components/common/reveal";
 import { Pagination } from "@/components/common/pagination";
 import { BlogCard } from "@/modules/blog/components/blog-card";
@@ -69,12 +68,10 @@ export default async function BlogPage({
   searchParams: SearchParams;
 }) {
   const { q, page: requestedPage } = await readParams(searchParams);
-  // Featured posts only lead the unfiltered first page.
-  const showFeatured = !q && requestedPage === 1;
-  const [{ items: blogs, total, page, pageCount }, featured] = await Promise.all([
-    blogService.getPage(requestedPage, q),
-    showFeatured ? blogService.getFeatured(3) : Promise.resolve([]),
-  ]);
+  const { items: blogs, total, page, pageCount } = await blogService.getPage(
+    requestedPage,
+    q,
+  );
   // Past the last page (e.g. a stale link after posts were removed) — send the
   // visitor to the real last page rather than serving it under a wrong URL.
   if (page !== requestedPage) redirect(blogsHref(page, q));
@@ -99,22 +96,6 @@ export default async function BlogPage({
           { name: "Blog", href: "/blogs" },
         ]}
       />
-
-      {/* Featured posts */}
-      {featured.length > 0 && (
-        <section aria-labelledby="featured-title" className="py-10 sm:py-16">
-          <Container>
-            <SectionHeader align="left" as="h2" title="Featured posts" />
-            <div className="mt-8 grid gap-6 md:grid-cols-3">
-              {featured.map((b, i) => (
-                <Reveal as="div" index={i} key={b.id}>
-                  <BlogCard blog={b} featured />
-                </Reveal>
-              ))}
-            </div>
-          </Container>
-        </section>
-      )}
 
       {/* All posts */}
       <section

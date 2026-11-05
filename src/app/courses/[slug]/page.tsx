@@ -13,10 +13,12 @@ import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Container } from "@/components/common/container";
 import { Reveal } from "@/components/common/reveal";
+import { Carousel } from "@/components/common/carousel";
 import { RichTextContent } from "@/components/common/rich-text-content";
 import { CollapsibleContent } from "@/components/common/collapsible-content";
 import { EnrollDialog } from "@/components/forms/enroll-dialog";
 import { htmlToPlainText } from "@/lib/sanitize";
+import { courseShortName } from "@/lib/format";
 import { CourseCard } from "@/modules/courses/components/course-card";
 import { BlogCard } from "@/modules/blog/components/blog-card";
 import { CurriculumHighlights } from "@/modules/courses/components/curriculum-highlights";
@@ -81,6 +83,9 @@ export default async function CourseDetailPage({
     blogService.getForCourse(course.slug),
   ]);
 
+  // Bare module name ("SAP MM") for headings that add their own wording.
+  const courseName = courseShortName(course.title);
+
   // Reuse the shared schedule table with just this course's batches.
   const batchRows = course.batches.map((b) => ({
     id: b.id,
@@ -122,7 +127,7 @@ export default async function CourseDetailPage({
             trigger={{
               label: (
                 <>
-                  Advance My Career <ArrowRight aria-hidden="true" />
+                  Book a Free Demo <ArrowRight aria-hidden="true" />
                 </>
               ),
               className: cn(
@@ -166,8 +171,9 @@ export default async function CourseDetailPage({
       <CourseOutcomes courseTitle={course.title} />
       <BatchSchedule
         rows={batchRows}
-        eyebrow="New Batch Schedule"
-        title="Upcoming training"
+        eyebrow="Next Batch Schedule"
+        title={`Upcoming ${courseName} training`}
+        description={`Learn ${courseName} from experienced industry professionals with practical training and placement assistance.`}
         hideViewDetails
       />
 
@@ -175,32 +181,14 @@ export default async function CourseDetailPage({
 
       <CourseReviews courseTitle={course.title} testimonials={testimonials} />
 
-      <FaqSection faqs={faqs} />
-
-      {course.relatedCourses.length > 0 && (
-        <Container className="py-10 sm:py-14">
-          <div className="text-center">
-            <p className="mb-2 text-sm font-semibold uppercase tracking-wider text-accent-orange">
-              Keep exploring
-            </p>
-            <h2 className="font-heading text-3xl font-bold tracking-tight">
-              <span className="bg-gradient-to-r from-brand via-brand to-accent-orange bg-clip-text text-transparent">
-                Related courses
-              </span>
-            </h2>
-          </div>
-          <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {course.relatedCourses.map((related, i) => (
-              <Reveal as="div" index={i % 3} key={related.id}>
-                <CourseCard course={related} />
-              </Reveal>
-            ))}
-          </div>
-        </Container>
-      )}
+      <FaqSection
+        faqs={faqs}
+        title={`Frequently Asked Questions About ${courseName} Course in Pune`}
+        description={`Everything you need to know about ${courseName}, batch and placements.`}
+      />
 
       {relatedArticles.length > 0 && (
-        <Container className="pb-10 sm:pb-16">
+        <Container className="py-10 sm:py-14">
           <div className="text-center">
             <p className="mb-2 text-sm font-semibold uppercase tracking-wider text-accent-orange">
               From the blog
@@ -218,6 +206,32 @@ export default async function CourseDetailPage({
               </Reveal>
             ))}
           </div>
+        </Container>
+      )}
+
+      {course.relatedCourses.length > 0 && (
+        <Container className="pb-10 sm:pb-16">
+          <div className="text-center">
+            <p className="mb-2 text-sm font-semibold uppercase tracking-wider text-accent-orange">
+              Keep exploring
+            </p>
+            <h2 className="font-heading text-3xl font-bold tracking-tight">
+              <span className="bg-gradient-to-r from-brand via-brand to-accent-orange bg-clip-text text-transparent">
+                Related courses
+              </span>
+            </h2>
+          </div>
+          {/* One course per view on mobile, auto-advancing every 3s. */}
+          <Carousel
+            label="Related courses"
+            autoPlayMs={3000}
+            className="mt-10"
+            itemClassName="w-full sm:w-[calc((100%-1.5rem)/2)] lg:w-[calc((100%-3rem)/3)]"
+          >
+            {course.relatedCourses.map((related) => (
+              <CourseCard key={related.id} course={related} />
+            ))}
+          </Carousel>
         </Container>
       )}
     </>

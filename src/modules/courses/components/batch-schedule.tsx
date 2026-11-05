@@ -41,7 +41,7 @@ interface BatchScheduleProps {
  */
 export function BatchSchedule({
   rows,
-  eyebrow = "New Batch Schedules",
+  eyebrow = "Next Batch Schedules",
   title = "Upcoming training batches",
   description = "Reserve your seat in the next live cohort. Limited seats per batch to keep mentorship hands-on.",
   hideViewDetails = false,

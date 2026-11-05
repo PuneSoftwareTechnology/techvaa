@@ -14,8 +14,19 @@ import { RichTextContent } from "@/components/common/rich-text-content";
  * Renders the FAQ accordion. The matching FAQPage JSON-LD is emitted by the
  * page (see lib/jsonld → faqSchema) so the markup and structured data stay in
  * sync from one data source.
+ *
+ * Answers are force-mounted so every answer ships in the server-rendered HTML
+ * (crawlable by Google); closed ones are merely hidden, not unmounted.
  */
-export function FaqSection({ faqs }: { faqs: FaqDTO[] }) {
+export function FaqSection({
+  faqs,
+  title = "Frequently asked questions",
+  description = "Everything you need to know about courses, batches, and placements.",
+}: {
+  faqs: FaqDTO[];
+  title?: string;
+  description?: string;
+}) {
   if (faqs.length === 0) return null;
   return (
     <section aria-labelledby="faq-title" className="py-12 sm:py-20">
@@ -23,8 +34,8 @@ export function FaqSection({ faqs }: { faqs: FaqDTO[] }) {
         <SectionHeader
           as="h2"
           eyebrow="FAQ"
-          title="Frequently asked questions"
-          description="Everything you need to know about courses, batches, and placements."
+          title={title}
+          description={description}
         />
         <Reveal className="mt-10">
           <Accordion type="single" collapsible className="w-full gap-3">
@@ -37,7 +48,7 @@ export function FaqSection({ faqs }: { faqs: FaqDTO[] }) {
                 <AccordionTrigger className="py-4 text-left text-base font-semibold no-underline hover:no-underline data-open:text-primary **:data-[slot=accordion-trigger-icon]:flex **:data-[slot=accordion-trigger-icon]:size-7 **:data-[slot=accordion-trigger-icon]:items-center **:data-[slot=accordion-trigger-icon]:justify-center **:data-[slot=accordion-trigger-icon]:rounded-full **:data-[slot=accordion-trigger-icon]:bg-primary/10 **:data-[slot=accordion-trigger-icon]:text-primary">
                   {faq.question}
                 </AccordionTrigger>
-                <AccordionContent>
+                <AccordionContent forceMount>
                   <RichTextContent
                     html={faq.answer}
                     className="prose-sm prose-p:text-muted-foreground prose-li:text-muted-foreground"

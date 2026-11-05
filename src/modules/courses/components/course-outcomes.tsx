@@ -42,11 +42,11 @@ export function CourseOutcomes({ courseTitle }: { courseTitle: string }) {
           </h2>
         </Reveal>
         <Reveal className="mt-8 sm:mt-12">
-          <dl className="grid grid-cols-2 gap-6 lg:grid-cols-4">
+          <dl className="grid grid-cols-2 gap-3 sm:gap-6 lg:grid-cols-4">
             {COURSE_OUTCOME_STATS.map((s, i) => (
               <div
                 key={s.label}
-                className="rounded-2xl border border-white/10 bg-white/5 p-6 text-center ring-1 ring-white/5 backdrop-blur-sm transition-colors hover:bg-white/10"
+                className="rounded-2xl border border-white/10 bg-white/5 px-3 py-5 text-center ring-1 ring-white/5 backdrop-blur-sm transition-colors hover:bg-white/10 sm:p-6"
               >
                 <div
                   className={cn(
@@ -58,7 +58,7 @@ export function CourseOutcomes({ courseTitle }: { courseTitle: string }) {
                 </div>
                 <dt className="sr-only">{s.label}</dt>
                 <dd>
-                  <span className="block font-heading text-2xl font-extrabold text-white">
+                  <span className="block font-heading text-xl font-extrabold text-white sm:text-2xl">
                     {s.value}
                   </span>
                   <span className="mt-1 block text-sm text-white/70">
@@ -76,7 +76,9 @@ export function CourseOutcomes({ courseTitle }: { courseTitle: string }) {
               label: `Enroll in ${courseTitle}`,
               className: cn(
                 buttonVariants({ variant: "accent", size: "xl" }),
-                "relative overflow-hidden",
+                // Course titles are long: wrap onto 2–3 lines on phones
+                // instead of running off the screen.
+                "relative h-auto min-h-12 max-w-full overflow-hidden px-5 py-3 text-[0.9375rem] leading-snug text-pretty whitespace-normal sm:px-6 sm:text-base sm:whitespace-nowrap",
               ),
               shimmer: true,
             }}

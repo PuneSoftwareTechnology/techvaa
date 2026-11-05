@@ -19,3 +19,14 @@ export function courseShortName(title: string): string {
     .trim();
   return name || title;
 }
+
+/**
+ * Heading for a course's syllabus section, e.g. "SAP FICO S4HANA Course
+ * Syllabus". S4HANA courses (by slug) get "S4HANA" added when the short name
+ * leaves it out ("SAP MM" → "SAP MM S4HANA"); other courses keep their name.
+ */
+export function courseSyllabusTitle(title: string, slug: string): string {
+  let name = courseShortName(title);
+  if (/s4hana/i.test(slug) && !/s\/?4\s*hana/i.test(name)) name += " S4HANA";
+  return `${name} Course Syllabus`;
+}

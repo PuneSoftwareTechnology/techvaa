@@ -177,7 +177,9 @@ export const SOCIAL_LINKS = [
 /**
  * Hiring / alumni-placement partners for the marquee.
  * Logos are resolved at render time from each domain via Google's favicon
- * service (see LogoMarquee), with a wordmark fallback.
+ * service (see LogoMarquee), with a wordmark fallback. Some sites only resolve
+ * on their `www.` host; `logo` overrides the lookup with a self-hosted file
+ * for brands the service has no icon for.
  */
 export const HIRING_PARTNERS = [
   { name: "Wipro", domain: "wipro.com" },
@@ -186,10 +188,10 @@ export const HIRING_PARTNERS = [
   { name: "Birlasoft", domain: "birlasoft.com" },
   { name: "Capgemini", domain: "capgemini.com" },
   { name: "H&M", domain: "hm.com" },
-  { name: "L&T Infotech", domain: "ltimindtree.com" },
+  { name: "L&T Infotech", domain: "ltimindtree.com", logo: "/logos/ltimindtree.png" },
   { name: "Maersk", domain: "maersk.com" },
-  { name: "TCS", domain: "tcs.com" },
-  { name: "Tata Technologies", domain: "tatatechnologies.com" },
+  { name: "TCS", domain: "www.tcs.com" },
+  { name: "Tata Technologies", domain: "www.tatatechnologies.com" },
   { name: "Deloitte", domain: "deloitte.com" },
   { name: "Tata", domain: "tata.com" },
 ] as const;

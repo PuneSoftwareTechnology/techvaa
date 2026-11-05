@@ -16,7 +16,7 @@ export function HiringPartners() {
         <SectionHeader
           as="h2"
           eyebrow="Placements"
-          title="Our Students Are Placed In Companies"
+          title="Our Students Are Successfully Placed In"
           className="[&_h2]:uppercase"
         />
       </Container>

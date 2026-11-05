@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Mail, MapPin, Phone, MessageCircle, Clock } from "lucide-react";
+import { MapPin, Clock } from "lucide-react";
 import { pageMetadata } from "@/lib/page-seo";
 import { JsonLd } from "@/components/seo/json-ld";
 import { breadcrumbSchema } from "@/lib/jsonld";
@@ -8,7 +8,7 @@ import { Container } from "@/components/common/container";
 import { Card } from "@/components/ui/card";
 import { LeadForm } from "@/components/forms/lead-form";
 import { SOCIAL_ICON_MAP } from "@/components/common/social-icons";
-import { SITE, LOCATION, HAS_ADDRESS, SOCIAL_LINKS } from "@/constants/site";
+import { LOCATION, HAS_ADDRESS, SOCIAL_LINKS } from "@/constants/site";
 
 export async function generateMetadata(): Promise<Metadata> {
   return pageMetadata("/contact", {
@@ -69,52 +69,6 @@ export default function ContactPage() {
             </p>
 
             <ul className="mt-8 space-y-4">
-              <li className="flex items-start gap-4">
-                <span className="grid size-11 shrink-0 place-items-center rounded-xl bg-brand/10 text-brand">
-                  <Mail className="size-5" aria-hidden="true" />
-                </span>
-                <div>
-                  <p className="text-sm font-semibold text-foreground">Email</p>
-                  <a
-                    href={`mailto:${SITE.email}`}
-                    className="text-sm text-muted-foreground hover:text-brand"
-                  >
-                    {SITE.email}
-                  </a>
-                </div>
-              </li>
-              <li className="flex items-start gap-4">
-                <span className="grid size-11 shrink-0 place-items-center rounded-xl bg-brand/10 text-brand">
-                  <Phone className="size-5" aria-hidden="true" />
-                </span>
-                <div>
-                  <p className="text-sm font-semibold text-foreground">Phone</p>
-                  <a
-                    href={`tel:${SITE.phone.replace(/[^+\d]/g, "")}`}
-                    className="text-sm text-muted-foreground hover:text-brand"
-                  >
-                    {SITE.phone}
-                  </a>
-                </div>
-              </li>
-              <li className="flex items-start gap-4">
-                <span className="grid size-11 shrink-0 place-items-center rounded-xl bg-brand/10 text-brand">
-                  <MessageCircle className="size-5" aria-hidden="true" />
-                </span>
-                <div>
-                  <p className="text-sm font-semibold text-foreground">
-                    WhatsApp
-                  </p>
-                  <a
-                    href={`https://wa.me/${SITE.whatsapp.replace(/\D/g, "")}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-sm text-muted-foreground hover:text-brand"
-                  >
-                    {SITE.whatsapp}
-                  </a>
-                </div>
-              </li>
               <li className="flex items-start gap-4">
                 <span className="grid size-11 shrink-0 place-items-center rounded-xl bg-brand/10 text-brand">
                   <Clock className="size-5" aria-hidden="true" />

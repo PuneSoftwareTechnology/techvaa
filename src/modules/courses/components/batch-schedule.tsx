@@ -3,7 +3,6 @@ import { Container } from "@/components/common/container";
 import { SectionHeader } from "@/components/common/section-header";
 import { Reveal } from "@/components/common/reveal";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { EnrollDialog } from "@/components/forms/enroll-dialog";
 import { cn } from "@/lib/utils";
 import { formatDate } from "@/lib/format";
@@ -14,6 +13,30 @@ const STATUS_STYLES: Record<BatchStatus, string> = {
   "Limited Seats": "bg-amber-100 text-amber-700",
   "Filling Fast": "bg-rose-100 text-rose-700",
 };
+
+const STATUS_DOT: Record<BatchStatus, string> = {
+  "Enrollment Open": "bg-emerald-500",
+  "Limited Seats": "bg-amber-500",
+  "Filling Fast": "bg-rose-500",
+};
+
+/** Compact status chip: its own column on desktop, above the title on mobile. */
+function StatusPill({ status }: { status: BatchStatus }) {
+  return (
+    <span
+      className={cn(
+        "inline-flex items-center gap-1.5 whitespace-nowrap rounded-full px-2 py-0.5 text-[11px] font-semibold leading-4",
+        STATUS_STYLES[status]
+      )}
+    >
+      <span
+        aria-hidden="true"
+        className={cn("size-1.5 rounded-full", STATUS_DOT[status])}
+      />
+      {status}
+    </span>
+  );
+}
 
 /** Colored accent stripe on mobile cards so each batch reads as distinct. */
 const STATUS_ACCENT: Record<BatchStatus, string> = {
@@ -96,18 +119,14 @@ export function BatchSchedule({
                     {b.courseTitle}
                   </th>
                   <td className="px-5 py-4 text-muted-foreground">{b.mode}</td>
-                  <td className="px-5 py-4 text-muted-foreground">
+                  <td className="whitespace-nowrap px-5 py-4 text-muted-foreground">
                     {formatDate(b.startDate)}
                   </td>
-                  <td className="px-5 py-4 text-muted-foreground">
+                  <td className="whitespace-nowrap px-5 py-4 text-muted-foreground">
                     {b.duration}
                   </td>
                   <td className="px-5 py-4">
-                    <Badge
-                      className={cn("font-medium", STATUS_STYLES[b.status])}
-                    >
-                      {b.status}
-                    </Badge>
+                    <StatusPill status={b.status} />
                   </td>
                   <td className="px-5 py-4">
                     <div className="flex items-center justify-end gap-2">
@@ -137,13 +156,11 @@ export function BatchSchedule({
                   STATUS_ACCENT[b.status]
                 )}
               >
-                <div className="flex items-start justify-between gap-3 border-b pb-3">
-                  <h3 className="text-lg font-bold leading-snug text-foreground">
+                <div className="border-b pb-3">
+                  <StatusPill status={b.status} />
+                  <h3 className="mt-2 text-lg font-bold leading-snug text-foreground">
                     {b.courseTitle}
                   </h3>
-                  <Badge className={cn("shrink-0", STATUS_STYLES[b.status])}>
-                    {b.status}
-                  </Badge>
                 </div>
                 <dl className="mt-4 grid grid-cols-3 gap-x-3 rounded-xl bg-secondary/60 p-3 text-sm">
                   <div>

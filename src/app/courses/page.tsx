@@ -39,7 +39,7 @@ export default async function CoursesPage() {
         ])}
       />
       <PageHero
-        eyebrow="Curriculum"
+        eyebrow="Training Programs"
         title="SAP courses built for the job market"
         description="Choose a track and start learning on live S/4HANA systems with mentors who hire."
       />

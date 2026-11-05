@@ -13,17 +13,16 @@ import { Container } from "@/components/common/container";
 import { SectionHeader } from "@/components/common/section-header";
 import { Reveal } from "@/components/common/reveal";
 import { DynamicIcon } from "@/components/common/dynamic-icon";
-import { LogoMarquee } from "@/components/common/logo-marquee";
 import { Shimmer } from "@/components/common/shimmer";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { PlacementsGrid } from "@/modules/placements/components/placements-grid";
+import { HiringPartners } from "@/modules/home/components/hiring-partners";
 import { GoogleRatingBadge } from "@/modules/reviews/components/google-rating-badge";
 import {
   CAREER_TOOLS,
   PLACEMENT_PROCESS,
   PLACEMENT_GUARANTEE,
-  ALUMNI_PARTNERS,
 } from "@/constants/placements";
 
 // Render on every request (live DB read) — see the home page for why Amplify's
@@ -148,21 +147,7 @@ export default async function PlacementsPage() {
         </section>
       )}
 
-      {/* Our Students Are Placed In */}
-      <section
-        aria-labelledby="alumni-title"
-        className="border-t bg-secondary/40 py-10 sm:py-14"
-      >
-        <Container>
-          <h2
-            id="alumni-title"
-            className="mb-8 text-center text-sm font-semibold uppercase tracking-wider text-muted-foreground"
-          >
-            Our Students Are Placed In
-          </h2>
-          <LogoMarquee items={ALUMNI_PARTNERS} durationSeconds={40} />
-        </Container>
-      </section>
+      <HiringPartners />
 
       {/* Placement process */}
       <section

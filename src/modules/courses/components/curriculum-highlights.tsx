@@ -21,8 +21,10 @@ const CARD_ACCENTS = [
 
 export function CurriculumHighlights({
   items,
+  title = "Key curriculum highlights",
 }: {
   items?: CurriculumItemDTO[];
+  title?: string;
 }) {
   // Prefer the course's own Key Curriculum; fall back to editorial defaults so
   // the section never renders empty for a course that has none authored yet.
@@ -48,7 +50,7 @@ export function CurriculumHighlights({
         <SectionHeader
           as="h2"
           eyebrow="What you'll learn"
-          title="Key curriculum highlights"
+          title={title}
           gradient
         />
         <div className="mt-8 grid gap-4 sm:mt-12 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3">

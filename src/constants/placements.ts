@@ -1,7 +1,5 @@
 /** Static editorial content for the Placement Services page. */
 
-import { HIRING_PARTNERS } from "@/constants/site";
-
 export const CAREER_TOOLS = [
   {
     icon: "file-text",
@@ -35,7 +33,7 @@ export const PLACEMENT_PROCESS = [
   { icon: "search", step: "Interview Preparation", description: "Question banks, scenarios and mock drills." },
   { icon: "monitor-play", step: "Mock Interview", description: "Panel-style interviews with feedback." },
   { icon: "award", step: "Certification Guidance", description: "Proper guidance for certification." },
-  { icon: "briefcase", step: "Job Search & Interview", description: "Comprehensive guidance and job search support." },
+  { icon: "briefcase", step: "Job Search & Placement Assistance", description: "Comprehensive guidance and placement assistance." },
 ] as const;
 
 export const PLACEMENT_GUARANTEE = [
@@ -44,9 +42,3 @@ export const PLACEMENT_GUARANTEE = [
   "Job Readiness",
   "Clear Interview",
 ] as const;
-
-/**
- * Alumni hiring partners shown in the placements grid. Shares the single
- * canonical partner list with the home marquee (see HIRING_PARTNERS).
- */
-export const ALUMNI_PARTNERS = HIRING_PARTNERS;

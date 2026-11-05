@@ -3,7 +3,14 @@
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 
-type MarqueeItem = { name: string; domain?: string };
+type MarqueeItem = { name: string; domain?: string; logo?: string };
+
+function logoSrc(item: MarqueeItem): string | undefined {
+  if (item.logo) return item.logo;
+  if (item.domain) {
+    return `https://www.google.com/s2/favicons?domain=${item.domain}&sz=128`;
+  }
+}
 
 /**
  * Renders a partner brand mark when a domain is available (resolved via
@@ -19,14 +26,15 @@ function MarqueeItemContent({
   tile: boolean;
 }) {
   const [failed, setFailed] = useState(false);
+  const src = failed ? undefined : logoSrc(item);
 
   if (tile) {
     return (
       <span className="flex h-16 items-center gap-3 rounded-2xl border bg-card px-6 text-base font-semibold tracking-tight text-foreground shadow-sm transition-all hover:-translate-y-0.5 hover:border-brand/30 hover:shadow-md">
-        {item.domain && !failed && (
+        {src && (
           // eslint-disable-next-line @next/next/no-img-element -- decorative external logo; plain img avoids remotePattern config and keeps it off the LCP path
           <img
-            src={`https://www.google.com/s2/favicons?domain=${item.domain}&sz=128`}
+            src={src}
             alt=""
             width={32}
             height={32}
@@ -41,12 +49,12 @@ function MarqueeItemContent({
     );
   }
 
-  if (item.domain && !failed) {
+  if (src) {
     return (
       <span className="flex items-center gap-2.5 text-lg font-semibold tracking-tight text-muted-foreground/70 transition-colors hover:text-foreground">
         {/* eslint-disable-next-line @next/next/no-img-element -- decorative external logo; plain img avoids remotePattern config and keeps it off the LCP path */}
         <img
-          src={`https://www.google.com/s2/favicons?domain=${item.domain}&sz=128`}
+          src={src}
           alt=""
           width={28}
           height={28}

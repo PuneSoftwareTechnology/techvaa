@@ -11,8 +11,14 @@ import {
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 
+const MAX_DOTS = 5;
+
+const ARROW_CLASS =
+  "absolute top-1/2 z-10 hidden size-11 -translate-y-1/2 place-items-center rounded-full border bg-card text-foreground shadow-md transition-colors hover:border-brand hover:text-brand sm:grid";
+
 /**
- * Swipeable, scroll-snap carousel with prev/next arrows and position dots.
+ * Swipeable, scroll-snap carousel: prev/next arrows on the edges from `sm`
+ * up, and a short row of position dots on mobile.
  * Each child is one slide; `itemClassName` sets the slide width per breakpoint
  * (e.g. one per view on mobile, three on desktop). The controls only appear
  * when the slides overflow, so a carousel that fits on screen renders as a
@@ -105,12 +111,20 @@ export function Carousel({
     pausedRef.current = false;
   };
 
+  // Mobile shows a short window of dots that slides with the active slide,
+  // so a long list reads as "there's more" instead of a wall of dots.
+  const dotStart = Math.min(
+    Math.max(active - Math.floor(MAX_DOTS / 2), 0),
+    Math.max(positions - MAX_DOTS, 0),
+  );
+  const dotEnd = Math.min(dotStart + MAX_DOTS, positions);
+
   return (
     <div
       role="region"
       aria-roledescription="carousel"
       aria-label={label}
-      className={className}
+      className={cn("relative", className)}
       onMouseEnter={pause}
       onMouseLeave={resume}
       onFocus={pause}
@@ -136,43 +150,53 @@ export function Carousel({
       </ul>
 
       {positions > 1 && (
-        <div className="mt-6 flex items-center justify-center gap-4">
+        <>
+          {/* Desktop: arrows sit on the left/right edges of the track. */}
           <button
             type="button"
             onClick={prev}
             aria-label="Previous"
-            className="grid size-10 shrink-0 place-items-center rounded-full border bg-card text-foreground shadow-sm transition-colors hover:border-brand hover:text-brand"
+            className={cn(ARROW_CLASS, "left-0 -translate-x-1/3")}
           >
             <ChevronLeft className="size-5" aria-hidden="true" />
           </button>
-
-          <div className="flex flex-wrap items-center justify-center gap-2">
-            {Array.from({ length: positions }, (_, i) => (
-              <button
-                key={i}
-                type="button"
-                onClick={() => goTo(i)}
-                aria-label={`Go to slide ${i + 1}`}
-                aria-current={i === active}
-                className={cn(
-                  "h-2.5 rounded-full transition-all",
-                  i === active
-                    ? "w-6 bg-accent-orange"
-                    : "w-2.5 bg-muted-foreground/30 hover:bg-muted-foreground/50",
-                )}
-              />
-            ))}
-          </div>
-
           <button
             type="button"
             onClick={next}
             aria-label="Next"
-            className="grid size-10 shrink-0 place-items-center rounded-full border bg-card text-foreground shadow-sm transition-colors hover:border-brand hover:text-brand"
+            className={cn(ARROW_CLASS, "right-0 translate-x-1/3")}
           >
             <ChevronRight className="size-5" aria-hidden="true" />
           </button>
-        </div>
+
+          {/* Mobile: swipe, with position dots below. */}
+          <div className="mt-5 flex items-center justify-center gap-2 sm:hidden">
+            {Array.from({ length: dotEnd - dotStart }, (_, k) => {
+              const i = dotStart + k;
+              // Shrink the outer dots when more slides exist beyond them.
+              const edge =
+                (k === 0 && dotStart > 0) ||
+                (i === dotEnd - 1 && dotEnd < positions);
+              return (
+                <button
+                  key={i}
+                  type="button"
+                  onClick={() => goTo(i)}
+                  aria-label={`Go to slide ${i + 1}`}
+                  aria-current={i === active}
+                  className={cn(
+                    "rounded-full transition-all",
+                    i === active
+                      ? "h-2.5 w-6 bg-accent-orange"
+                      : edge
+                        ? "size-1.5 bg-muted-foreground/30"
+                        : "size-2.5 bg-muted-foreground/30",
+                  )}
+                />
+              );
+            })}
+          </div>
+        </>
       )}
     </div>
   );

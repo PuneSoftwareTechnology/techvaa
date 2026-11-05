@@ -17,7 +17,7 @@ export function TopModules({ courses }: { courses: CourseDTO[] }) {
       <Container>
         <SectionHeader
           as="h2"
-          eyebrow="Curriculum"
+          eyebrow="Training Programs"
           title="Explore our top SAP modules"
           description="Industry-aligned tracks across finance, logistics and development — each with live projects and certification guidance."
         />
@@ -33,7 +33,7 @@ export function TopModules({ courses }: { courses: CourseDTO[] }) {
         <div className="mt-10 text-center">
           <Button asChild variant="outline" size="xl">
             <Link href="/courses">
-              View all 15+ modules <ArrowRight aria-hidden="true" />
+              View all SAP S4HANA courses <ArrowRight aria-hidden="true" />
             </Link>
           </Button>
         </div>

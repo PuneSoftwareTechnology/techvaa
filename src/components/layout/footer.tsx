@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Mail, MapPin, Phone } from "lucide-react";
+import { MapPin } from "lucide-react";
 import { Container } from "@/components/common/container";
 import { Logo } from "@/components/common/logo";
 import { SOCIAL_ICON_MAP } from "@/components/common/social-icons";
@@ -23,18 +23,6 @@ export function Footer() {
               {SITE.description}
             </p>
             <div className="mt-5 space-y-2 text-sm text-white/80">
-              <a
-                href={`mailto:${SITE.email}`}
-                className="flex items-center gap-2 hover:text-white"
-              >
-                <Mail className="size-4" aria-hidden="true" /> {SITE.email}
-              </a>
-              <a
-                href={`tel:${SITE.phone.replace(/[^+\d]/g, "")}`}
-                className="flex items-center gap-2 hover:text-white"
-              >
-                <Phone className="size-4" aria-hidden="true" /> {SITE.phone}
-              </a>
               <p className="flex items-start gap-2">
                 <MapPin className="mt-0.5 size-4 shrink-0" aria-hidden="true" />
                 <span>

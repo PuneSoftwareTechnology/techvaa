@@ -59,12 +59,12 @@ export function TransformCta() {
             Join the next cohort, attend a free demo, or download the full
             course catalog to plan your SAP career.
           </p>
-          <div className="mt-8 flex justify-center gap-3">
+          <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:justify-center">
             <Button
               asChild
               variant="accent"
               size="xl"
-              className="relative flex-1 overflow-hidden px-3 text-sm sm:flex-initial sm:px-6 sm:text-base"
+              className="relative w-full overflow-hidden sm:w-auto"
             >
               <ScrollLink href="#contact">
                 <Shimmer />
@@ -79,7 +79,7 @@ export function TransformCta() {
               asChild
               size="xl"
               variant="outline"
-              className="flex-1 border-white/30 bg-white/5 px-3 text-sm text-white hover:bg-white/15 hover:text-white sm:flex-initial sm:px-6 sm:text-base"
+              className="w-full border-white/30 bg-white/5 text-white hover:bg-white/15 hover:text-white sm:w-auto"
             >
               <Link href="/courses">
                 <Eye aria-hidden="true" className="hidden md:block" /> View

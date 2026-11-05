@@ -25,7 +25,7 @@ function computeRatingSummary(reviews: ReviewDTO[]): RatingSummary {
   return { average, count, distribution };
 }
 
-/** Derive testimonials from published reviews when the testimonial table is empty. */
+/** Present published reviews in the testimonial card shape. */
 function reviewsAsTestimonials(reviews: ReviewDTO[]): TestimonialDTO[] {
   return reviews.map((r) => ({
     id: r.id,
@@ -52,23 +52,33 @@ export const placementService = {
   getTop: cache((take = 12) => placementRepository.findPublished(take)),
 };
 
+/**
+ * Fill a short testimonial list up to `take` with top published reviews, so the
+ * reviews carousel always has enough cards to page through.
+ */
+async function topUpWithReviews(
+  own: TestimonialDTO[],
+  take: number,
+): Promise<TestimonialDTO[]> {
+  if (own.length >= take) return own;
+  const reviews = await reviewRepository.findPublished(take - own.length);
+  return [...own, ...reviewsAsTestimonials(reviews)];
+}
+
 export const testimonialService = {
   /**
-   * Homepage success stories. Only testimonials flagged `showOnHomepage` are
-   * used; falls back to published reviews so the section is never empty.
+   * Homepage success stories: testimonials flagged `showOnHomepage` first,
+   * topped up with published reviews.
    */
-  getForHomepage: cache(async (take = 3): Promise<TestimonialDTO[]> => {
-    const own = await testimonialRepository.findForHomepage(take);
-    if (own.length > 0) return own;
-    const reviews = await reviewRepository.findPublished(take);
-    return reviewsAsTestimonials(reviews);
-  }),
+  getForHomepage: cache(async (take = 3): Promise<TestimonialDTO[]> =>
+    topUpWithReviews(await testimonialRepository.findForHomepage(take), take)
+  ),
 
   /**
-   * Testimonials attached to a specific course. Strictly scoped — no fallback,
-   * so a course with no tagged testimonials simply hides the section.
+   * Course page success stories: testimonials tagged to this course first,
+   * topped up with published reviews.
    */
-  getForCourse: cache((courseId: string, take = 8): Promise<TestimonialDTO[]> =>
-    testimonialRepository.findForCourse(courseId, take)
+  getForCourse: cache(async (courseId: string, take = 8): Promise<TestimonialDTO[]> =>
+    topUpWithReviews(await testimonialRepository.findForCourse(courseId, take), take)
   ),
 };

@@ -32,7 +32,7 @@ export function PlacedCompanies() {
         );
       })}
       <p className="sr-only">
-        Our students are placed in: {HIRING_PARTNERS.map((p) => p.name).join(", ")}
+        Our students are successfully placed in: {HIRING_PARTNERS.map((p) => p.name).join(", ")}
       </p>
     </div>
   );

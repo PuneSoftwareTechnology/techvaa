@@ -79,6 +79,10 @@ const nextConfig: NextConfig = {
     // Cache optimized images for 30 days so re-crawls / repeat visits don't
     // re-trigger optimization (each re-optimization re-fetches the source).
     minimumCacheTTL: 2592000,
+    // Dev only: on NAT64 networks (IPv6 hotspots/ISPs) public hosts like S3
+    // also resolve to 64:ff9b:: addresses, which Next 16 treats as private
+    // and refuses to optimize. Production keeps the default protection.
+    dangerouslyAllowLocalIP: process.env.NODE_ENV === "development",
   },
 
   // Keep server-only DB packages external (unbundled) on the server. These are

@@ -18,14 +18,14 @@ import { RichTextContent } from "@/components/common/rich-text-content";
 import { CollapsibleContent } from "@/components/common/collapsible-content";
 import { EnrollDialog } from "@/components/forms/enroll-dialog";
 import { htmlToPlainText } from "@/lib/sanitize";
-import { courseShortName } from "@/lib/format";
+import { courseShortName, courseSyllabusTitle } from "@/lib/format";
 import { CourseCard } from "@/modules/courses/components/course-card";
 import { BlogCard } from "@/modules/blog/components/blog-card";
 import { CurriculumHighlights } from "@/modules/courses/components/curriculum-highlights";
 import { AboutTrainer } from "@/modules/courses/components/about-trainer";
 import { CourseOutcomes } from "@/modules/courses/components/course-outcomes";
 import { BatchSchedule } from "@/modules/courses/components/batch-schedule";
-import { AlumniPlaced } from "@/modules/courses/components/alumni-placed";
+import { HiringPartners } from "@/modules/home/components/hiring-partners";
 import { CourseReviews } from "@/modules/courses/components/course-reviews";
 import { FaqSection } from "@/modules/home/components/faq-section";
 
@@ -161,7 +161,10 @@ export default async function CourseDetailPage({
         </Container>
       )}
 
-      <CurriculumHighlights items={course.curriculum} />
+      <CurriculumHighlights
+        items={course.curriculum}
+        title={courseSyllabusTitle(course.title, course.slug)}
+      />
 
       <AboutTrainer
         heading={course.trainerHeading}
@@ -177,7 +180,7 @@ export default async function CourseDetailPage({
         hideViewDetails
       />
 
-      <AlumniPlaced courseTitle={course.title} />
+      <HiringPartners />
 
       <CourseReviews courseTitle={course.title} testimonials={testimonials} />
 

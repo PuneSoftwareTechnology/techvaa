@@ -50,6 +50,10 @@ export const reviewService = {
 export const placementService = {
   getAll: cache(() => placementRepository.findPublished()),
   getTop: cache((take = 12) => placementRepository.findPublished(take)),
+  /** "Recently Placed Students" for one course page (admin-curated). */
+  getForCourse: cache((courseId: string, take = 20) =>
+    placementRepository.findForCourse(courseId, take)
+  ),
 };
 
 /**
@@ -75,10 +79,11 @@ export const testimonialService = {
   ),
 
   /**
-   * Course page success stories: testimonials tagged to this course first,
-   * topped up with published reviews.
+   * Course page testimonials: only those tagged to this course in the admin
+   * (Testimonial → Courses). Deliberately NOT topped up with general reviews —
+   * that showed the same (often other-course) reviews on every course page.
    */
-  getForCourse: cache(async (courseId: string, take = 8): Promise<TestimonialDTO[]> =>
-    topUpWithReviews(await testimonialRepository.findForCourse(courseId, take), take)
+  getForCourse: cache((courseId: string, take = 8): Promise<TestimonialDTO[]> =>
+    testimonialRepository.findForCourse(courseId, take)
   ),
 };

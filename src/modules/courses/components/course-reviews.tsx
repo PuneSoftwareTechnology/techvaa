@@ -24,9 +24,9 @@ export function CourseReviews({
       <Container>
         <SectionHeader
           as="h2"
-          eyebrow="Success Stories"
+          eyebrow="Testimonials"
           title="What our graduates say"
-          description={`Real outcomes from learners who advanced their careers with the ${courseTitle} program at Techvaa.`}
+          description={`Real feedback from learners who advanced their careers with the ${courseTitle} program at Techvaa.`}
           gradient
         />
       </Container>

@@ -11,6 +11,14 @@ import {
   SOCIAL_LINKS,
 } from "@/constants/site";
 
+/** Official brand colours for each social tile. */
+const SOCIAL_TILE: Record<(typeof SOCIAL_LINKS)[number]["icon"], string> = {
+  instagram:
+    "bg-[radial-gradient(circle_at_30%_107%,#fdf497_0%,#fdf497_5%,#fd5949_45%,#d6249f_60%,#285AEB_90%)]",
+  youtube: "bg-[#FF0000]",
+  facebook: "bg-[#1877F2]",
+};
+
 export function Footer() {
   const year = 2026; // server-rendered; avoids hydration drift from Date.now()
   return (
@@ -56,6 +64,27 @@ export function Footer() {
                 </span>
               </p>
             </div>
+
+            {/* Brand-coloured social icons, directly under the location. */}
+            <ul aria-label="Follow Techvaa" className="mt-5 flex items-center gap-3">
+              {SOCIAL_LINKS.map((s) => {
+                const Icon =
+                  SOCIAL_ICON_MAP[s.icon as keyof typeof SOCIAL_ICON_MAP];
+                return (
+                  <li key={s.label}>
+                    <a
+                      href={s.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={s.label}
+                      className={`grid size-10 place-items-center rounded-xl text-white shadow-md ring-1 ring-white/20 transition-transform hover:-translate-y-0.5 hover:scale-105 ${SOCIAL_TILE[s.icon]}`}
+                    >
+                      <Icon className="size-5" aria-hidden="true" />
+                    </a>
+                  </li>
+                );
+              })}
+            </ul>
           </div>
 
           <div className="grid grid-cols-2 gap-10 md:contents">
@@ -115,25 +144,6 @@ export function Footer() {
               ))}
             </ul>
           </div>
-          <ul className="flex items-center gap-3">
-            {SOCIAL_LINKS.map((s) => {
-              const Icon =
-                SOCIAL_ICON_MAP[s.icon as keyof typeof SOCIAL_ICON_MAP];
-              return (
-                <li key={s.label}>
-                  <a
-                    href={s.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={s.label}
-                    className="grid size-9 place-items-center rounded-full bg-white/10 text-white transition-colors hover:bg-accent-orange"
-                  >
-                    <Icon className="size-4" aria-hidden="true" />
-                  </a>
-                </li>
-              );
-            })}
-          </ul>
         </div>
         <p className="text-xs text-center mt-8 mb-16 font-semibold text-white/45 italic">
           Techvaa is not an authorized SAP partner.

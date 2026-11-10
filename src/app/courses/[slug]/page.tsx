@@ -4,7 +4,10 @@ import { ArrowRight } from "lucide-react";
 import { courseService } from "@/services/course.service";
 import { faqService } from "@/services/faq.service";
 import { blogService } from "@/services/blog.service";
-import { testimonialService } from "@/services/social-proof.service";
+import {
+  placementService,
+  testimonialService,
+} from "@/services/social-proof.service";
 import { buildMetadata } from "@/lib/seo";
 import { JsonLd } from "@/components/seo/json-ld";
 import { courseSchema, breadcrumbSchema, faqSchema } from "@/lib/jsonld";
@@ -27,6 +30,7 @@ import { CourseOutcomes } from "@/modules/courses/components/course-outcomes";
 import { BatchSchedule } from "@/modules/courses/components/batch-schedule";
 import { HiringPartners } from "@/modules/home/components/hiring-partners";
 import { CourseReviews } from "@/modules/courses/components/course-reviews";
+import { RecentlyPlaced } from "@/modules/courses/components/recently-placed";
 import { FaqSection } from "@/modules/home/components/faq-section";
 
 // Render on every request (live DB read) — see the home page for why Amplify's
@@ -77,11 +81,13 @@ export default async function CourseDetailPage({
 
   if (!course) notFound();
 
-  const [faqs, testimonials, relatedArticles] = await Promise.all([
-    faqService.getForCourse(course.id),
-    testimonialService.getForCourse(course.id, 8),
-    blogService.getForCourse(course.slug),
-  ]);
+  const [faqs, testimonials, relatedArticles, placedStudents] =
+    await Promise.all([
+      faqService.getForCourse(course.id),
+      testimonialService.getForCourse(course.id, 8),
+      blogService.getForCourse(course.slug),
+      placementService.getForCourse(course.id),
+    ]);
 
   // Bare module name ("SAP MM") for headings that add their own wording.
   const courseName = courseShortName(course.title);
@@ -112,7 +118,7 @@ export default async function CourseDetailPage({
       />
 
       <PageHero
-        eyebrow="SAP Certification Bootcamp"
+        eyebrow="SAP S4HANA Training & Placement"
         title={course.title}
         description={course.shortDescription ?? undefined}
         breadcrumbs={[
@@ -160,6 +166,9 @@ export default async function CourseDetailPage({
           </CollapsibleContent>
         </Container>
       )}
+
+      {/* Above "What you'll learn" (client request). */}
+      <RecentlyPlaced courseName={courseName} placements={placedStudents} />
 
       <CurriculumHighlights
         items={course.curriculum}

@@ -175,23 +175,52 @@ export const SOCIAL_LINKS = [
 ] as const;
 
 /**
- * Hiring / alumni-placement partners for the marquee.
+ * Companies our students are placed in, as the three rows of the "Our Students
+ * Are Successfully Placed In" marquee. Each row is a different set (client
+ * request) — IT services / consulting, IT & BFSI, and enterprises.
+ *
  * Logos are resolved at render time from each domain via Google's favicon
  * service (see LogoMarquee), with a wordmark fallback. Some sites only resolve
  * on their `www.` host; `logo` overrides the lookup with a self-hosted file
  * for brands the service has no icon for.
  */
-export const HIRING_PARTNERS = [
-  { name: "Wipro", domain: "wipro.com" },
-  { name: "eClerx", domain: "eclerx.com" },
-  { name: "Accenture", domain: "accenture.com" },
-  { name: "Birlasoft", domain: "birlasoft.com" },
-  { name: "Capgemini", domain: "capgemini.com" },
-  { name: "H&M", domain: "hm.com" },
-  { name: "L&T Infotech", domain: "ltimindtree.com", logo: "/logos/ltimindtree.png" },
-  { name: "Maersk", domain: "maersk.com" },
-  { name: "TCS", domain: "www.tcs.com" },
-  { name: "Tata Technologies", domain: "www.tatatechnologies.com" },
-  { name: "Deloitte", domain: "deloitte.com" },
-  { name: "Tata", domain: "tata.com" },
+export const PLACED_COMPANY_ROWS = [
+  [
+    { name: "Accenture", domain: "accenture.com" },
+    { name: "Infosys", domain: "infosys.com" },
+    { name: "Capgemini", domain: "capgemini.com" },
+    { name: "Deloitte", domain: "deloitte.com" },
+    { name: "Wipro", domain: "wipro.com" },
+    { name: "Cognizant", domain: "cognizant.com" },
+    { name: "TCS", domain: "www.tcs.com" },
+    { name: "IBM", domain: "ibm.com" },
+    { name: "EY", domain: "ey.com" },
+    { name: "L&T Infotech", domain: "ltimindtree.com", logo: "/logos/ltimindtree.png" },
+  ],
+  [
+    { name: "Tata Technologies", domain: "www.tatatechnologies.com" },
+    { name: "Birlasoft", domain: "birlasoft.com" },
+    { name: "Yash Technologies", domain: "yash.com" },
+    { name: "eClerx", domain: "eclerx.com" },
+    { name: "Genpact", domain: "genpact.com" },
+    { name: "Synechron", domain: "synechron.com" },
+    { name: "Tietoevry", domain: "tietoevry.com" },
+    { name: "Atos", domain: "atos.net" },
+    { name: "Barclays", domain: "barclays.com" },
+    { name: "DBS Bank", domain: "dbs.com" },
+  ],
+  [
+    { name: "Maersk", domain: "maersk.com" },
+    { name: "H&M", domain: "hm.com" },
+    { name: "Volkswagen", domain: "volkswagen.com" },
+    { name: "Schindler", domain: "schindler.com" },
+    { name: "Godrej", domain: "www.godrejindustries.com" },
+    { name: "Konecranes", domain: "konecranes.com" },
+    { name: "Faurecia", domain: "faurecia.com" },
+    { name: "Smith+Nephew", domain: "smith-nephew.com" },
+    { name: "Kerry", domain: "kerry.com" },
+  ],
 ] as const;
+
+/** Every placed-in company, flattened (screen-reader list, schema, etc.). */
+export const HIRING_PARTNERS = PLACED_COMPANY_ROWS.flat();

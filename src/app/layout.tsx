@@ -10,7 +10,9 @@ import { FloatingContact } from "@/components/layout/floating-contact";
 import { FloatingEnquiry } from "@/components/layout/floating-enquiry";
 import { JsonLd } from "@/components/seo/json-ld";
 import { organizationSchema, websiteSchema } from "@/lib/jsonld";
-import { CookieConsent } from "@/components/analytics/consent";
+import { GoogleAnalytics } from "@/components/analytics/google-analytics";
+import { MicrosoftClarity } from "@/components/analytics/clarity";
+import { MetaPixel } from "@/components/analytics/meta-pixel";
 import { WebVitals } from "@/components/analytics/web-vitals";
 
 const geistSans = Geist({
@@ -84,7 +86,11 @@ export default function RootLayout({
           <FloatingContact />
           <FloatingEnquiry />
         </Providers>
-        <CookieConsent />
+        {/* Analytics load for every visitor — no cookie banner (client
+            request). Each renders nothing unless its env var is set. */}
+        <GoogleAnalytics />
+        <MicrosoftClarity />
+        <MetaPixel />
         <WebVitals />
       </body>
     </html>

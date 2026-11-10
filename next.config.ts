@@ -23,7 +23,7 @@ const csp = [
   "img-src 'self' data: blob: https:",
   "font-src 'self' data: https://fonts.gstatic.com",
   "connect-src 'self' https://www.googletagmanager.com https://*.google-analytics.com https://*.analytics.google.com https://*.clarity.ms https://c.bing.com https://connect.facebook.net https://www.facebook.com https://stats.g.doubleclick.net https://www.google.com",
-  "frame-src 'self' https://www.google.com https://*.facebook.com https://td.doubleclick.net",
+  "frame-src 'self' https://www.google.com https://*.facebook.com https://td.doubleclick.net https://www.youtube-nocookie.com https://www.instagram.com",
   "worker-src 'self' blob:",
   "upgrade-insecure-requests",
 ].join("; ");

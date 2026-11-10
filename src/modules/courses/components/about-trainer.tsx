@@ -25,7 +25,7 @@ export function AboutTrainer({
       <Container>
         <SectionHeader
           as="h2"
-          eyebrow="Meet your mentor"
+          eyebrow="Meet your trainer"
           title={heading || "About the trainer"}
           gradient
         />

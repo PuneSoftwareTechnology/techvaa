@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { SITE } from "@/constants/site";
 
+/** Default share image (1200×630) for pages without their own. */
+export const DEFAULT_OG_IMAGE = "/og-image.png";
+
 export function absoluteUrl(path = "/"): string {
   const base = SITE.url.replace(/\/$/, "");
   return path.startsWith("http") ? path : `${base}${path.startsWith("/") ? "" : "/"}${path}`;
@@ -48,11 +51,13 @@ export function buildMetadata({
     : `${SITE.name} — ${SITE.tagline}`;
   const noindex = robots?.startsWith("NOINDEX");
 
-  // When no explicit image is supplied we omit openGraph.images so the
-  // file-based `opengraph-image` convention provides the branded fallback.
-  const explicitImage = image
-    ? [{ url: absoluteUrl(image), width: 1200, height: 630, alt: resolvedTitle }]
-    : undefined;
+  // Falls back to a STATIC branded PNG in /public. A static file is served
+  // with a Content-Length header; the generated `opengraph-image` route
+  // streamed without one, and WhatsApp on phones then drops the preview image.
+  const ogImage = absoluteUrl(image ?? DEFAULT_OG_IMAGE);
+  const explicitImage = [
+    { url: ogImage, width: 1200, height: 630, alt: resolvedTitle },
+  ];
 
   return {
     title: branded ? { absolute: resolvedTitle } : (title ?? resolvedTitle),
@@ -69,13 +74,13 @@ export function buildMetadata({
       description,
       url,
       locale: SITE.locale,
-      ...(explicitImage ? { images: explicitImage } : {}),
+      images: explicitImage,
     },
     twitter: {
       card: "summary_large_image",
       title: resolvedTitle,
       description,
-      ...(image ? { images: [absoluteUrl(image)] } : {}),
+      images: [ogImage],
     },
   };
 }

@@ -51,4 +51,21 @@ export const placementRepository = {
     });
     return rows.map(toPlacementDTO);
   },
+
+  /**
+   * Placements picked for a course page's "Recently Placed Students" section:
+   * tagged to the course AND flagged `showOnCoursePage` in the admin.
+   */
+  async findForCourse(courseId: string, take?: number): Promise<PlacementDTO[]> {
+    const rows = await prisma.placement.findMany({
+      where: {
+        ...PUBLISHED,
+        showOnCoursePage: true,
+        courses: { some: { id: courseId } },
+      },
+      orderBy: [{ joiningDate: { sort: "desc", nulls: "last" } }, { createdAt: "desc" }],
+      take,
+    });
+    return rows.map(toPlacementDTO);
+  },
 };

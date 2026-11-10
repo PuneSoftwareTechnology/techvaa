@@ -12,7 +12,7 @@ export function WhyChoose() {
         <SectionHeader
           as="h2"
           eyebrow="Why Techvaa"
-          title="Why choose us for your training?"
+          title="Why choose Techvaa for your SAP training?"
           description="Everything you need to go from beginner to job-ready SAP consultant — mentorship, hands-on projects, and a placement engine that works."
         />
 

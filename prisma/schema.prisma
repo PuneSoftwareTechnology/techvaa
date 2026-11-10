@@ -88,21 +88,21 @@ model User {
 // ─────────────────────────────────────────────────────────────────────────────
 
 model Course {
-  id               String    @id @default(cuid())
-  title            String
-  slug             String    @unique
-  shortDescription String? // one-liner shown on course cards
-  description      String // long-form (HTML / markdown)
-  duration         String? // e.g. "6 weeks", "40 hours"
-  image            String?
+  id                 String    @id @default(cuid())
+  title              String
+  slug               String    @unique
+  shortDescription   String? // one-liner shown on course cards
+  description        String // long-form (HTML / markdown)
+  duration           String? // e.g. "6 weeks", "40 hours"
+  image              String?
   // About the Trainer — heading + long-form (HTML) shown after the curriculum.
   trainerHeading     String?
   trainerDescription String?
-  isFeatured       Boolean   @default(false)
-  isPublished      Boolean   @default(false)
-  createdAt        DateTime  @default(now())
-  updatedAt        DateTime  @updatedAt
-  deletedAt        DateTime?
+  isFeatured         Boolean   @default(false)
+  isPublished        Boolean   @default(false)
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+  deletedAt          DateTime?
 
   // Optional one-to-one SEO metadata (FK lives on SeoMetadata).
   seo SeoMetadata?
@@ -118,6 +118,10 @@ model Course {
 
   // Testimonials attached to this course (shown on the course detail page).
   testimonials Testimonial[] @relation("CourseTestimonials")
+
+  // Placements shown in this course page's "Recently Placed Students" section
+  // (only those with showOnCoursePage = true).
+  placements Placement[] @relation("CoursePlacements")
 
   // Blogs that link to this course (Blog.relatedCourses, implicit M2M).
   relatedBlogs Blog[] @relation("BlogRelatedCourses")
@@ -149,9 +153,9 @@ model CurriculumItem {
 
 // Upcoming batch ("New Batch Schedule") for a course — start date + duration.
 model CourseBatch {
-  id        String   @id @default(cuid())
+  id        String      @id @default(cuid())
   courseId  String
-  course    Course   @relation(fields: [courseId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  course    Course      @relation(fields: [courseId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   startDate DateTime
   duration  String // e.g. "12 weeks"
   mode      String?     @default("Instructor Led Training")
@@ -169,9 +173,9 @@ model CourseBatch {
 // ─────────────────────────────────────────────────────────────────────────────
 
 model Blog {
-  id              String    @id @default(cuid())
+  id              String  @id @default(cuid())
   title           String
-  slug            String    @unique
+  slug            String  @unique
   metaDescription String? // short SEO/summary line shown on cards & meta tags
   featuredImage   String?
   introduction    String // lede paragraph
@@ -246,19 +250,19 @@ model Review {
 }
 
 model Testimonial {
-  id          String    @id @default(cuid())
-  name        String
-  role        String?
-  company     String?
-  message     String
-  image       String?
-  videoUrl    String?
-  isPublished Boolean   @default(false)
+  id             String    @id @default(cuid())
+  name           String
+  role           String?
+  company        String?
+  message        String
+  image          String?
+  videoUrl       String?
+  isPublished    Boolean   @default(false)
   // When true, the testimonial appears in the homepage success-stories section.
-  showOnHomepage Boolean @default(false)
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  deletedAt   DateTime?
+  showOnHomepage Boolean   @default(false)
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  deletedAt      DateTime?
 
   // Courses this testimonial is attached to. It shows on a course page only
   // when that course is in this set; homepage placement uses showOnHomepage.
@@ -271,20 +275,27 @@ model Testimonial {
 }
 
 model Placement {
-  id          String    @id @default(cuid())
-  studentName String
-  company     String
-  package     String? // CTC, kept as text to allow "12 LPA", "$90k", ranges
-  course      String?
-  image       String?
-  linkedinUrl String?
-  joiningDate DateTime?
-  isPublished Boolean   @default(false)
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  deletedAt   DateTime?
+  id               String    @id @default(cuid())
+  studentName      String
+  company          String
+  package          String? // CTC, kept as text to allow "12 LPA", "$90k", ranges
+  course           String?
+  image            String?
+  linkedinUrl      String?
+  joiningDate      DateTime?
+  isPublished      Boolean   @default(false)
+  // When true, the placement appears in the "Recently Placed Students" section
+  // of every course page in `courses`. Optional — not every placement is shown.
+  showOnCoursePage Boolean   @default(false)
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+  deletedAt        DateTime?
+
+  // Course pages this placement is shown on (with showOnCoursePage).
+  courses Course[] @relation("CoursePlacements")
 
   @@index([isPublished])
+  @@index([showOnCoursePage])
   @@index([company])
   @@index([joiningDate])
   @@index([deletedAt])

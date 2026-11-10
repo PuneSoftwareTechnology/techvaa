@@ -1,7 +1,9 @@
 import { Quote } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
+import { parseVideoUrl } from "@/lib/video";
 import type { TestimonialDTO } from "@/types";
+import { TestimonialVideo } from "./testimonial-video";
 
 function initials(name: string) {
   return name
@@ -42,13 +44,28 @@ export function TestimonialCard({
   accent?: TestimonialAccent;
 }) {
   const meta = [testimonial.role, testimonial.company].filter(Boolean).join(" · ");
+  // A YouTube / Instagram link turns the card into a video testimonial: the
+  // player leads and the written message stays underneath (shortened).
+  const video = parseVideoUrl(testimonial.videoUrl);
   return (
     <Card className={cn("flex h-full flex-col p-6", accent?.bar, className)}>
-      <Quote
-        className={cn("size-7", accent?.quote ?? "text-accent-orange/70")}
-        aria-hidden="true"
-      />
-      <blockquote className="mt-3 flex-1 text-pretty text-sm leading-relaxed text-foreground/90">
+      {video ? (
+        <TestimonialVideo
+          video={video}
+          title={`${testimonial.name}'s Techvaa testimonial`}
+        />
+      ) : (
+        <Quote
+          className={cn("size-7", accent?.quote ?? "text-accent-orange/70")}
+          aria-hidden="true"
+        />
+      )}
+      <blockquote
+        className={cn(
+          "mt-3 flex-1 text-pretty text-sm leading-relaxed text-foreground/90",
+          video && "line-clamp-4",
+        )}
+      >
         “{testimonial.message}”
       </blockquote>
       <figcaption className="mt-5 flex items-center gap-3 border-t pt-4">

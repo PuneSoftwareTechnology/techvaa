@@ -1,10 +1,10 @@
 import "server-only";
-import { cache } from "react";
+import { cached } from "@/lib/data-cache";
 import { faqRepository } from "@/repositories/faq.repository";
 
 export const faqService = {
-  getForHomepage: cache(() => faqRepository.findForHomepage()),
-  getForCourse: cache((courseId: string) =>
+  getForHomepage: cached("faq.getForHomepage", () => faqRepository.findForHomepage()),
+  getForCourse: cached("faq.getForCourse", (courseId: string) =>
     faqRepository.findForCourse(courseId)
   ),
 };

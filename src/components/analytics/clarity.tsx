@@ -1,7 +1,7 @@
 import Script from "next/script";
 
 /**
- * Microsoft Clarity (session replay + heatmaps). Loaded `afterInteractive` so
+ * Microsoft Clarity (session replay + heatmaps). Loaded `lazyOnload` (after the page finishes loading) so
  * it never blocks LCP. Renders nothing unless `NEXT_PUBLIC_CLARITY_ID` is set,
  * so local/preview environments stay untracked — just leave the env var blank.
  *
@@ -13,7 +13,7 @@ export function MicrosoftClarity() {
   if (!clarityId) return null;
 
   return (
-    <Script id="ms-clarity-init" strategy="afterInteractive">
+    <Script id="ms-clarity-init" strategy="lazyOnload">
       {`
         (function(c,l,a,r,i,t,y){
           c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};

@@ -2,7 +2,7 @@ import Script from "next/script";
 
 /**
  * Meta (Facebook) Pixel. Only needed if you run Meta ads — loaded
- * `afterInteractive` so it never blocks LCP. Renders nothing unless
+ * `lazyOnload` (after the page finishes loading) so it never blocks LCP. Renders nothing unless
  * `NEXT_PUBLIC_META_PIXEL_ID` is set, so leave the env var blank to disable.
  *
  * Get the ID from Meta Events Manager → Data Sources → your pixel.
@@ -13,7 +13,7 @@ export function MetaPixel() {
 
   return (
     <>
-      <Script id="meta-pixel-init" strategy="afterInteractive">
+      <Script id="meta-pixel-init" strategy="lazyOnload">
         {`
           !function(f,b,e,v,n,t,s)
           {if(f.fbq)return;n=f.fbq=function(){n.callMethod?

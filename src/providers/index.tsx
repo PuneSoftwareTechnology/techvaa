@@ -3,7 +3,7 @@
 import { QueryProvider } from "./query-provider";
 import { ThemeProvider } from "./theme-provider";
 import { Toaster } from "@/components/ui/sonner";
-import { RecaptchaScript } from "@/components/common/recaptcha-script";
+import { RecaptchaPreloader } from "@/components/common/recaptcha-script";
 
 /** Root client-side provider stack mounted once in the app layout. */
 export function Providers({ children }: { children: React.ReactNode }) {
@@ -17,7 +17,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
       <QueryProvider>
         {children}
         <Toaster richColors position="top-center" />
-        <RecaptchaScript />
+        <RecaptchaPreloader />
       </QueryProvider>
     </ThemeProvider>
   );

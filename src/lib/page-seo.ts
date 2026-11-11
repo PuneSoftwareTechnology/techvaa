@@ -2,6 +2,20 @@ import "server-only";
 import type { Metadata } from "next";
 import { prisma } from "@/lib/prisma";
 import { buildMetadata } from "@/lib/seo";
+import { cached } from "@/lib/data-cache";
+
+const findPageSeo = cached("pageSeo.byPath", (path: string) =>
+  prisma.pageSeo.findUnique({
+    where: { path },
+    select: {
+      metaTitle: true,
+      metaDescription: true,
+      ogImage: true,
+      keywords: true,
+      robots: true,
+    },
+  })
+);
 
 type Fallback = {
   title: string;
@@ -20,9 +34,7 @@ export async function pageMetadata(
   path: string,
   fallback: Fallback
 ): Promise<Metadata> {
-  const seo = await prisma.pageSeo
-    .findUnique({ where: { path } })
-    .catch(() => null);
+  const seo = await findPageSeo(path).catch(() => null);
 
   return buildMetadata({
     title: seo?.metaTitle ?? fallback.title,

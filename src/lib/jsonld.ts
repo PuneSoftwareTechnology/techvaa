@@ -1,5 +1,5 @@
 import { SITE, SOCIAL_LINKS, LOCATION } from "@/constants/site";
-import { absoluteUrl } from "./seo";
+import { absoluteUrl, DEFAULT_OG_IMAGE } from "./seo";
 import { htmlToPlainText } from "./sanitize";
 import type {
   BlogDTO,
@@ -43,7 +43,6 @@ export function organizationSchema() {
     legalName: SITE.legalName,
     url: absoluteUrl("/"),
     description: SITE.description,
-    email: SITE.email,
     telephone: SITE.phone,
     foundingDate: String(SITE.foundingYear),
     address: postalAddress(),
@@ -58,9 +57,8 @@ export function localBusinessSchema(rating?: RatingSummary) {
     "@type": "LocalBusiness",
     "@id": `${absoluteUrl("/")}#localbusiness`,
     name: SITE.name,
-    image: absoluteUrl("/opengraph-image"),
+    image: absoluteUrl(DEFAULT_OG_IMAGE),
     url: absoluteUrl("/"),
-    email: SITE.email,
     telephone: SITE.phone,
     priceRange: "$$",
     address: postalAddress(),
@@ -205,7 +203,7 @@ export function articleSchema(blog: BlogDTO) {
     publisher: {
       "@type": "Organization",
       name: SITE.name,
-      logo: { "@type": "ImageObject", url: absoluteUrl("/opengraph-image") },
+      logo: { "@type": "ImageObject", url: absoluteUrl("/logo.png") },
     },
   };
 }

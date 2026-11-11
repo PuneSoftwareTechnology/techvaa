@@ -1,20 +1,26 @@
 "use client";
 
-import Script from "next/script";
-import { RECAPTCHA_SITE_KEY } from "@/lib/recaptcha-client";
+import { useEffect } from "react";
+import { RECAPTCHA_SITE_KEY, loadRecaptcha } from "@/lib/recaptcha-client";
 
 /**
- * Loads the Google reCAPTCHA v3 library once, app-wide. Renders nothing when no
- * site key is configured, so the third-party script (and its floating badge)
- * only ship once keys are set. Mounted in the root provider stack.
+ * Pre-loads reCAPTCHA the first time a visitor focuses a form field anywhere
+ * on the page, so the token is ready by the time they submit — without paying
+ * the library's main-thread cost on every page view. Renders nothing.
  */
-export function RecaptchaScript() {
-  if (!RECAPTCHA_SITE_KEY) return null;
+export function RecaptchaPreloader() {
+  useEffect(() => {
+    if (!RECAPTCHA_SITE_KEY) return;
+    const onFocus = (e: FocusEvent) => {
+      const el = e.target as HTMLElement | null;
+      if (el?.matches?.("input, textarea, select")) {
+        document.removeEventListener("focusin", onFocus);
+        void loadRecaptcha();
+      }
+    };
+    document.addEventListener("focusin", onFocus);
+    return () => document.removeEventListener("focusin", onFocus);
+  }, []);
 
-  return (
-    <Script
-      src={`https://www.google.com/recaptcha/api.js?render=${RECAPTCHA_SITE_KEY}`}
-      strategy="afterInteractive"
-    />
-  );
+  return null;
 }

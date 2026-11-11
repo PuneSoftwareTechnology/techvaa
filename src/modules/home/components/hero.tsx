@@ -1,7 +1,4 @@
-"use client";
-
 import Image from "next/image";
-import { motion, useReducedMotion } from "framer-motion";
 import { ArrowRight, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/common/container";
@@ -13,51 +10,34 @@ import { HERO_HIGHLIGHTS } from "@/constants/home";
 import { LOCATION } from "@/constants/site";
 
 export function Hero() {
-  const reduce = useReducedMotion();
-  const fade = (delay: number) =>
-    reduce
-      ? {}
-      : {
-          initial: { opacity: 0, y: 20 },
-          animate: { opacity: 1, y: 0 },
-          transition: {
-            duration: 0.6,
-            delay,
-            ease: [0.22, 1, 0.36, 1] as const,
-          },
-        };
-
+  // No entrance animations here: the hero is the first paint and holds the
+  // LCP image, so it must arrive visible in the server HTML (not opacity:0
+  // waiting for JavaScript).
   return (
     <section className="relative overflow-hidden bg-brand text-brand-foreground">
       <HeroBackground />
 
       <Container className="relative grid items-center gap-10 py-12 lg:grid-cols-2 lg:gap-12 lg:py-28">
         <div>
-          <motion.p
-            {...fade(0)}
-            className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-white/90 ring-1 ring-white/15"
+          <p className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-white/90 ring-1 ring-white/15"
           >
             <MapPin className="size-3.5 text-accent-orange" aria-hidden="true" />
             SAP Training Institute in {LOCATION.city}
-          </motion.p>
+          </p>
 
-          <motion.h1
-            {...fade(0.08)}
-            className="mt-5 text-balance font-heading text-[1.75rem] font-extrabold leading-tight tracking-tight sm:text-5xl sm:leading-[1.05] lg:text-6xl"
+          <h1 className="mt-5 text-balance font-heading text-[1.75rem] font-extrabold leading-tight tracking-tight sm:text-5xl sm:leading-[1.05] lg:text-6xl"
           >
             Master SAP. <span className="text-accent-orange">Elevate</span> Your
             Career. Get Hired.
-          </motion.h1>
+          </h1>
 
-          <motion.p
-            {...fade(0.16)}
-            className="mt-5 max-w-xl text-pretty text-lg text-white/80"
+          <p className="mt-5 max-w-xl text-pretty text-lg text-white/80"
           >
             Comprehensive SAP training in {LOCATION.city} with real-time Projects
             and 100% placement support.
-          </motion.p>
+          </p>
 
-          <motion.div {...fade(0.24)} className="mt-8 flex flex-wrap gap-3">
+          <div className="mt-8 flex flex-wrap gap-3">
             <Button
               asChild
               variant="accent"
@@ -69,9 +49,9 @@ export function Hero() {
                 Enroll Now <ArrowRight aria-hidden="true" />
               </ScrollLink>
             </Button>
-          </motion.div>
+          </div>
 
-          <motion.ul {...fade(0.32)} className="mt-8 grid gap-2">
+          <ul className="mt-8 grid gap-2">
             {HERO_HIGHLIGHTS.map((h) => (
               <li
                 key={h}
@@ -84,24 +64,11 @@ export function Hero() {
                 {h}
               </li>
             ))}
-          </motion.ul>
+          </ul>
         </div>
 
         {/* Placements banner — LCP image, so preload it */}
-        <motion.div
-          {...(reduce
-            ? {}
-            : {
-                initial: { opacity: 0, scale: 0.96, y: 24 },
-                animate: { opacity: 1, scale: 1, y: 0 },
-                transition: {
-                  duration: 0.7,
-                  delay: 0.2,
-                  ease: [0.22, 1, 0.36, 1] as const,
-                },
-              })}
-          className="relative mx-auto w-full max-w-xl"
-        >
+        <div className="relative mx-auto w-full max-w-xl">
           <Image
             src="/images/hero-placements.webp"
             alt="Techvaa students placed at PwC, EY, Deloitte, TCS and Infosys"
@@ -117,7 +84,7 @@ export function Hero() {
           >
             100% Placement Support
           </div>
-        </motion.div>
+        </div>
       </Container>
     </section>
   );

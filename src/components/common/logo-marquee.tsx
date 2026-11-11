@@ -35,7 +35,7 @@ function MarqueeItemContent({
           // eslint-disable-next-line @next/next/no-img-element -- decorative external logo; plain img avoids remotePattern config and keeps it off the LCP path
           <img
             src={src}
-            alt=""
+            alt={`${item.name} logo`}
             width={32}
             height={32}
             loading="lazy"
@@ -55,7 +55,7 @@ function MarqueeItemContent({
         {/* eslint-disable-next-line @next/next/no-img-element -- decorative external logo; plain img avoids remotePattern config and keeps it off the LCP path */}
         <img
           src={src}
-          alt=""
+          alt={`${item.name} logo`}
           width={28}
           height={28}
           loading="lazy"

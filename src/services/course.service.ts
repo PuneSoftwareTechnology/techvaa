@@ -1,17 +1,17 @@
 import "server-only";
-import { cache } from "react";
+import { cached } from "@/lib/data-cache";
 import { courseRepository } from "@/repositories/course.repository";
 
 /**
- * Course service. `cache()` dedupes calls within a single render pass; ISR
- * freshness is controlled by `export const revalidate` on the consuming route.
+ * Course service. Reads are cached across requests for a short TTL — see
+ * lib/data-cache.ts.
  */
 export const courseService = {
-  getAll: cache(() => courseRepository.findPublished()),
-  getFeatured: cache((limit?: number) => courseRepository.findFeatured(limit)),
-  getBySlug: cache((slug: string) => courseRepository.findBySlug(slug)),
-  getAllSlugs: cache(() => courseRepository.findPublishedSlugs()),
-  getUpcomingBatches: cache((limit?: number) =>
+  getAll: cached("course.getAll", () => courseRepository.findPublished()),
+  getFeatured: cached("course.getFeatured", (limit?: number) => courseRepository.findFeatured(limit)),
+  getBySlug: cached("course.getBySlug", (slug: string) => courseRepository.findBySlug(slug)),
+  getAllSlugs: cached("course.getAllSlugs", () => courseRepository.findPublishedSlugs()),
+  getUpcomingBatches: cached("course.getUpcomingBatches", (limit?: number) =>
     courseRepository.findUpcomingBatches(limit),
   ),
 };

@@ -179,46 +179,44 @@ export const SOCIAL_LINKS = [
  * Are Successfully Placed In" marquee. Each row is a different set (client
  * request) — IT services / consulting, IT & BFSI, and enterprises.
  *
- * Logos are resolved at render time from each domain via Google's favicon
- * service (see LogoMarquee), with a wordmark fallback. Some sites only resolve
- * on their `www.` host; `logo` overrides the lookup with a self-hosted file
- * for brands the service has no icon for.
+ * Logos are self-hosted in /public/logos (no third-party requests, cached for a
+ * year); LogoMarquee falls back to the name alone if a file is missing.
  */
 export const PLACED_COMPANY_ROWS = [
   [
-    { name: "Accenture", domain: "accenture.com" },
-    { name: "Infosys", domain: "infosys.com" },
-    { name: "Capgemini", domain: "capgemini.com" },
-    { name: "Deloitte", domain: "deloitte.com" },
-    { name: "Wipro", domain: "wipro.com" },
-    { name: "Cognizant", domain: "cognizant.com" },
-    { name: "TCS", domain: "www.tcs.com" },
-    { name: "IBM", domain: "ibm.com" },
-    { name: "EY", domain: "ey.com" },
-    { name: "L&T Infotech", domain: "ltimindtree.com", logo: "/logos/ltimindtree.png" },
+    { name: "Accenture", logo: "/logos/accenture.png" },
+    { name: "Infosys", logo: "/logos/infosys.png" },
+    { name: "Capgemini", logo: "/logos/capgemini.png" },
+    { name: "Deloitte", logo: "/logos/deloitte.png" },
+    { name: "Wipro", logo: "/logos/wipro.png" },
+    { name: "Cognizant", logo: "/logos/cognizant.png" },
+    { name: "TCS", logo: "/logos/tcs.png" },
+    { name: "IBM", logo: "/logos/ibm.png" },
+    { name: "EY", logo: "/logos/ey.png" },
+    { name: "L&T Infotech", logo: "/logos/ltimindtree.png" },
   ],
   [
-    { name: "Tata Technologies", domain: "www.tatatechnologies.com" },
-    { name: "Birlasoft", domain: "birlasoft.com" },
-    { name: "Yash Technologies", domain: "yash.com" },
-    { name: "eClerx", domain: "eclerx.com" },
-    { name: "Genpact", domain: "genpact.com" },
-    { name: "Synechron", domain: "synechron.com" },
-    { name: "Tietoevry", domain: "tietoevry.com" },
-    { name: "Atos", domain: "atos.net" },
-    { name: "Barclays", domain: "barclays.com" },
-    { name: "DBS Bank", domain: "dbs.com" },
+    { name: "Tata Technologies", logo: "/logos/tata-technologies.png" },
+    { name: "Birlasoft", logo: "/logos/birlasoft.png" },
+    { name: "Yash Technologies", logo: "/logos/yash-technologies.png" },
+    { name: "eClerx", logo: "/logos/eclerx.png" },
+    { name: "Genpact", logo: "/logos/genpact.png" },
+    { name: "Synechron", logo: "/logos/synechron.png" },
+    { name: "Tietoevry", logo: "/logos/tietoevry.png" },
+    { name: "Atos", logo: "/logos/atos.png" },
+    { name: "Barclays", logo: "/logos/barclays.png" },
+    { name: "DBS Bank", logo: "/logos/dbs-bank.png" },
   ],
   [
-    { name: "Maersk", domain: "maersk.com" },
-    { name: "H&M", domain: "hm.com" },
-    { name: "Volkswagen", domain: "volkswagen.com" },
-    { name: "Schindler", domain: "schindler.com" },
-    { name: "Godrej", domain: "www.godrejindustries.com" },
-    { name: "Konecranes", domain: "konecranes.com" },
-    { name: "Faurecia", domain: "faurecia.com" },
-    { name: "Smith+Nephew", domain: "smith-nephew.com" },
-    { name: "Kerry", domain: "kerry.com" },
+    { name: "Maersk", logo: "/logos/maersk.png" },
+    { name: "H&M", logo: "/logos/h-m.png" },
+    { name: "Volkswagen", logo: "/logos/volkswagen.png" },
+    { name: "Schindler", logo: "/logos/schindler.png" },
+    { name: "Godrej", logo: "/logos/godrej.png" },
+    { name: "Konecranes", logo: "/logos/konecranes.png" },
+    { name: "Faurecia", logo: "/logos/faurecia.png" },
+    { name: "Smith+Nephew", logo: "/logos/smith-nephew.png" },
+    { name: "Kerry", logo: "/logos/kerry.png" },
   ],
 ] as const;
 

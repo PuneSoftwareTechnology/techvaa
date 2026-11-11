@@ -52,6 +52,11 @@ const nextConfig: NextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
 
+  // Always render <title>/<meta> inside <head>. By default Next streams
+  // metadata into the <body> for every client except a short bot list, so
+  // SEO tools and many crawlers reported "title / description not found".
+  htmlLimitedBots: /.*/,
+
   // Server Actions run a CSRF check that compares the request `origin` against
   // the `host`/`x-forwarded-host` header. Behind the production reverse proxy /
   // CDN these differ, so Next rejects every form submission with a 500

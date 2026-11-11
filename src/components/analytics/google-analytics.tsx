@@ -1,7 +1,7 @@
 import Script from "next/script";
 
 /**
- * Google Analytics 4 (gtag.js), loaded with `afterInteractive` so it stays off
+ * Google Analytics 4 (gtag.js), loaded with `lazyOnload` (after the page finishes loading) so it stays off
  * the critical render path and never blocks LCP. Renders nothing unless
  * `NEXT_PUBLIC_GA_ID` is set, so local/preview environments stay untracked
  * without any code change — just leave the env var blank.
@@ -14,9 +14,9 @@ export function GoogleAnalytics() {
     <>
       <Script
         src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}
-        strategy="afterInteractive"
+        strategy="lazyOnload"
       />
-      <Script id="ga4-init" strategy="afterInteractive">
+      <Script id="ga4-init" strategy="lazyOnload">
         {`
           window.dataLayer = window.dataLayer || [];
           function gtag(){dataLayer.push(arguments);}

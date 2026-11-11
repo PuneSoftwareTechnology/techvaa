@@ -1,5 +1,6 @@
 import "server-only";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
+import { DATA_TAG } from "@/lib/data-cache";
 import type { NextRequest } from "next/server";
 import { corsHeaders, preflight } from "@/lib/api/rest";
 
@@ -65,6 +66,9 @@ export async function POST(req: NextRequest) {
   for (const path of revalidated) revalidatePath(path);
   // Invalidate every page under the dynamic detail routes.
   for (const route of DETAIL_ROUTES) revalidatePath(route, "page");
+  // Expire the cross-request DB cache (lib/data-cache.ts) right away on this
+  // instance; other Amplify instances pick up the change within DATA_TTL.
+  revalidateTag(DATA_TAG, { expire: 0 });
 
   // NOTE: this refreshes the ORIGIN's ISR cache only. The site runs on Amplify
   // Hosting, whose managed CloudFront still serves its edge copy until the

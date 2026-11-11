@@ -1,5 +1,5 @@
 import "server-only";
-import { cache } from "react";
+import { cached } from "@/lib/data-cache";
 import {
   placementRepository,
   reviewRepository,
@@ -39,19 +39,19 @@ function reviewsAsTestimonials(reviews: ReviewDTO[]): TestimonialDTO[] {
 }
 
 export const reviewService = {
-  getAll: cache(() => reviewRepository.findPublished()),
-  getTop: cache((take = 6) => reviewRepository.findPublished(take)),
-  getRatingSummary: cache(async (): Promise<RatingSummary> => {
+  getAll: cached("review.getAll", () => reviewRepository.findPublished()),
+  getTop: cached("review.getTop", (take: number = 6) => reviewRepository.findPublished(take)),
+  getRatingSummary: cached("review.getRatingSummary", async (): Promise<RatingSummary> => {
     const reviews = await reviewRepository.findPublished();
     return computeRatingSummary(reviews);
   }),
 };
 
 export const placementService = {
-  getAll: cache(() => placementRepository.findPublished()),
-  getTop: cache((take = 12) => placementRepository.findPublished(take)),
+  getAll: cached("placement.getAll", () => placementRepository.findPublished()),
+  getTop: cached("placement.getTop", (take: number = 12) => placementRepository.findPublished(take)),
   /** "Recently Placed Students" for one course page (admin-curated). */
-  getForCourse: cache((courseId: string, take = 20) =>
+  getForCourse: cached("placement.getForCourse", (courseId: string, take: number = 20) =>
     placementRepository.findForCourse(courseId, take)
   ),
 };
@@ -74,7 +74,7 @@ export const testimonialService = {
    * Homepage success stories: testimonials flagged `showOnHomepage` first,
    * topped up with published reviews.
    */
-  getForHomepage: cache(async (take = 3): Promise<TestimonialDTO[]> =>
+  getForHomepage: cached("testimonial.getForHomepage", async (take: number = 3): Promise<TestimonialDTO[]> =>
     topUpWithReviews(await testimonialRepository.findForHomepage(take), take)
   ),
 
@@ -83,7 +83,7 @@ export const testimonialService = {
    * (Testimonial → Courses). Deliberately NOT topped up with general reviews —
    * that showed the same (often other-course) reviews on every course page.
    */
-  getForCourse: cache((courseId: string, take = 8): Promise<TestimonialDTO[]> =>
+  getForCourse: cached("testimonial.getForCourse", (courseId: string, take: number = 8): Promise<TestimonialDTO[]> =>
     testimonialRepository.findForCourse(courseId, take)
   ),
 };

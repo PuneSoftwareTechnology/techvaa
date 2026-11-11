@@ -66,10 +66,12 @@ export function MediaCard({
             src={image}
             alt={title}
             fill
+            // Cards sit in a 3-col grid inside max-w-7xl, so they never exceed
+            // ~390px; capping it stops desktop from fetching the 640w file.
             sizes={
               stacked
-                ? "(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-                : "(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 7rem"
+                ? "(min-width: 1280px) 390px, (min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                : "(min-width: 1280px) 390px, (min-width: 1024px) 33vw, (min-width: 640px) 50vw, 7rem"
             }
             className="object-cover object-center transition-transform duration-300 group-hover:scale-105"
           />

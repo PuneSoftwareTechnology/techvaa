@@ -8,7 +8,7 @@ import { useReportWebVitals } from "next/web-vitals";
  * numbers Google actually ranks on, not just lab/Lighthouse scores.
  *
  * No-ops with a blank NEXT_PUBLIC_GA_ID; metrics that arrive before the
- * (lazily loaded) GA script are buffered and sent once it is ready. Confined to its own client component per Next guidance so
+ * GA stub exists are buffered and sent once it is ready. Confined to its own client component per Next guidance so
  * the client boundary doesn't leak into the root layout.
  */
 declare global {
@@ -19,9 +19,10 @@ declare global {
 
 type Metric = { name: string; id: string; value: number };
 
-// GA loads lazily (after the page finishes loading), so early metrics like
-// TTFB / FCP usually arrive before `gtag` exists. Buffer them and flush once GA
-// is up; give up after ~30 s (e.g. GA blocked or not configured).
+// The `gtag` stub is defined right after hydration (google-analytics.tsx) and
+// queues into dataLayer until gtag.js loads on first interaction. Metrics that
+// arrive before even the stub exists are buffered and flushed once it does;
+// give up after ~30 s (e.g. GA blocked or not configured).
 const pending: Metric[] = [];
 let flushTimer: ReturnType<typeof setInterval> | null = null;
 let flushTries = 0;

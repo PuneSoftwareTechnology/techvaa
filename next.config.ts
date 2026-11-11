@@ -80,7 +80,8 @@ const nextConfig: NextConfig = {
       { protocol: "https", hostname: "images.unsplash.com" },
       { protocol: "https", hostname: "picsum.photos" },
     ],
-    deviceSizes: [360, 640, 768, 1024, 1280, 1536, 1920],
+    // 480 gives ~390px course/blog cards a close-fitting file (vs 640).
+    deviceSizes: [360, 480, 640, 768, 1024, 1280, 1536, 1920],
     // Cache optimized images for 30 days so re-crawls / repeat visits don't
     // re-trigger optimization (each re-optimization re-fetches the source).
     minimumCacheTTL: 2592000,

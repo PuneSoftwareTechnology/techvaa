@@ -145,7 +145,7 @@ export function Footer() {
             </ul>
           </div>
         </div>
-        <p className="text-xs text-center mt-8 mb-16 font-semibold text-white/45 italic">
+        <p className="text-xs text-center mt-8 mb-16 font-semibold text-white/70 italic">
           Techvaa is not an authorized SAP partner.
         </p>
       </Container>

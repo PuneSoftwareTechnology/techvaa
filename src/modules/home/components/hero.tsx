@@ -67,7 +67,9 @@ export function Hero() {
           </ul>
         </div>
 
-        {/* Placements banner — LCP image, so preload it */}
+        {/* Placements banner — the LCP image. `preload` puts a <link> in the
+            <head>; `fetchPriority="high"` is copied onto that preload and the
+            <img>, so it isn't queued behind CSS/JS. */}
         <div className="relative mx-auto w-full max-w-xl">
           <Image
             src="/images/hero-placements.webp"
@@ -76,10 +78,11 @@ export function Hero() {
             height={900}
             sizes="(min-width: 640px) 576px, 100vw"
             preload
+            fetchPriority="high"
             className="h-auto w-full rounded-2xl shadow-2xl ring-1 ring-white/20"
           />
           <div
-            className="absolute -bottom-5 -left-5 rounded-xl bg-accent-orange px-4 py-3 text-sm font-semibold text-white shadow-xl"
+            className="absolute -bottom-5 -left-5 rounded-xl bg-accent-orange-strong px-4 py-3 text-sm font-semibold text-white shadow-xl"
             aria-hidden="true"
           >
             100% Placement Support

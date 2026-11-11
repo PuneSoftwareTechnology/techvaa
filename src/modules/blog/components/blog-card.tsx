@@ -32,7 +32,10 @@ export function BlogCard({
           <span>{formatDate(blog.publishedAt)}</span>
           <Link
             href={`/blogs/${blog.slug}`}
-            className="relative z-10 inline-flex items-center gap-1 text-sm font-semibold text-accent-orange transition-transform hover:underline group-hover:translate-x-0.5"
+            // Every card repeats "Read Blog"; name the target so screen-reader
+            // link lists can tell them apart (label starts with the visible text).
+            aria-label={`Read Blog: ${blog.title}`}
+            className="relative z-10 inline-flex items-center gap-1 text-sm font-semibold text-accent-orange-strong dark:text-accent-orange transition-transform hover:underline group-hover:translate-x-0.5"
           >
             Read Blog
             <ArrowRight className="size-4" aria-hidden="true" />

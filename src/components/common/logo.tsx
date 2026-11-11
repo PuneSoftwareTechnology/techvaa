@@ -3,9 +3,11 @@ import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { SITE } from "@/constants/site";
 
-// Intrinsic size of the source logo files (public/logo.png, public/logo-white.png).
-const LOGO_W = 2029;
-const LOGO_H = 489;
+// Largest rendered size (h-14 = 56px tall at lg; source art is 2029x489).
+// Passing the display size — not the 2029px intrinsic size — makes next/image
+// serve ~256w/640w (1x/2x) instead of a 1920px file for a 232px logo.
+const LOGO_W = 232;
+const LOGO_H = 56;
 
 /**
  * Techvaa brand logo. Renders the real artwork:
@@ -31,7 +33,9 @@ export function Logo({
         alt={SITE.name}
         width={LOGO_W}
         height={LOGO_H}
-        priority={variant === "default"}
+        // Header logo is above the fold: load it immediately, but don't
+        // preload it — a <head> preload would compete with the hero LCP image.
+        loading={variant === "default" ? "eager" : "lazy"}
         className="h-12 w-auto lg:h-14"
       />
     </Link>

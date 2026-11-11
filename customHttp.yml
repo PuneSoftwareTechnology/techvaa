@@ -1,0 +1,22 @@
+# Amplify Hosting custom headers (applied at the CloudFront edge on redeploy).
+#
+# Why this file exists: files in /public (e.g. /logos/*.png) are served by
+# Amplify directly, NOT by the Next.js server, so the Cache-Control rule in
+# next.config.ts `headers()` never reaches them — they went out with
+# `max-age=5`. These patterns give them a 1-year browser cache.
+#
+# Because the cache is long-lived, when you REPLACE an image under these paths,
+# give it a NEW filename (e.g. wipro-2.png) — otherwise returning visitors keep
+# the old file for up to a year.
+#
+# Note: this file overrides anything set in Amplify console → Hosting →
+# Custom headers. Security headers live in next.config.ts, not here.
+customHeaders:
+  - pattern: '/logos/*'
+    headers:
+      - key: 'Cache-Control'
+        value: 'public, max-age=31536000, immutable'
+  - pattern: '/images/*'
+    headers:
+      - key: 'Cache-Control'
+        value: 'public, max-age=31536000, immutable'

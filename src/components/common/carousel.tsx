@@ -169,8 +169,10 @@ export function Carousel({
             <ChevronRight className="size-5" aria-hidden="true" />
           </button>
 
-          {/* Mobile: swipe, with position dots below. */}
-          <div className="mt-5 flex items-center justify-center gap-2 sm:hidden">
+          {/* Mobile: swipe, with position dots below. Each dot sits in a
+              24px button so it meets the minimum touch-target size; the
+              visible dot stays small. */}
+          <div className="mt-3 flex items-center justify-center sm:hidden">
             {Array.from({ length: dotEnd - dotStart }, (_, k) => {
               const i = dotStart + k;
               // Shrink the outer dots when more slides exist beyond them.
@@ -184,15 +186,20 @@ export function Carousel({
                   onClick={() => goTo(i)}
                   aria-label={`Go to slide ${i + 1}`}
                   aria-current={i === active}
-                  className={cn(
-                    "rounded-full transition-all",
-                    i === active
-                      ? "h-2.5 w-6 bg-accent-orange"
-                      : edge
-                        ? "size-1.5 bg-muted-foreground/30"
-                        : "size-2.5 bg-muted-foreground/30",
-                  )}
-                />
+                  className="grid h-6 min-w-6 place-items-center px-1"
+                >
+                  <span
+                    aria-hidden="true"
+                    className={cn(
+                      "block rounded-full transition-all",
+                      i === active
+                        ? "h-2.5 w-6 bg-accent-orange"
+                        : edge
+                          ? "size-1.5 bg-muted-foreground/30"
+                          : "size-2.5 bg-muted-foreground/30",
+                    )}
+                  />
+                </button>
               );
             })}
           </div>

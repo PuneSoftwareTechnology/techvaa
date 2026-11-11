@@ -20,7 +20,7 @@ const buttonVariants = cva(
           "bg-destructive/10 text-destructive hover:bg-destructive/20 focus-visible:border-destructive/40 focus-visible:ring-destructive/20 dark:bg-destructive/20 dark:hover:bg-destructive/30 dark:focus-visible:ring-destructive/40",
         link: "text-primary underline-offset-4 hover:underline",
         accent:
-          "bg-accent-orange text-accent-orange-foreground shadow-sm hover:bg-[color-mix(in_oklch,var(--accent-orange),black_8%)]",
+          "bg-accent-orange-strong text-accent-orange-foreground shadow-sm hover:bg-[color-mix(in_oklch,var(--accent-orange-strong),black_10%)]",
         brand:
           "bg-brand text-brand-foreground shadow-sm hover:bg-[color-mix(in_oklch,var(--brand),black_10%)]",
       },

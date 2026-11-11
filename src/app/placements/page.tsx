@@ -138,7 +138,7 @@ export default async function PlacementsPage() {
                     index={i}
                     className="flex h-full flex-1 items-center gap-4 rounded-2xl bg-white/10 p-4 text-white ring-1 ring-white/10 lg:flex-col lg:items-center lg:gap-3 lg:p-5 lg:text-center"
                   >
-                    <span className="relative grid size-12 shrink-0 place-items-center rounded-full bg-accent-orange text-accent-orange-foreground">
+                    <span className="relative grid size-12 shrink-0 place-items-center rounded-full bg-accent-orange-strong text-accent-orange-foreground">
                       <DynamicIcon name={p.icon} className="size-6" />
                       <span className="absolute -right-1 -top-1 grid size-5 place-items-center rounded-full bg-white text-[10px] font-bold text-brand">
                         {i + 1}
@@ -204,7 +204,7 @@ export default async function PlacementsPage() {
                   key={g}
                   className="flex items-center gap-3 rounded-xl bg-white/10 p-4 text-sm font-medium"
                 >
-                  <span className="grid size-8 shrink-0 place-items-center rounded-full bg-accent-orange text-sm font-bold text-accent-orange-foreground">
+                  <span className="grid size-8 shrink-0 place-items-center rounded-full bg-accent-orange-strong text-sm font-bold text-accent-orange-foreground">
                     {i + 1}
                   </span>
                   {g}

@@ -35,7 +35,7 @@ export function CourseCard({
       className={className}
       imageOverlay={
         course.isFeatured ? (
-          <Badge className="absolute left-2 top-2 z-10 bg-accent-orange text-accent-orange-foreground">
+          <Badge className="absolute left-2 top-2 z-10 bg-accent-orange-strong text-accent-orange-foreground">
             Featured
           </Badge>
         ) : undefined
@@ -52,7 +52,10 @@ export function CourseCard({
           />
           <Link
             href={`/courses/${course.slug}`}
-            className="relative z-10 inline-flex items-center gap-1 text-sm font-semibold text-accent-orange transition-transform hover:underline group-hover:translate-x-0.5"
+            // Every card repeats "Explore Course"; name the target so screen-reader
+            // link lists can tell them apart (label starts with the visible text).
+            aria-label={`Explore Course: ${course.title}`}
+            className="relative z-10 inline-flex items-center gap-1 text-sm font-semibold text-accent-orange-strong dark:text-accent-orange transition-transform hover:underline group-hover:translate-x-0.5"
           >
             Explore Course
             <ArrowRight className="size-4" aria-hidden="true" />

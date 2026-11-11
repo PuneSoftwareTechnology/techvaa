@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import { SITE } from "@/constants/site";
 
 /** Default share image (1200×630) for pages without their own. */
-export const DEFAULT_OG_IMAGE = "/og-image.png";
+// Bump `v` whenever og-image.png changes — WhatsApp / Facebook cache by URL.
+export const DEFAULT_OG_IMAGE = "/og-image.png?v=2";
 
 export function absoluteUrl(path = "/"): string {
   const base = SITE.url.replace(/\/$/, "");

@@ -18,12 +18,12 @@ function initials(name: string) {
 
 // Deterministic color theme per card so the grid feels lively but stable.
 const THEMES = [
-  { avatar: "bg-blue-500 text-white", ring: "ring-blue-500/15", accent: "from-blue-500 to-sky-400", bg: "bg-blue-50/60" },
-  { avatar: "bg-emerald-500 text-white", ring: "ring-emerald-500/15", accent: "from-emerald-500 to-teal-400", bg: "bg-emerald-50/60" },
-  { avatar: "bg-violet-500 text-white", ring: "ring-violet-500/15", accent: "from-violet-500 to-fuchsia-400", bg: "bg-violet-50/60" },
-  { avatar: "bg-amber-500 text-white", ring: "ring-amber-500/15", accent: "from-amber-500 to-orange-400", bg: "bg-amber-50/60" },
-  { avatar: "bg-rose-500 text-white", ring: "ring-rose-500/15", accent: "from-rose-500 to-pink-400", bg: "bg-rose-50/60" },
-  { avatar: "bg-cyan-600 text-white", ring: "ring-cyan-500/15", accent: "from-cyan-500 to-blue-400", bg: "bg-cyan-50/60" },
+  { avatar: "bg-blue-700 text-white", ring: "ring-blue-500/15", accent: "from-blue-500 to-sky-400", bg: "bg-blue-50/60" },
+  { avatar: "bg-emerald-700 text-white", ring: "ring-emerald-500/15", accent: "from-emerald-500 to-teal-400", bg: "bg-emerald-50/60" },
+  { avatar: "bg-violet-700 text-white", ring: "ring-violet-500/15", accent: "from-violet-500 to-fuchsia-400", bg: "bg-violet-50/60" },
+  { avatar: "bg-amber-700 text-white", ring: "ring-amber-500/15", accent: "from-amber-500 to-orange-400", bg: "bg-amber-50/60" },
+  { avatar: "bg-rose-700 text-white", ring: "ring-rose-500/15", accent: "from-rose-500 to-pink-400", bg: "bg-rose-50/60" },
+  { avatar: "bg-cyan-700 text-white", ring: "ring-cyan-500/15", accent: "from-cyan-500 to-blue-400", bg: "bg-cyan-50/60" },
 ];
 
 function themeFor(seed: string) {

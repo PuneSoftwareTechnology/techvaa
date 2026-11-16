@@ -48,16 +48,18 @@ export function CourseOutcomes({ courseTitle }: { courseTitle: string }) {
                 key={s.label}
                 className="rounded-2xl border border-white/10 bg-white/5 px-3 py-5 text-center ring-1 ring-white/5 backdrop-blur-sm transition-colors hover:bg-white/10 sm:p-6"
               >
-                <div
-                  className={cn(
-                    "mx-auto mb-3 grid size-12 place-items-center rounded-xl",
-                    STAT_TILES[i % STAT_TILES.length],
-                  )}
-                >
-                  <DynamicIcon name={s.icon} className="size-6" />
-                </div>
+                {/* A <dl> group may only hold <dt>/<dd>, so the icon lives
+                    inside the <dd> rather than as a sibling <div>. */}
                 <dt className="sr-only">{s.label}</dt>
                 <dd>
+                  <span
+                    className={cn(
+                      "mx-auto mb-3 grid size-12 place-items-center rounded-xl",
+                      STAT_TILES[i % STAT_TILES.length],
+                    )}
+                  >
+                    <DynamicIcon name={s.icon} className="size-6" />
+                  </span>
                   <span className="block font-heading text-xl font-extrabold text-white sm:text-2xl">
                     {s.value}
                   </span>

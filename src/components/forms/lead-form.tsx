@@ -125,7 +125,7 @@ export function LeadForm({ courseInterest, tone = "light", className }: LeadForm
             id="lf-email"
             type="email"
             autoComplete="email"
-            placeholder="you@example.com"
+            placeholder="Your email address"
             aria-invalid={!!errors.email}
             className={fieldClass}
             {...register("email")}

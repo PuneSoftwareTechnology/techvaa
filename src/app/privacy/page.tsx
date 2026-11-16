@@ -100,7 +100,7 @@ const SECTIONS: LegalSection[] = [
     id: "contact",
     title: "Contact us",
     paragraphs: [
-      `If you have any questions or concerns about this Privacy Policy or how we handle your data, please contact us at ${SITE.email} or call ${SITE.phone}.`,
+      `If you have any questions or concerns about this Privacy Policy or how we handle your data, please reach us through the form on our Contact page or call ${SITE.phone}.`,
     ],
   },
 ];

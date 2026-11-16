@@ -90,7 +90,7 @@ const SECTIONS: LegalSection[] = [
     id: "contact",
     title: "Contact us",
     paragraphs: [
-      `If you have any questions about these Terms of Use, please contact us at ${SITE.email} or call ${SITE.phone}.`,
+      `If you have any questions about these Terms of Use, please reach us through the form on our Contact page or call ${SITE.phone}.`,
     ],
   },
 ];

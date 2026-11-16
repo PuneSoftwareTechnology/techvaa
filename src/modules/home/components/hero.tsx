@@ -46,7 +46,7 @@ export function Hero() {
             >
               <ScrollLink href="#contact">
                 <Shimmer />
-                Enroll Now <ArrowRight aria-hidden="true" />
+                Enquire Now <ArrowRight aria-hidden="true" />
               </ScrollLink>
             </Button>
           </div>

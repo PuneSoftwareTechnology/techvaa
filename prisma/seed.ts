@@ -41,9 +41,9 @@ async function main() {
     {
       page: "Home",
       path: "/",
-      metaTitle: "Techvaa - SAP Training Institute in Pune",
+      metaTitle: "SAP Training Institute in Pune | Best SAP Courses | Techvaa",
       metaDescription:
-        "Learn SAP S/4HANA in 3 months with projects. 100% practical training, interview preparation and placement services.",
+        "Techvaa is an SAP training institute in Pune offering SAP S4 HANA courses, online training and placement support with live projects. Join the next batch.",
       keywords: [
         "SAP training in Pune",
         "SAP course in Pune",

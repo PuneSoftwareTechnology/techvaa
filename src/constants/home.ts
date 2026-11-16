@@ -17,21 +17,21 @@ export const WHY_CHOOSE = [
     icon: "monitor-play",
     title: "Live Projects",
     description:
-      "Real-time server access and case studies that mirror actual enterprise rollouts.",
+      "Build job-ready SAP skills through hands-on configuration, practical exercises and real-world implementation case studies.",
     iconClass: "bg-emerald-100 text-emerald-600",
   },
   {
     icon: "calendar-clock",
     title: "Flexible Learning",
     description:
-      "Virtual and classroom sessions with lifetime access to recordings.",
+      "Virtual and classroom sessions with SAP online training and access to recordings.",
     iconClass: "bg-amber-100 text-amber-600",
   },
   {
     icon: "briefcase",
     title: "Job Placement",
     description:
-      "Dedicated career services and a hiring-partner network to get you placed.",
+      "Every SAP course with placement support includes dedicated career services and a hiring-partner network to get you placed.",
     iconClass: "bg-violet-100 text-violet-600",
   },
 ] as const;

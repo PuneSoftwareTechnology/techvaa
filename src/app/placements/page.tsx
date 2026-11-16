@@ -58,8 +58,8 @@ export default async function PlacementsPage() {
 
       <PageHero
         eyebrow="Career Services"
-        title="Launch your career with Techvaa"
-        description="Master the skills that matter. Our expert-led training sharpens your edge for clearing interviews with confidence."
+        title="Launch your SAP career with Techvaa"
+        description="Master the SAP skills that matter. Our expert-led training sharpens your edge for clearing interviews with confidence."
         breadcrumbs={[
           { name: "Home", href: "/" },
           { name: "Placements", href: "/placements" },

@@ -34,8 +34,8 @@ type EnrollDialogProps = {
   /** Extra classes for the trigger button (e.g. full-width on mobile cards). */
   className?: string;
   /**
-   * Custom trigger presentation. When provided it replaces the default "Enroll
-   * Now" accent button (e.g. a text-style "Talk to us" link on a course card).
+   * Custom trigger presentation. When provided it replaces the default "Enquire
+   * Now" accent button (e.g. the "Book a Free Demo" hero button on a course page).
    *
    * This is intentionally plain data, NOT a JSX element: the button is built
    * here, inside the client component. Handing Radix's `asChild` Slot an element
@@ -115,16 +115,17 @@ export function EnrollDialog({ course, className, trigger }: EnrollDialogProps) 
             className={cn("relative overflow-hidden", className)}
           >
             <Shimmer />
-            Enroll Now
+            Enquire Now
           </Button>
         )}
       </DialogTrigger>
 
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Reserve your seat</DialogTitle>
+          <DialogTitle>Get Course Details</DialogTitle>
           <DialogDescription>
-            Share your details and our team will confirm your spot in this batch.
+            Submit your enquiry and our team will contact you with course
+            information.
           </DialogDescription>
         </DialogHeader>
 
@@ -148,7 +149,7 @@ export function EnrollDialog({ course, className, trigger }: EnrollDialogProps) 
           onSubmit={handleSubmit(onSubmit, onInvalid)}
           noValidate
           className="space-y-4"
-          aria-label="Course enrollment enquiry form"
+          aria-label="Course enquiry form"
         >
           {/* Honeypot — visually hidden, off the tab order. Uses `sr-only`
               (clip-based) rather than off-screen positioning: an absolutely
@@ -239,7 +240,7 @@ export function EnrollDialog({ course, className, trigger }: EnrollDialogProps) 
             className={cn("w-full")}
           >
             {isPending && <Loader2 className="animate-spin" aria-hidden="true" />}
-            {isPending ? "Sending…" : "Submit Enrollment"}
+            {isPending ? "Sending…" : "Submit Enquiry"}
           </Button>
 
           <RecaptchaNotice />

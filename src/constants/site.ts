@@ -127,7 +127,7 @@ export const NAV_ITEMS: readonly NavItem[] = [
   { label: "Reviews", href: "/reviews" },
 ] as const;
 
-export const PRIMARY_CTA = { label: "Enroll Now", href: "/courses" } as const;
+export const PRIMARY_CTA = { label: "Enquire Now", href: "/courses" } as const;
 
 /** Footer link columns. */
 export const FOOTER_LINKS = {
@@ -147,6 +147,7 @@ export const FOOTER_LINKS = {
     { label: "SAP BW", href: "/courses/sap-bw-s4hana-course" },
     { label: "SAP Analytics Cloud", href: "/courses/sap-analytics-cloud-course" },
     { label: "SAP CO", href: "/courses/sap-co-s4hana-course" },
+    { label: "SAP BTP", href: "/courses/sap-btp-course" },
   ],
   legal: [
     { label: "Terms of Use", href: "/terms" },

@@ -118,6 +118,35 @@ const nextConfig: NextConfig = {
   async headers() {
     return [
       { source: "/:path*", headers: securityHeaders },
+      // Let CloudFront cache page HTML. Pages are force-dynamic (see
+      // src/app/page.tsx — Amplify's per-instance ISR cache served stale build
+      // snapshots), which makes Next send `no-store`, so every visit hit a
+      // cold Amplify compute + suspended Neon DB: 3–5 s before the first byte.
+      // Next keeps a Cache-Control that is already set on a dynamic page, so
+      // this replaces that `no-store`:
+      // - s-maxage=60: the edge serves its copy for 60 s (DB reads are
+      //   already cached 60 s, so admin edits show on the same timescale).
+      // - stale-while-revalidate: after that, visitors still get the edge copy
+      //   instantly while CloudFront refetches in the background — so the first
+      //   visitor after a quiet spell no longer waits on a cold start.
+      // - stale-if-error: keep serving the last good page if the origin fails.
+      // - max-age=0: browsers always recheck, so nobody gets stuck on an old copy.
+      // RSC navigation requests and Server Action posts are excluded and keep
+      // Next's own no-store; they vary on router-state headers, not the URL.
+      {
+        source: "/((?!api/|_next/).*)",
+        missing: [
+          { type: "header", key: "rsc" },
+          { type: "header", key: "next-action" },
+        ],
+        headers: [
+          {
+            key: "Cache-Control",
+            value:
+              "public, max-age=0, s-maxage=60, stale-while-revalidate=86400, stale-if-error=86400",
+          },
+        ],
+      },
       // Static media is content-hashed or rarely changes — cache hard so
       // repeat visitors and bot re-crawls don't re-download it (saves transfer).
       {

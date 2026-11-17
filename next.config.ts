@@ -112,6 +112,24 @@ const nextConfig: NextConfig = {
     return [
       { source: "/blog", destination: "/blogs", permanent: true },
       { source: "/blog/:slug", destination: "/blogs/:slug", permanent: true },
+
+      // Blog posts whose slugs were corrected for typos. The old URLs are
+      // indexed/shared, so send them to the fixed slug instead of a 404.
+      {
+        source: "/blogs/sap-fico-interveiw-questions-asked-in-various-companies",
+        destination: "/blogs/sap-fico-interview-questions-asked-in-various-companies",
+        permanent: true,
+      },
+      {
+        source: "/blogs/sap-fico-interview-questoin-asked-in-hcl-tcs-wipro",
+        destination: "/blogs/sap-fico-interview-questions-asked-in-hcl-tcs-wipro",
+        permanent: true,
+      },
+      {
+        source: "/blogs/asset-accounting-interviews-questions-in-sap-s4hana",
+        destination: "/blogs/asset-accounting-interview-questions-in-sap-s4hana",
+        permanent: true,
+      },
     ];
   },
 

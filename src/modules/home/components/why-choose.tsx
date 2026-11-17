@@ -13,7 +13,7 @@ export function WhyChoose() {
           as="h2"
           eyebrow="Why Techvaa"
           title="Why choose Techvaa for your SAP training?"
-          description="Everything you need in an SAP S4 HANA course to go from beginner to job-ready SAP consultant — mentorship, hands-on projects, and a placement engine that works."
+          description="Everything you need in an SAP S4HANA course to go from beginner to job-ready SAP consultant — mentorship, hands-on projects, and a placement engine that works."
         />
 
         <div className="mt-8 grid grid-cols-2 gap-4 sm:mt-12 sm:gap-6 lg:grid-cols-4">

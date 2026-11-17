@@ -27,7 +27,7 @@ export async function generateMetadata(): Promise<Metadata> {
   return pageMetadata("/", {
     title: "SAP Training Institute in Pune | Best SAP Courses | Techvaa",
     description:
-      "Techvaa is an SAP training institute in Pune offering SAP S4 HANA courses, online training and placement support with live projects. Join the next batch.",
+      "Techvaa is an SAP training institute in Pune offering SAP S4HANA courses, online training and placement support with live projects. Join the next batch.",
     keywords: [
       "SAP training in Pune",
       "SAP course in Pune",

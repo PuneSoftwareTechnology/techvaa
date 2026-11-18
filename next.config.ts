@@ -130,6 +130,11 @@ const nextConfig: NextConfig = {
         destination: "/blogs/asset-accounting-interview-questions-in-sap-s4hana",
         permanent: true,
       },
+      {
+        source: "/blogs/ptp-process-in-sap-with-accounting-entry",
+        destination: "/blogs/ptp-process-in-sap-with-accounting-entries",
+        permanent: true,
+      },
     ];
   },
 
